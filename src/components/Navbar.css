@@ -1,0 +1,243 @@
+.announcement-bar {
+  background: var(--primary);
+  color: var(--white);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  overflow: hidden;
+  height: 36px;
+  display: flex;
+  align-items: center;
+}
+
+.announcement-track {
+  display: flex;
+  white-space: nowrap;
+  animation: marquee 30s linear infinite;
+  will-change: transform;
+}
+
+.announcement-track span {
+  padding-right: 2rem;
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  transition: box-shadow 0.3s ease;
+}
+
+.navbar.scrolled {
+  box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+}
+
+.navbar-inner {
+  display: flex;
+  align-items: center;
+  height: 88px;
+  gap: 1.5rem;
+  
+}
+
+.navbar-logo {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: -0.5px;
+  flex-shrink: 0;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 1.4rem;
+  flex: 1;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.nav-links a {
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--primary);
+  text-transform: uppercase;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+
+.nav-links a:hover {
+  color: var(--accent-dark);
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.icon-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--primary);
+  transition: background 0.2s, color 0.2s;
+  border: none;
+}
+
+.icon-btn:hover {
+  background: var(--bg-cream);
+  color: var(--accent-dark);
+}
+
+.badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: var(--accent-dark);
+  color: white;
+  font-size: 0.6rem;
+  font-weight: 700;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--primary);
+  padding: 4px;
+}
+
+/* Search Dropdown */
+.search-wrapper {
+  position: relative;
+}
+
+.search-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 320px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+  animation: slideDown 0.2s ease;
+}
+
+.search-dropdown input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--primary);
+  background: var(--bg-cream);
+  outline: none;
+}
+
+.search-dropdown input:focus {
+  border-color: var(--accent);
+}
+
+.search-results {
+  list-style: none;
+  margin-top: 10px;
+}
+
+.search-results li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.search-results li:hover {
+  background: var(--bg-cream);
+}
+
+.search-results img {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.search-results div {
+  display: flex;
+  flex-direction: column;
+}
+
+.result-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.result-price {
+  font-size: 0.78rem;
+  color: var(--accent-dark);
+  font-weight: 600;
+}
+
+/* Mobile Menu */
+.mobile-menu {
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  padding: 1rem 1.5rem;
+  animation: slideDown 0.2s ease;
+}
+
+.mobile-menu ul {
+  list-style: none;
+}
+
+.mobile-menu li a {
+  display: block;
+  padding: 0.75rem 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--primary);
+  border-bottom: 1px solid var(--border);
+  letter-spacing: 0.03em;
+}
+
+.mobile-menu li:last-child a {
+  border-bottom: none;
+}
+
+@media (max-width: 1024px) {
+  .nav-links {
+    display: none;
+  }
+  .hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-logo {
+    font-size: 1.4rem;
+  }
+}
