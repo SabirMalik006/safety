@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
 import Navbar from './components/Navbar';
@@ -11,6 +11,21 @@ import Wishlist from './pages/Wishlist';
 import Reviews from './pages/Reviews';
 import ContactUs from './pages/ContactUs';
 import AboutUs from './pages/AboutUs';
+import Checkout from './pages/Checkout';
+
+// Layout component to conditionally show Navbar and Footer
+function Layout({ children }) {
+  const location = useLocation();
+  const hideNavFooter = location.pathname === '/checkout';
+  
+  return (
+    <>
+      {!hideNavFooter && <Navbar />}
+      <main>{children}</main>
+      {!hideNavFooter && <Footer />}
+    </>
+  );
+}
 
 function ScrollToTop() {
   const { pathname } = window.location;
@@ -22,8 +37,7 @@ export default function App() {
     <BrowserRouter>
       <CartProvider>
         <WishlistProvider>
-          <Navbar />
-          <main>
+          <Layout>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/collections/:slug" element={<Collections />} />
@@ -31,6 +45,7 @@ export default function App() {
               <Route path="/cart" element={<Cart />} />
               <Route path="/pages/wishlist" element={<Wishlist />} />
               <Route path="/pages/reviews" element={<Reviews />} />
+              <Route path="/checkout" element={<Checkout />} />
               <Route path="/pages/wholesale" element={
                 <div className="page-content" style={{ padding: '6rem 0', textAlign: 'center' }}>
                   <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem' }}>Wholesale Inquiry</h2>
@@ -46,8 +61,7 @@ export default function App() {
               <Route path="/contact" element={<ContactUs />} />
               <Route path="/about" element={<AboutUs />} />
             </Routes>
-          </main>
-          <Footer />
+          </Layout>
         </WishlistProvider>
       </CartProvider>
     </BrowserRouter>

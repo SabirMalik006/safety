@@ -102,9 +102,10 @@ export default function Cart() {
             <button>Apply</button>
           </div>
 
-          <button className="btn-checkout">
+          {/* ✅ ONLY THIS LINE CHANGED - Added Link to checkout page */}
+          <Link to="/checkout" className="btn-checkout">
             Proceed to Checkout <FiArrowRight />
-          </button>
+          </Link>
 
           <Link to="/collections/all-bags" className="continue-shopping">
             ← Continue Shopping
