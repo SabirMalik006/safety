@@ -4,7 +4,7 @@ import './Reviews.css';
 
 export default function Reviews() {
   return (
-    <div className="reviews-page">
+    <div className="reviews-page page-content">
       <div className="reviews-hero">
         <div className="container">
           <p className="section-tag">Testimonials</p>

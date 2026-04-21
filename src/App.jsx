@@ -32,13 +32,13 @@ export default function App() {
               <Route path="/pages/wishlist" element={<Wishlist />} />
               <Route path="/pages/reviews" element={<Reviews />} />
               <Route path="/pages/wholesale" element={
-                <div style={{ padding: '6rem 0', textAlign: 'center' }}>
+                <div className="page-content" style={{ padding: '6rem 0', textAlign: 'center' }}>
                   <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem' }}>Wholesale Inquiry</h2>
                   <p style={{ color: 'var(--text-muted)', marginTop: '1rem' }}>Contact us at wholesale@carryme.pk for bulk orders.</p>
                 </div>
               } />
               <Route path="*" element={
-                <div style={{ padding: '6rem 0', textAlign: 'center' }}>
+                <div className="page-content" style={{ padding: '6rem 0', textAlign: 'center' }}>
                   <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem' }}>404 — Page Not Found</h2>
                   <a href="/" style={{ color: 'var(--accent-dark)', marginTop: '1rem', display: 'block' }}>← Back to Home</a>
                 </div>

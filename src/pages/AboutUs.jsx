@@ -2,7 +2,7 @@ import { FiAward, FiHeart, FiUsers, FiTarget, FiTruck, FiShield, FiRefreshCw, Fi
 
 export default function AboutUs() {
   return (
-    <div className="about-page">
+    <div className="about-page page-content">
       {/* Hero Section */}
       <section className="about-hero">
         <div className="container">

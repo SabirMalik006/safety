@@ -290,12 +290,14 @@
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.4);
   z-index: 199;
 }
 
 @media (max-width: 1024px) {
-  .collection-grid { grid-template-columns: repeat(2, 1fr); }
+  .collection-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
@@ -310,22 +312,29 @@
     padding: 1.5rem;
     overflow-y: auto;
     transition: left 0.3s ease;
-    box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
   }
+
   .filter-sidebar.open {
     left: 0;
   }
+
   .filter-overlay {
     display: block;
   }
+
   .close-filter {
     display: flex;
   }
+
   .collections-body {
     gap: 0;
   }
 }
 
 @media (max-width: 560px) {
-  .collection-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  .collection-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
 }

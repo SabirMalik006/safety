@@ -9,7 +9,7 @@ export default function Wishlist() {
 
   if (wishlist.length === 0) {
     return (
-      <div className="wishlist-empty">
+      <div className="wishlist-empty page-content">
         <FiHeart size={64} strokeWidth={1} />
         <h2>Your wishlist is empty</h2>
         <p>Save your favourite bags for later!</p>
@@ -21,7 +21,7 @@ export default function Wishlist() {
   }
 
   return (
-    <div className="wishlist-page">
+    <div className="wishlist-page page-content">
       <div className="container wishlist-header">
         <h1>My Wishlist</h1>
         <span>{wishlist.length} item{wishlist.length !== 1 ? 's' : ''}</span>

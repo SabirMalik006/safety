@@ -21,7 +21,7 @@ export default function ProductDetail() {
 
   if (!product) {
     return (
-      <div className="not-found container">
+      <div className="not-found container page-content">
         <h2>Product not found</h2>
         <Link to="/collections/all-bags">Back to All Bags</Link>
       </div>
@@ -45,7 +45,7 @@ export default function ProductDetail() {
   };
 
   return (
-    <div className="product-detail-page">
+    <div className="product-detail-page page-content">
       {/* Breadcrumb */}
       <div className="breadcrumb-bar">
         <div className="container breadcrumb-inner">

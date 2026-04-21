@@ -10,7 +10,7 @@ export default function Cart() {
 
   if (cart.length === 0) {
     return (
-      <div className="cart-empty">
+      <div className="cart-empty page-content">
         <FiShoppingCart size={64} strokeWidth={1} />
         <h2>Your cart is empty</h2>
         <p>Add some beautiful bags to your cart!</p>
@@ -22,7 +22,7 @@ export default function Cart() {
   }
 
   return (
-    <div className="cart-page">
+    <div className="cart-page page-content">
       <div className="container cart-header">
         <h1>Shopping Cart</h1>
         <span>{cart.length} item{cart.length !== 1 ? 's' : ''}</span>

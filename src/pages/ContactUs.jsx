@@ -25,7 +25,7 @@ export default function ContactUs() {
   };
 
   return (
-    <div className="contact-page">
+    <div className="contact-page page-content">
       {/* Hero Section */}
       <section className="contact-hero">
         <div className="container">
