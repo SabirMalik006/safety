@@ -5,18 +5,16 @@
 }
 
 :root {
-  --primary: #1a1a1a;
-  --accent: #c4a882;
-  --accent-dark: #a88960;
-  --bg-light: #faf9f7;
-  --bg-cream: #f5f2ee;
-  --text-muted: #6b6560;
-  --text-light: #999490;
+  --primary: #FFB300;
+  --secondary: #1B2631;
+  --accent: #FF5722;
+  --bg-light: #F8F9F9;
+  --text-main: #2C3E50;
+  --text-muted: #5D6D7E;
   --white: #ffffff;
-  --border: #e8e4df;
-  --sale-red: #c0392b;
-  --font-display: 'Playfair Display', serif;
-  --font-body: 'DM Sans', sans-serif;
+  --border: #D5DBDB;
+  --font-display: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
 }
 
 html {

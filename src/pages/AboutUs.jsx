@@ -6,8 +6,8 @@ export default function AboutUs() {
       {/* Hero Section */}
       <section className="about-hero">
         <div className="container">
-          <h1>Our Story</h1>
-          <p>Crafted with passion, designed for the modern Pakistani woman</p>
+          <h1>Our Mission</h1>
+          <p>Protecting Pakistan's workforce with certified industrial safety gear and professional tools.</p>
         </div>
       </section>
 
@@ -22,22 +22,22 @@ export default function AboutUs() {
               />
             </div>
             <div className="story-content">
-              <span className="story-tag">Our Journey</span>
-              <h2>Carry Your Story in Style</h2>
-              <p>Founded in 2020, CarryMe was born from a simple idea — to create beautiful, functional bags that empower women to carry their stories with pride. What started as a small online store has grown into a beloved brand across Pakistan.</p>
-              <p>Every bag is thoughtfully designed, blending timeless elegance with modern functionality. We believe that the right accessory can transform not just your outfit, but your entire day.</p>
+              <span className="story-tag">Our Background</span>
+              <h2>Your Partner in Industrial Excellence</h2>
+              <p>Founded in 2020, SafetyMe was established with a clear mission: to bridge the gap in Pakistan's industrial sector by providing certified, high-performance safety equipment and precision tools. What began as a specialized consultancy has evolved into a leading distributor of professional-grade gear.</p>
+              <p>Every piece of equipment in our catalog is rigorously tested to meet international safety standards (CE, ANSI). We believe that the right tools and protection don't just prevent accidents—they empower workers to perform at their definitive best.</p>
               <div className="story-stats">
                 <div className="stat">
-                  <strong>5,000+</strong>
-                  <span>Happy Customers</span>
+                  <strong>10,000+</strong>
+                  <span>Unit Deliveries</span>
                 </div>
                 <div className="stat">
-                  <strong>50+</strong>
-                  <span>Unique Designs</span>
+                  <strong>500+</strong>
+                  <span>Certified Tools</span>
                 </div>
                 <div className="stat">
                   <strong>4.9★</strong>
-                  <span>Customer Rating</span>
+                  <span>Reliability Rating</span>
                 </div>
               </div>
             </div>
@@ -52,17 +52,17 @@ export default function AboutUs() {
             <div className="mission-card">
               <div className="mission-icon"><FiTarget /></div>
               <h3>Our Mission</h3>
-              <p>To empower women through thoughtfully designed accessories that celebrate their unique style and story.</p>
+              <p>To eliminate workplace hazards by providing accessible, certified, and high-quality safety solutions to every industrial sector in Pakistan.</p>
             </div>
             <div className="mission-card">
               <div className="mission-icon"><FiHeart /></div>
               <h3>Our Vision</h3>
-              <p>To become Pakistan's most loved accessory brand, known for quality, design, and customer trust.</p>
+              <p>To be the definitive standard for industrial safety in the region, recognized for technical expertise and uncompromising quality.</p>
             </div>
             <div className="mission-card">
               <div className="mission-icon"><FiUsers /></div>
               <h3>Our Promise</h3>
-              <p>Quality craftsmanship, exceptional service, and a shopping experience you'll love.</p>
+              <p>Guaranteed certification, technical support, and the most reliable equipment for your workforce.</p>
             </div>
           </div>
         </div>
@@ -78,23 +78,23 @@ export default function AboutUs() {
           <div className="values-grid">
             <div className="value-item">
               <div className="value-icon"><FiAward /></div>
-              <h3>Quality First</h3>
-              <p>We never compromise on the quality of materials and craftsmanship.</p>
+              <h3>Certified Safety</h3>
+              <p>All our products comply with international safety standards (CE/ANSI).</p>
             </div>
             <div className="value-item">
               <div className="value-icon"><FiHeart /></div>
-              <h3>Customer Love</h3>
-              <p>Our customers are at the heart of everything we do.</p>
+              <h3>Integrity</h3>
+              <p>We prioritize worker safety above all else in our product selection.</p>
             </div>
             <div className="value-item">
               <div className="value-icon"><FiTruck /></div>
-              <h3>Timely Delivery</h3>
-              <p>We ensure your orders reach you when you expect them.</p>
+              <h3>Industrial Logistics</h3>
+              <p>Specialized handling for heavy tools and bulk safety equipment.</p>
             </div>
             <div className="value-item">
               <div className="value-icon"><FiShield /></div>
-              <h3>Trust & Safety</h3>
-              <p>Secure payments and hassle-free returns for peace of mind.</p>
+              <h3>Total Support</h3>
+              <p>On-site safety consultations and equipment training available.</p>
             </div>
           </div>
         </div>
@@ -104,16 +104,16 @@ export default function AboutUs() {
       <section className="team-section">
         <div className="container">
           <div className="section-header">
-            <span className="section-tag">Meet the Team</span>
-            <h2>The Faces Behind CarryMe</h2>
-            <p>Passionate individuals dedicated to bringing you the best.</p>
+            <span className="section-tag">Meet the Experts</span>
+            <h2>The Leadership Behind SafetyMe</h2>
+            <p>Industry veterans dedicated to ensuring workplace safety across Pakistan.</p>
           </div>
           <div className="team-grid">
             {[
-              { name: 'Ayesha Khan', role: 'Founder & Creative Director', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80' },
-              { name: 'Sara Ahmed', role: 'Head of Design', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80' },
-              { name: 'Omar Farooq', role: 'Operations Manager', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80' },
-              { name: 'Fatima Ali', role: 'Customer Experience', image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80' },
+              { name: 'Irfan Ahmed', role: 'Founder & Safety Consultant', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80' },
+              { name: 'Saad Farooq', role: 'Chief of Operations', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80' },
+              { name: 'Dr. Amna Khan', role: 'Standardization Lead', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80' },
+              { name: 'Hamza Ali', role: 'Industrial Logistics Manager', image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80' },
             ].map((member, i) => (
               <div key={i} className="team-card">
                 <img src={member.image} alt={member.name} />
@@ -129,7 +129,7 @@ export default function AboutUs() {
       <section className="why-us">
         <div className="container">
           <div className="why-us-content">
-            <h2>Why Choose CarryMe?</h2>
+            <h2>Why Choose SafetyMe?</h2>
             <div className="features-grid">
               <div className="feature">
                 <FiStar />
@@ -148,8 +148,8 @@ export default function AboutUs() {
               <div className="feature">
                 <FiTruck />
                 <div>
-                  <strong>Free Delivery</strong>
-                  <span>On orders above Rs.3,999</span>
+                  <strong>Fast Logistics</strong>
+                  <span>Expedited shipping for critical site equipment</span>
                 </div>
               </div>
               <div className="feature">

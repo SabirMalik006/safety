@@ -14,29 +14,29 @@ const heroSlides = [
   {
     id: 1,
     tag: 'Season End Sale',
-    title: 'Carry Your\nStory in Style',
-    subtitle: 'Premium bags crafted for the modern Pakistani woman',
+    title: 'Protective Goggles',
+    subtitle: 'Close-up Photo of Pliers and Protective Goggles',
     cta: 'Shop Now',
     ctaPath: '/collections/all-bags',
-    image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=1600&q=85',
+    image: 'https://images.pexels.com/photos/9242909/pexels-photo-9242909.jpeg',
   },
   {
     id: 2,
     tag: 'New Arrivals',
-    title: 'Elegance\nMeets Function',
-    subtitle: 'Discover our latest collection of shoulder bags and totes',
+    title: 'Construction Helmet',
+    subtitle: 'Yellow Construction Helmet on Industrial Site',
     cta: 'Explore Collection',
     ctaPath: '/collections/best-selling',
-    image: 'https://images.unsplash.com/photo-1591561954557-26941169b49e?w=1600&q=85',
+    image: 'https://images.pexels.com/photos/34965713/pexels-photo-34965713.jpeg',
   },
   {
     id: 3,
     tag: "Men's Collection",
-    title: 'Classic Wallets\nFor Modern Men',
-    subtitle: 'Slim, stylish, and built to last — wallets for every occasion',
+    title: 'Hand Tools',
+    subtitle: 'Flat Lay Photography of Hand Tools',
     cta: 'Shop Wallets',
     ctaPath: '/collections/men-wallets',
-    image: 'https://images.unsplash.com/photo-1627123424574-724758594e93?w=1600&q=85',
+    image: 'https://images.pexels.com/photos/1029243/pexels-photo-1029243.jpeg',
   },
 ];
 
@@ -66,14 +66,15 @@ export default function Home() {
 
         {/* ── CINEMATIC HERO ── */}
         <section className="hero-wrap">
-          <div 
+          <div
             className="hero-track"
             style={{ transform: `translateX(-${activeSlide * 100}%)` }}
           >
             {heroSlides.map((slide, idx) => (
-              <div 
-                key={slide.id} 
+              <div
+                key={slide.id}
                 className={`hero-slide ${idx === activeSlide ? 'active' : ''}`}
+                data-index={idx + 1}
               >
                 <img src={slide.image} alt={slide.title} className="hero-img" />
                 <div className="hero-scrim" />
@@ -107,10 +108,10 @@ export default function Home() {
 
           <div className="hero-bar">
             <Link to="/collections/best-selling" className="hero-bar-btn">
-              Women's Collection
+              Best Selling Items
             </Link>
             <Link to="/collections/men-wallets" className="hero-bar-btn">
-              Men's Collection
+              Popular Items
             </Link>
           </div>
 
@@ -146,8 +147,8 @@ export default function Home() {
         <section id="shop" className="section-pad">
           <div className="container">
             <p className="section-tag">Explore</p>
-            <h2 className="section-title">Shop By Style</h2>
-            <p className="section-subtitle">Express your style with our standout collection.</p>
+            <h2 className="section-title">Shop By Category</h2>
+            <p className="section-subtitle">Your safety, our priority — explore our premium protection gear</p>
             <div className="categories-grid">
               {categories.map(cat => (
                 <Link key={cat.id} to={`/collections/${cat.slug}`} className="cat-card">
@@ -192,7 +193,7 @@ export default function Home() {
               <Link to="/collections/all-bags" className="hero-btn">Shop the Sale <FiArrowRight /></Link>
             </div>
             <div className="promo-image">
-              <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&q=80" alt="Sale" />
+              <img src="https://images.pexels.com/photos/5357150/pexels-photo-5357150.jpeg" alt="Sale" />
             </div>
           </div>
         </section>
@@ -236,12 +237,12 @@ export default function Home() {
             <p className="section-subtitle">Tag us in your photos for a chance to be featured!</p>
             <div className="instagram-grid">
               {[
-                'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&q=80',
-                'https://images.unsplash.com/photo-1591561954557-26941169b49e?w=400&q=80',
-                'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&q=80',
-                'https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?w=400&q=80',
-                'https://images.unsplash.com/photo-1627123424574-724758594e93?w=400&q=80',
-                'https://images.unsplash.com/photo-1601924638867-3a6de6b7a500?w=400&q=80',
+                'https://images.pexels.com/photos/14528645/pexels-photo-14528645.jpeg',
+                'https://images.pexels.com/photos/5466150/pexels-photo-5466150.jpeg',
+                'https://images.pexels.com/photos/7723358/pexels-photo-7723358.jpeg',
+                'https://images.pexels.com/photos/18510503/pexels-photo-18510503.jpeg',
+                'https://images.pexels.com/photos/20844818/pexels-photo-20844818.jpeg',
+                'https://images.pexels.com/photos/34965713/pexels-photo-34965713.jpeg',
               ].map((img, i) => (
                 <div key={i} className="ig-item">
                   <img src={img} alt={`Instagram ${i + 1}`} />

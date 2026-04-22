@@ -10,7 +10,7 @@
 
   /* Header Heights */
   --ann-height: 36px;
-  --nav-height: 70px;
+  --nav-height: 55px;
   --header-height: calc(var(--ann-height) + var(--nav-height));
 }
 
@@ -81,7 +81,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 70px;
+  height: 55px;
   gap: 1rem;
 }
 
@@ -364,7 +364,7 @@
 @media (max-width: 768px) {
   :root {
     --ann-height: 0px;
-    --nav-height: 60px;
+    --nav-height: 50px;
   }
 
   .ann-bar {
@@ -380,7 +380,7 @@
   }
 
   .nb-container {
-    height: 60px;
+    height: 50px;
     padding: 0 16px;
   }
 
@@ -440,7 +440,7 @@
 @media (max-width: 480px) {
   :root {
     --ann-height: 0px;
-    --nav-height: 55px;
+    --nav-height: 45px;
   }
 
   .ann-bar {
@@ -456,7 +456,7 @@
   }
 
   .nb-container {
-    height: 55px;
+    height: 45px;
   }
 
   .nb-logo {

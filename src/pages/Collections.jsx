@@ -6,12 +6,12 @@ import { products } from '../data/products';
 import './Collections.css';
 
 const collectionMeta = {
-  'all-bags': { title: 'All Bags', desc: 'Browse our complete collection of premium bags.' },
-  'best-selling': { title: 'Best Sellers', desc: 'Our most-loved styles, chosen by thousands.' },
-  'canvas-bags': { title: 'Canvas Bags', desc: 'Durable, stylish canvas bags for everyday use.' },
-  'men-wallets': { title: 'Men Wallets', desc: 'Slim and classic wallets for the modern man.' },
-  'tote-bag': { title: 'Tote Bags', desc: 'Spacious and elegant tote bags for every occasion.' },
-  'shoulder-bag': { title: 'Shoulder Bags', desc: 'Versatile shoulder bags that go with everything.' },
+  'all-products': { title: 'All Equipment', desc: 'Explore our complete range of professional safety gear and industrial tools.' },
+  'best-selling': { title: 'Best Sellers', desc: 'Top-rated protective equipment trusted by industry professionals.' },
+  'head-eye-protection': { title: 'Head & Eye Protection', desc: 'Certified helmets and protective goggles for maximum workplace safety.' },
+  'power-tools': { title: 'Power Tools', desc: 'High-performance drilling machines and industrial power equipment.' },
+  'hand-tools': { title: 'Hand Tools', desc: 'Professional grade pliers, hammers, and essential hand tool sets.' },
+  'measuring-tools': { title: 'Measuring Equipment', desc: 'Precision digital tapes and industrial measuring instruments.' },
 };
 
 const sortOptions = [
@@ -34,7 +34,7 @@ export default function Collections() {
   const allColors = [...new Set(products.flatMap(p => p.colors))];
 
   let filtered = products.filter(p => {
-    if (slug === 'all-bags') return p.category !== 'men-wallets';
+    if (slug === 'all-products') return true;
     if (slug === 'best-selling') return p.id <= 7;
     return p.category === slug;
   });

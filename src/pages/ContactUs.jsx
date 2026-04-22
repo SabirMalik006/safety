@@ -41,8 +41,8 @@ export default function ContactUs() {
             <div className="contact-card">
               <div className="contact-icon"><FiMapPin /></div>
               <h3>Visit Us</h3>
-              <p>Shop #45, Main Boulevard</p>
-              <p>Gulberg III, Lahore, Pakistan</p>
+              <p>Plot #12, Industrial Area</p>
+              <p>SITE Phase II, Karachi, Pakistan</p>
             </div>
             <div className="contact-card">
               <div className="contact-icon"><FiPhoneCall /></div>
@@ -53,8 +53,8 @@ export default function ContactUs() {
             <div className="contact-card">
               <div className="contact-icon"><FiMail /></div>
               <h3>Email Us</h3>
-              <p>support@carryme.pk</p>
-              <p>care@carryme.pk</p>
+              <p>support@safetyme.pk</p>
+              <p>sales@safetyme.pk</p>
             </div>
           </div>
         </div>
@@ -141,7 +141,7 @@ export default function ContactUs() {
                 </button>
                 {isSubmitted && (
                   <div className="success-message">
-                    ✓ Message sent successfully! We'll contact you soon.
+                    ✓ Inquiry sent successfully! Our safety consultants will contact you soon.
                   </div>
                 )}
               </form>

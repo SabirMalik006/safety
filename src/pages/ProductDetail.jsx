@@ -23,7 +23,7 @@ export default function ProductDetail() {
     return (
       <div className="not-found container page-content">
         <h2>Product not found</h2>
-        <Link to="/collections/all-bags">Back to All Bags</Link>
+        <Link to="/collections/all-products">Back to All Equipment</Link>
       </div>
     );
   }
@@ -156,8 +156,8 @@ export default function ProductDetail() {
             <div className="guarantee-item">
               <FiTruck />
               <div>
-                <strong>Free Delivery</strong>
-                <span>On orders above Rs.3,999</span>
+                <strong>Fast Logistics</strong>
+                <span>On orders above Rs.10,000</span>
               </div>
             </div>
             <div className="guarantee-item">
@@ -196,16 +196,16 @@ export default function ProductDetail() {
             <div className="tab-pane">
               <h3>Product Description</h3>
               <p>
-                The {product.name} is a premium quality bag crafted with attention to detail and superior materials.
-                Designed for the modern Pakistani woman, it combines style with practicality for everyday use.
+                The {product.name} is a professional-grade solution crafted for durability and performance in demanding environments.
+                Built to international safety standards, it ensures maximum protection and efficiency for your workplace.
               </p>
               <ul>
-                <li>Premium quality materials</li>
-                <li>Multiple color options available</li>
-                <li>Spacious main compartment</li>
-                <li>Inner pockets for organization</li>
-                <li>Adjustable strap (where applicable)</li>
-                <li>Durable zipper closures</li>
+                <li>Certified safety standards (CE/ANSI)</li>
+                <li>Durable, industrial-grade construction</li>
+                <li>Ergonomic design for comfortable usage</li>
+                <li>High-performance specifications</li>
+                <li>Standard warranty included</li>
+                <li>Tested for extreme conditions</li>
               </ul>
             </div>
           )}
@@ -227,7 +227,7 @@ export default function ProductDetail() {
             <div className="tab-pane">
               <h3>Shipping & Returns</h3>
               <p><strong>Delivery:</strong> 2-4 business days across Pakistan</p>
-              <p><strong>Free shipping:</strong> On orders above Rs.3,999</p>
+              <p><strong>Free shipping:</strong> On orders above Rs.10,000</p>
               <p><strong>COD:</strong> Available nationwide</p>
               <p><strong>Returns:</strong> 7-day easy return policy if product is unused and in original packaging</p>
             </div>

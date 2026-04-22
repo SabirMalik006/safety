@@ -83,7 +83,7 @@ export default function Checkout() {
         <Link to="/cart" className="back-to-cart">
           ← Back to Cart
         </Link>
-        <h1 className="checkout-title">Carry Me</h1>
+        <h1 className="checkout-title">SafetyMe</h1>
       </div>
 
       <div className="checkout-container">
@@ -283,7 +283,7 @@ export default function Checkout() {
                   <div className="payment-box-content">
                     <div className="bank-details">
                       <p><strong>Account Details:</strong></p>
-                      <p>Account Name: Abeera</p>
+                      <p>Account Name: SafetyMe Official</p>
                       <p>Bank / Service: Easypaisa</p>
                       <p>Account Number: 0329 7239880</p>
                     </div>
@@ -319,7 +319,7 @@ export default function Checkout() {
                     <div className="bank-details">
                       <p><strong>Bank Details:</strong></p>
                       <p>Bank Name: Faysal Bank</p>
-                      <p>Account Title: Carry Me</p>
+                      <p>Account Title: SafetyMe</p>
                       <p>Account Number: 1234-5678901</p>
                       <p>IBAN: PK65FAYS1234567890123</p>
                     </div>

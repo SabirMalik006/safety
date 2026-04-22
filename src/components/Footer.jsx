@@ -7,8 +7,8 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer-top container">
         <div className="footer-brand">
-          <Link to="/" className="footer-logo">Carry Me</Link>
-          <p>Pakistan's premium destination for stylish bags and accessories. Quality you can feel, style you can see.</p>
+          <Link to="/" className="footer-logo">SafetyPro</Link>
+          <p>Pakistan's trusted destination for premium safety equipment and industrial protection gear. Quality you can trust, safety you can rely on.</p>
           <div className="social-links">
             <a href="#" aria-label="Instagram"><FiInstagram /></a>
             <a href="#" aria-label="Facebook"><FiFacebook /></a>
@@ -18,14 +18,14 @@ export default function Footer() {
         </div>
 
         <div className="footer-col">
-          <h4>Quick Links</h4>
+          <h4>Safety Products</h4>
           <ul>
-            <li><Link to="/collections/all-bags">All Bags</Link></li>
-            <li><Link to="/collections/best-selling">Best Sellers</Link></li>
-            <li><Link to="/collections/canvas-bags">Canvas Bags</Link></li>
-            <li><Link to="/collections/men-wallets">Men Wallets</Link></li>
-            <li><Link to="/collections/tote-bag">Tote Bags</Link></li>
-            <li><Link to="/collections/shoulder-bag">Shoulder Bags</Link></li>
+            <li><Link to="/collections/all-bags">Head Protection</Link></li>
+            <li><Link to="/collections/best-selling">Eye Protection</Link></li>
+            <li><Link to="/collections/canvas-bags">Hand Protection</Link></li>
+            <li><Link to="/collections/men-wallets">Body Protection</Link></li>
+            <li><Link to="/collections/tote-bag">Foot Protection</Link></li>
+            <li><Link to="/collections/shoulder-bag">Respiratory Protection</Link></li>
           </ul>
         </div>
 
@@ -50,7 +50,7 @@ export default function Footer() {
             <li><Link to="/policies/terms">Terms of Service</Link></li>
           </ul>
           <div className="newsletter">
-            <h4 style={{marginTop: '1.5rem', marginBottom: '0.75rem'}}>Newsletter</h4>
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.75rem' }}>Newsletter</h4>
             <div className="newsletter-form">
               <input type="email" placeholder="Your email..." />
               <button>Subscribe</button>
@@ -60,7 +60,7 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom container">
-        <p>© {new Date().getFullYear()} CarryMe. All rights reserved. Made with ♥ in Pakistan</p>
+        <p>© {new Date().getFullYear()} SafetyPro. All rights reserved. Made with ♥ in Pakistan</p>
         <div className="payment-badges">
           <span>COD</span>
           <span>JazzCash</span>

@@ -6,15 +6,15 @@ import './Cart.css';
 export default function Cart() {
   const { cart, removeFromCart, updateQuantity, total } = useCart();
 
-  const delivery = total >= 3999 ? 0 : 250;
+  const delivery = total >= 10000 ? 0 : 500;
 
   if (cart.length === 0) {
     return (
       <div className="cart-empty page-content">
         <FiShoppingCart size={64} strokeWidth={1} />
         <h2>Your cart is empty</h2>
-        <p>Add some beautiful bags to your cart!</p>
-        <Link to="/collections/all-bags" className="btn-shop">
+        <p>Add some essential safety equipment to your cart!</p>
+        <Link to="/collections/all-products" className="btn-shop">
           Continue Shopping <FiArrowRight />
         </Link>
       </div>
@@ -87,7 +87,7 @@ export default function Cart() {
             </div>
             {delivery > 0 && (
               <p className="free-shipping-notice">
-                Add Rs.{(3999 - total).toLocaleString()} more for free delivery!
+                Add Rs.{(10000 - total).toLocaleString()} more for free delivery!
               </p>
             )}
           </div>
@@ -107,7 +107,7 @@ export default function Cart() {
             Proceed to Checkout <FiArrowRight />
           </Link>
 
-          <Link to="/collections/all-bags" className="continue-shopping">
+          <Link to="/collections/all-products" className="continue-shopping">
             ← Continue Shopping
           </Link>
 

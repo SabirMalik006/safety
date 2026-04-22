@@ -12,8 +12,8 @@ export default function Wishlist() {
       <div className="wishlist-empty page-content">
         <FiHeart size={64} strokeWidth={1} />
         <h2>Your wishlist is empty</h2>
-        <p>Save your favourite bags for later!</p>
-        <Link to="/collections/all-bags" className="btn-shop">
+        <p>Save essential industrial gear for later!</p>
+        <Link to="/collections/all-products" className="btn-shop">
           Browse Collection <FiArrowRight />
         </Link>
       </div>

@@ -95,7 +95,7 @@ export default function Navbar() {
             <span key={i}>
               🎉 Season End Sale | Limited Stock | Shop Now! 🎉 &nbsp;&nbsp;&nbsp;
               🚚 Free Delivery on orders above Rs.3,999 &nbsp;&nbsp;&nbsp;
-              ✨ Up to 20% Off on All Bags ✨
+              ✨ Up to 20% Off on All Intruments ✨
             </span>
           ))}
         </div>
@@ -111,7 +111,7 @@ export default function Navbar() {
             className="nb-logo"
             onClick={(e) => handleNavClick(e, '/')}
           >
-            CarryMe
+            SafetyMe
           </Link>
 
           {/* Hamburger (mobil) */}

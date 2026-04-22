@@ -49,7 +49,7 @@ export default function App() {
               <Route path="/pages/wholesale" element={
                 <div className="page-content" style={{ padding: '6rem 0', textAlign: 'center' }}>
                   <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem' }}>Wholesale Inquiry</h2>
-                  <p style={{ color: 'var(--text-muted)', marginTop: '1rem' }}>Contact us at wholesale@carryme.pk for bulk orders.</p>
+                  <p style={{ color: 'var(--text-muted)', marginTop: '1rem' }}>Contact us at info@safetyme.pk for industrial bulk orders.</p>
                 </div>
               } />
               <Route path="*" element={

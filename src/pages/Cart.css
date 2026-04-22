@@ -304,7 +304,7 @@
   margin-bottom: 1rem;
 }
 
-.btn-checkout:hover { background: var(--accent-dark); }
+/* .btn-checkout:hover { background: var(--accent-dark); } */
 
 .continue-shopping {
   display: block;

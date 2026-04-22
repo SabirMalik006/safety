@@ -9,14 +9,14 @@ export default function Reviews() {
         <div className="container">
           <p className="section-tag">Testimonials</p>
           <h1>Customer Reviews</h1>
-          <p>Real feedback from 5,000+ happy customers across Pakistan.</p>
+          <p>Real feedback from 10,000+ satisfied professionals across Pakistan.</p>
           <div className="rating-summary">
             <span className="big-num">4.8</span>
             <div>
               <div className="stars-row">
                 {[...Array(5)].map((_, i) => <FiStar key={i} className="star filled" />)}
               </div>
-              <span>Based on 5,000+ reviews</span>
+              <span>Based on 10,000+ reviews</span>
             </div>
           </div>
         </div>
