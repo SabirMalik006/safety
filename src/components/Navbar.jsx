@@ -114,7 +114,7 @@ export default function Navbar() {
             CarryMe
           </Link>
 
-          {/* Hamburger (mobile) */}
+          {/* Hamburger (mobil) */}
           <button
             className="nb-hamburger"
             onClick={() => setMenuOpen(!menuOpen)}
