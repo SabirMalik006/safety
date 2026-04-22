@@ -17,7 +17,7 @@ const heroSlides = [
     title: 'Protective Goggles',
     subtitle: 'Close-up Photo of Pliers and Protective Goggles',
     cta: 'Shop Now',
-    ctaPath: '/collections/all-bags',
+    ctaPath: '/collections/best-selling',
     image: 'https://images.pexels.com/photos/9242909/pexels-photo-9242909.jpeg',
   },
   {
@@ -35,7 +35,7 @@ const heroSlides = [
     title: 'Hand Tools',
     subtitle: 'Flat Lay Photography of Hand Tools',
     cta: 'Shop Wallets',
-    ctaPath: '/collections/men-wallets',
+    ctaPath: '/collections/best-selling',
     image: 'https://images.pexels.com/photos/1029243/pexels-photo-1029243.jpeg',
   },
 ];
@@ -110,7 +110,7 @@ export default function Home() {
             <Link to="/collections/best-selling" className="hero-bar-btn">
               Best Selling Items
             </Link>
-            <Link to="/collections/men-wallets" className="hero-bar-btn">
+            <Link to="/collections/best-selling" className="hero-bar-btn">
               Popular Items
             </Link>
           </div>
@@ -176,7 +176,7 @@ export default function Home() {
               {bestSellers.map(p => <ProductCard key={p.id} product={p} />)}
             </div>
             <div style={{ textAlign: 'center', marginTop: '3rem' }}>
-              <Link to="/collections/all-bags" className="btn-outline-large">
+              <Link to="/collections/best-selling" className="btn-outline-large">
                 View All Products <FiArrowRight />
               </Link>
             </div>
