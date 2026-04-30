@@ -233,7 +233,7 @@ export default function Home() {
         <section className="instagram-section">
           <div className="container" style={{ textAlign: 'center' }}>
             <p className="section-tag">Follow Us</p>
-            <h2 className="section-title">@CarryMe.pk</h2>
+            <h2 className="section-title">@Horizon.pk</h2>
             <p className="section-subtitle">Tag us in your photos for a chance to be featured!</p>
             <div className="instagram-grid">
               {[

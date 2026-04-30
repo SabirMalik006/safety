@@ -18,7 +18,7 @@ export default function Footer() {
         </div>
 
         <div className="footer-col">
-          <h4>Safety Products</h4>
+          <h4>Horizon Products</h4>
           <ul>
             <li><Link to="/collections/all-bags">Head Protection</Link></li>
             <li><Link to="/collections/best-selling">Eye Protection</Link></li>
@@ -60,7 +60,7 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom container">
-        <p>© {new Date().getFullYear()} SafetyPro. All rights reserved. Made with ♥ in Pakistan</p>
+        <p>© {new Date().getFullYear()} HorizonPro. All rights reserved. Made with ♥ in Pakistan</p>
         <div className="payment-badges">
           <span>COD</span>
           <span>JazzCash</span>

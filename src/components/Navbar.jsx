@@ -111,7 +111,7 @@ export default function Navbar() {
             className="nb-logo"
             onClick={(e) => handleNavClick(e, '/')}
           >
-            SafetyMe
+            Horizon
           </Link>
 
           {/* Hamburger (mobil) */}
