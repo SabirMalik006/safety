@@ -5,41 +5,12 @@ import {
   FiShield, FiHeadphones, FiChevronDown
 } from 'react-icons/fi';
 import ProductCard from '../components/ProductCard';
-import { products, categories, reviews } from '../data/products';
+import { getHeroes } from '../services/heroService';
+import { getProducts } from '../services/productService';
+import { products as mockProducts, categories, reviews } from '../data/products';
 import './Home.css';
 
-
-/* ─── DATA ─────────────────────────────────────────────────── */
-const heroSlides = [
-  {
-    id: 1,
-    tag: 'Season End Sale',
-    title: 'Protective Goggles',
-    subtitle: 'Close-up Photo of Pliers and Protective Goggles',
-    cta: 'Shop Now',
-    ctaPath: '/collections/best-selling',
-    image: 'https://images.pexels.com/photos/9242909/pexels-photo-9242909.jpeg',
-  },
-  {
-    id: 2,
-    tag: 'New Arrivals',
-    title: 'Construction Helmet',
-    subtitle: 'Yellow Construction Helmet on Industrial Site',
-    cta: 'Explore Collection',
-    ctaPath: '/collections/best-selling',
-    image: 'https://images.pexels.com/photos/34965713/pexels-photo-34965713.jpeg',
-  },
-  {
-    id: 3,
-    tag: "Men's Collection",
-    title: 'Hand Tools',
-    subtitle: 'Flat Lay Photography of Hand Tools',
-    cta: 'Shop Wallets',
-    ctaPath: '/collections/best-selling',
-    image: 'https://images.pexels.com/photos/1029243/pexels-photo-1029243.jpeg',
-  },
-];
-
+// Features array - same rahega
 const features = [
   { icon: <FiTruck />, title: 'Free Delivery', desc: 'On orders above Rs.3,999' },
   { icon: <FiRefreshCw />, title: 'Easy Returns', desc: '7-day hassle-free returns' },
@@ -47,18 +18,149 @@ const features = [
   { icon: <FiHeadphones />, title: '24/7 Support', desc: 'Always here to help you' },
 ];
 
-/* ─── HOME ─────────────────────────────────────────────────── */
 export default function Home() {
   const [activeSlide, setActiveSlide] = useState(0);
+  const [heroSlides, setHeroSlides] = useState([]);
+  const [bestSellers, setBestSellers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  // Fetch data from backend
   useEffect(() => {
-    const t = setInterval(() => {
-      setActiveSlide(prev => (prev + 1) % heroSlides.length);
-    }, 5000);
-    return () => clearInterval(t);
+    const fetchHomeData = async () => {
+      try {
+        // Fetch heroes from backend
+        const heroRes = await getHeroes();
+        if (heroRes.success && heroRes.data.length > 0) {
+          // Convert backend hero format to frontend format (design ke hisaab se)
+          const formattedHeroes = heroRes.data.map((hero, index) => ({
+            id: hero._id,
+            tag: hero.subtitle || 'Featured',
+            title: hero.title,
+            subtitle: hero.description || 'Premium safety equipment',
+            cta: hero.buttonText || 'Shop Now',
+            ctaPath: hero.buttonLink || '/collections/all-bags',
+            image: hero.imageUrl,
+          }));
+          setHeroSlides(formattedHeroes);
+        } else {
+          // Fallback to mock data if no heroes in DB
+          setHeroSlides([
+            {
+              id: 1,
+              tag: 'Season End Sale',
+              title: 'Protective Goggles',
+              subtitle: 'Close-up Photo of Pliers and Protective Goggles',
+              cta: 'Shop Now',
+              ctaPath: '/collections/best-selling',
+              image: 'https://images.pexels.com/photos/9242909/pexels-photo-9242909.jpeg',
+            },
+            {
+              id: 2,
+              tag: 'New Arrivals',
+              title: 'Construction Helmet',
+              subtitle: 'Yellow Construction Helmet on Industrial Site',
+              cta: 'Explore Collection',
+              ctaPath: '/collections/best-selling',
+              image: 'https://images.pexels.com/photos/34965713/pexels-photo-34965713.jpeg',
+            },
+            {
+              id: 3,
+              tag: "Men's Collection",
+              title: 'Hand Tools',
+              subtitle: 'Flat Lay Photography of Hand Tools',
+              cta: 'Shop Wallets',
+              ctaPath: '/collections/best-selling',
+              image: 'https://images.pexels.com/photos/1029243/pexels-photo-1029243.jpeg',
+            },
+          ]);
+        }
+
+        // Fetch featured products from backend
+        const productsRes = await getProducts({ featured: 'true' });
+        if (productsRes.success && productsRes.data.length > 0) {
+          // Convert backend product format to frontend ProductCard expected format
+          const formattedProducts = productsRes.data.map(product => ({
+            id: product._id,
+            name: product.name,
+            price: product.price,
+            comparePrice: product.comparePrice,
+            image: product.images?.[0]?.url || '/images/placeholder.jpg',
+            slug: product.slug,
+            rating: product.rating,
+            reviewCount: product.numReviews,
+            colors: product.colors || [],
+          }));
+          setBestSellers(formattedProducts);
+        } else {
+          // Fallback to mock products
+          setBestSellers(mockProducts.slice(0, 8));
+        }
+      } catch (error) {
+        console.error('Error fetching home data:', error);
+        // Fallback to mock data on error
+        setHeroSlides([
+          {
+            id: 1,
+            tag: 'Season End Sale',
+            title: 'Protective Goggles',
+            subtitle: 'Close-up Photo of Pliers and Protective Goggles',
+            cta: 'Shop Now',
+            ctaPath: '/collections/best-selling',
+            image: 'https://images.pexels.com/photos/9242909/pexels-photo-9242909.jpeg',
+          },
+          {
+            id: 2,
+            tag: 'New Arrivals',
+            title: 'Construction Helmet',
+            subtitle: 'Yellow Construction Helmet on Industrial Site',
+            cta: 'Explore Collection',
+            ctaPath: '/collections/best-selling',
+            image: 'https://images.pexels.com/photos/34965713/pexels-photo-34965713.jpeg',
+          },
+          {
+            id: 3,
+            tag: "Men's Collection",
+            title: 'Hand Tools',
+            subtitle: 'Flat Lay Photography of Hand Tools',
+            cta: 'Shop Wallets',
+            ctaPath: '/collections/best-selling',
+            image: 'https://images.pexels.com/photos/1029243/pexels-photo-1029243.jpeg',
+          },
+        ]);
+        setBestSellers(mockProducts.slice(0, 8));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHomeData();
   }, []);
 
-  const bestSellers = products.slice(0, 8);
+  // Auto-slide effect
+  useEffect(() => {
+    if (heroSlides.length <= 1) return;
+    const interval = setInterval(() => {
+      setActiveSlide(prev => (prev + 1) % heroSlides.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [heroSlides.length]);
+
+  if (loading) {
+    return (
+      <div className="home">
+        <div style={{ 
+          minHeight: '100vh', 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center',
+          background: 'var(--steel)',
+          color: 'white'
+        }}>
+          Loading...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -114,18 +216,6 @@ export default function Home() {
               Popular Items
             </Link>
           </div>
-
-          {/* <div className="happy-badge">
-            <div className="badge-faces">
-              {['A','F','S','M'].map((l, i) => (
-                <span key={i} className={`face face-${i}`}>{l}</span>
-              ))}
-            </div>
-            <div className="badge-text">
-              <strong>5,000+</strong>
-              <span>Happy Customers</span>
-            </div>
-          </div> */}
         </section>
 
         {/* ── FEATURES BAR ── */}
@@ -206,7 +296,6 @@ export default function Home() {
             <p className="section-subtitle">Real reviews from real CarryMe customers across Pakistan.</p>
             <div className="reviews-marquee">
               <div className="reviews-track">
-                {/* Double the reviews for seamless loop */}
                 {[...reviews, ...reviews].map((r, idx) => (
                   <div key={`${r.id}-${idx}`} className="review-card">
                     <div className="review-stars">

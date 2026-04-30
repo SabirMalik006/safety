@@ -23,10 +23,14 @@ export default function Navbar() {
   const searchRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const { cart } = useCart();
-  const { wishlist } = useWishlist();
+  
+  // ✅ FIXED: Use correct variable names from contexts
+  const { cartItems } = useCart();           // cartItems not cart
+  const { wishlist } = useWishlist();        // wishlist is correct
 
-  const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+  // ✅ FIXED: calculate count from cartItems
+  const cartCount = cartItems?.reduce((acc, item) => acc + (item.quantity || 1), 0) || 0;
+  const wishlistCount = wishlist?.length || 0;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80);
@@ -178,7 +182,7 @@ export default function Navbar() {
             {/* Wishlist */}
             <Link to="/pages/wishlist" className="nb-icon">
               <FiHeart size={20} />
-              {wishlist.length > 0 && <span className="nb-badge">{wishlist.length}</span>}
+              {wishlistCount > 0 && <span className="nb-badge">{wishlistCount}</span>}
             </Link>
 
             {/* Cart */}

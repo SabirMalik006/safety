@@ -1,50 +1,116 @@
-import { createContext, useContext, useState } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
+import api from '../services/api';
+import { isAuthenticated } from '../services/authService';
 
 const CartContext = createContext();
 
-export function CartProvider({ children }) {
-  const [cart, setCart] = useState([]);
+export const useCart = () => useContext(CartContext);
 
-  const addToCart = (product) => {
-    setCart(prev => {
-      const key = `${product.id}-${product.selectedColor}`;
-      const existing = prev.find(i => `${i.id}-${i.selectedColor}` === key);
-      if (existing) {
-        return prev.map(i =>
-          `${i.id}-${i.selectedColor}` === key
-            ? { ...i, quantity: i.quantity + 1 }
-            : i
-        );
+export const CartProvider = ({ children }) => {
+  const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // Load cart from localStorage
+  useEffect(() => {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+      setCartItems(JSON.parse(savedCart));
+    }
+  }, []);
+
+  // Save cart to localStorage
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  const addToCart = (product, quantity = 1, selectedColor = null, selectedSize = null) => {
+    setCartItems(prevItems => {
+      const existingIndex = prevItems.findIndex(
+        item => item.productId === product._id && 
+                item.color === selectedColor && 
+                item.size === selectedSize
+      );
+
+      if (existingIndex > -1) {
+        const updated = [...prevItems];
+        updated[existingIndex].quantity += quantity;
+        return updated;
       }
-      return [...prev, { ...product, quantity: 1 }];
+
+      return [...prevItems, {
+        productId: product._id,
+        name: product.name,
+        price: product.price,
+        image: product.images?.[0]?.url || '/images/placeholder.jpg',
+        quantity,
+        color: selectedColor,
+        size: selectedSize,
+        stock: product.stock
+      }];
     });
   };
 
-  const removeFromCart = (id, color) => {
-    setCart(prev => prev.filter(i => !(i.id === id && i.selectedColor === color)));
+  const removeFromCart = (index) => {
+    setCartItems(prev => prev.filter((_, i) => i !== index));
   };
 
-  const updateQuantity = (id, color, quantity) => {
-    if (quantity < 1) {
-      removeFromCart(id, color);
+  const updateQuantity = (index, newQuantity) => {
+    if (newQuantity < 1) {
+      removeFromCart(index);
       return;
     }
-    setCart(prev =>
-      prev.map(i =>
-        i.id === id && i.selectedColor === color ? { ...i, quantity } : i
-      )
-    );
+    setCartItems(prev => prev.map((item, i) => 
+      i === index ? { ...item, quantity: newQuantity } : item
+    ));
   };
 
-  const clearCart = () => setCart([]);
+  const getCartTotal = () => {
+    return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+  };
 
-  const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const getCartCount = () => {
+    return cartItems.reduce((count, item) => count + item.quantity, 0);
+  };
+
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
+  const placeOrder = async (orderData) => {
+    setLoading(true);
+    try {
+      const response = await api.post('/orders', {
+        orderItems: cartItems.map(item => ({
+          product: item.productId,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          image: item.image,
+          color: item.color,
+          size: item.size
+        })),
+        ...orderData
+      });
+      clearCart();
+      return response.data;
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart, total }}>
+    <CartContext.Provider value={{
+      cartItems,
+      addToCart,
+      removeFromCart,
+      updateQuantity,
+      getCartTotal,
+      getCartCount,
+      clearCart,
+      placeOrder,
+      loading
+    }}>
       {children}
     </CartContext.Provider>
   );
-}
-
-export const useCart = () => useContext(CartContext);
+};

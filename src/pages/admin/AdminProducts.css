@@ -1,0 +1,161 @@
+.admin-products {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  padding: 12px 20px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.search-bar svg {
+  color: #999;
+}
+
+.search-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+
+.products-table-container {
+  background: #fff;
+  border-radius: 20px;
+  overflow-x: auto;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+
+.products-table th,
+.products-table td {
+  padding: 16px;
+  text-align: left;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.products-table th {
+  font-size: 12px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  background: #fafafa;
+}
+
+.product-image-cell img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.product-name-cell {
+  font-weight: 500;
+}
+
+.low-stock {
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+.status-badge.in-stock {
+  background: rgba(39, 174, 96, 0.1);
+  color: #27ae60;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.status-badge.out-stock {
+  background: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.actions-cell {
+  display: flex;
+  gap: 8px;
+}
+
+.modal-content.large {
+  max-width: 700px;
+}
+
+.product-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.tags-input {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  background: #fafafa;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: #c4a47a;
+  color: #fff;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.tag button {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+.tag-add {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tag-add input {
+  border: none;
+  padding: 4px 8px;
+  font-size: 12px;
+  background: transparent;
+}
+
+.tag-add button {
+  background: none;
+  border: none;
+  color: #c4a47a;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+@media (max-width: 768px) {
+  .product-form .form-row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -27,14 +27,35 @@ const Login = () => {
     try {
       const response = await axios.post('http://localhost:5000/api/auth/login', formData);
       
-      if (response.data.success) {
-        localStorage.setItem('token', response.data.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.data));
+      console.log('Login response:', response.data); // Debug log
+      
+      // ✅ Fix: Check response structure
+      if (response.data.success || response.status === 200) {
+        if (response.data.data?.token) {
+          localStorage.setItem('token', response.data.data.token);
+          localStorage.setItem('user', JSON.stringify(response.data.data));
+        }
+        
         toast.success('Login successful! Welcome back!');
-        navigate('/dashboard');
+        
+        // Check if user is admin
+        const user = response.data.data;
+        if (user?.role === 'admin') {
+          navigate('/admin/dashboard');
+        } else {
+          navigate('/');
+        }
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Login failed. Please try again.');
+      console.error('Login error:', error.response?.data);
+      
+      const errorMessage = error.response?.data?.message || 'Login failed. Please try again.';
+      toast.error(errorMessage);
+      
+      // Agar "User already exists" error aa raha hai to register karo
+      if (errorMessage.includes('already exists')) {
+        toast.info('Please login with your credentials');
+      }
     } finally {
       setLoading(false);
     }

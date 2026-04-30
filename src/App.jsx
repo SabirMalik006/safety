@@ -16,13 +16,27 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 
+// Admin Imports
+import AdminLayout from './pages/admin/AdminLayout';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminProducts from './pages/admin/AdminProducts';
+import AdminCategories from './pages/admin/AdminCategories';
+import AdminOrders from './pages/admin/AdminOrders';
+import AdminHero from './pages/admin/AdminHero';
+import AdminReviews from './pages/admin/AdminReviews';
+import AdminContacts from './pages/admin/AdminContacts';
+import AdminUsers from './pages/admin/AdminUsers';
+import AdminPaymentVerification from './pages/admin/AdminPaymentVerification';
+
 // Layout component to conditionally show Navbar and Footer
 function Layout({ children }) {
   const location = useLocation();
   
   // Pages where Navbar and Footer should be hidden
   const hideNavFooterPages = ['/checkout', '/login', '/register', '/dashboard'];
-  const shouldHideNavFooter = hideNavFooterPages.includes(location.pathname);
+  // Also hide on admin routes
+  const isAdminRoute = location.pathname.startsWith('/admin');
+  const shouldHideNavFooter = hideNavFooterPages.includes(location.pathname) || isAdminRoute;
   
   return (
     <>
@@ -35,7 +49,12 @@ function Layout({ children }) {
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    >
       <CartProvider>
         <WishlistProvider>
           <Layout>
@@ -64,7 +83,21 @@ export default function App() {
               {/* Auth Pages - No Navbar/Footer */}
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/dashboard" element={<Dashboard />} />
+              {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+              
+              {/* Admin Routes - No Navbar/Footer, Protected Layout */}
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<AdminDashboard />} />
+                <Route path="dashboard" element={<AdminDashboard />} />
+                <Route path="products" element={<AdminProducts />} />
+                <Route path="categories" element={<AdminCategories />} />
+                <Route path="orders" element={<AdminOrders />} />
+                <Route path="hero" element={<AdminHero />} />
+                <Route path="reviews" element={<AdminReviews />} />
+                <Route path="contacts" element={<AdminContacts />} />
+                <Route path="users" element={<AdminUsers />} />
+                <Route path="payment-verification" element={<AdminPaymentVerification />} />
+              </Route>
               
               {/* 404 Page */}
               <Route path="*" element={

@@ -1,0 +1,186 @@
+.admin-reviews {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.review-item {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  transition: all 0.2s;
+}
+
+.review-item.pending {
+  border-left: 3px solid #f39c12;
+  background: #fffef8;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.reviewer-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.reviewer-avatar {
+  width: 44px;
+  height: 44px;
+  background: #c4a47a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
+  color: #fff;
+}
+
+.reviewer-info div {
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewer-info strong {
+  font-size: 14px;
+  color: #333;
+}
+
+.reviewer-info span {
+  font-size: 11px;
+  color: #999;
+}
+
+.review-rating {
+  display: flex;
+  gap: 4px;
+}
+
+.review-rating svg {
+  color: #ddd;
+  font-size: 16px;
+}
+
+.review-rating svg.filled {
+  color: #f39c12;
+  fill: #f39c12;
+}
+
+.review-body h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin-bottom: 8px;
+}
+
+.review-body p {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.review-product {
+  font-size: 12px;
+  color: #c4a47a;
+  margin-top: 8px;
+}
+
+.review-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.approve-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: rgba(39, 174, 96, 0.1);
+  border: none;
+  border-radius: 8px;
+  color: #27ae60;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.delete-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: rgba(231, 76, 60, 0.1);
+  border: none;
+  border-radius: 8px;
+  color: #e74c3c;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.review-detail {
+  padding: 8px 0;
+}
+
+.detail-row {
+  display: flex;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.detail-row label {
+  width: 100px;
+  font-weight: 600;
+  color: #555;
+  font-size: 13px;
+}
+
+.detail-row span {
+  flex: 1;
+  color: #333;
+  font-size: 13px;
+}
+
+.detail-rating {
+  display: flex;
+  gap: 4px;
+}
+
+.detail-rating svg {
+  color: #f39c12;
+  font-size: 14px;
+}
+
+.status-badge.approved {
+  background: rgba(39, 174, 96, 0.1);
+  color: #27ae60;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+}
+
+.status-badge.pending {
+  background: rgba(243, 156, 18, 0.1);
+  color: #f39c12;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+}

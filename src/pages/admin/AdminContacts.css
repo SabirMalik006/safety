@@ -1,0 +1,145 @@
+.admin-contacts {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.contacts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contact-item {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  transition: all 0.2s;
+}
+
+.contact-item.unread {
+  background: #fffef8;
+  border-left: 3px solid #c4a47a;
+}
+
+.contact-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.contact-sender {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sender-avatar {
+  width: 44px;
+  height: 44px;
+  background: #c4a47a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
+  color: #fff;
+}
+
+.contact-sender div {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-sender strong {
+  font-size: 14px;
+  color: #333;
+}
+
+.contact-sender span {
+  font-size: 12px;
+  color: #888;
+}
+
+.contact-date {
+  font-size: 11px;
+  color: #999;
+}
+
+.contact-subject {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #c4a47a;
+  margin-bottom: 8px;
+}
+
+.contact-message-preview {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.contact-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.read-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(52, 152, 219, 0.1);
+  border: none;
+  border-radius: 8px;
+  color: #3498db;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.contact-detail p {
+  background: #f8f9fa;
+  padding: 12px;
+  border-radius: 12px;
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #555;
+}
+
+.reply-section {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.reply-section textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  margin: 12px 0;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.reply-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: #c4a47a;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+}

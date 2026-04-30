@@ -27,9 +27,22 @@ export default function ProductCard({ product }) {
 
   const handleAddToCart = (e) => {
     e.preventDefault();
+    e.stopPropagation();
     if (product.inStock) {
       addToCart({ ...product, selectedColor });
     }
+  };
+
+  const handleWishlistClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleWishlist(product);
+  };
+
+  const handleViewClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    window.location.href = `/products/${product.slug}`;
   };
 
   return (
@@ -55,7 +68,7 @@ export default function ProductCard({ product }) {
         <div className={`product-actions ${hovering ? 'visible' : ''}`}>
           <button
             className={`action-btn wishlist-btn ${isWishlisted(product.id) ? 'active' : ''}`}
-            onClick={(e) => { e.preventDefault(); toggleWishlist(product); }}
+            onClick={handleWishlistClick}
             title="Add to Wishlist"
           >
             <FiHeart />
@@ -68,9 +81,13 @@ export default function ProductCard({ product }) {
           >
             <FiShoppingCart />
           </button>
-          <Link to={`/products/${product.slug}`} className="action-btn view-btn" title="Quick View">
+          <button
+            className="action-btn view-btn"
+            onClick={handleViewClick}
+            title="Quick View"
+          >
             <FiEye />
-          </Link>
+          </button>
         </div>
       </Link>
 
@@ -81,7 +98,11 @@ export default function ProductCard({ product }) {
               key={color}
               className={`swatch ${selectedColor === color ? 'active' : ''}`}
               style={{ background: colorMap[color] || '#ccc' }}
-              onClick={() => setSelectedColor(color)}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setSelectedColor(color);
+              }}
               title={color}
             />
           ))}

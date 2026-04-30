@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { FiMapPin, FiPhone, FiMail, FiClock, FiSend, FiPhoneCall } from 'react-icons/fi';
+import { submitContact } from '../services/contactService';
+import toast from 'react-hot-toast';
 
 export default function ContactUs() {
   const [formData, setFormData] = useState({
@@ -9,19 +11,28 @@ export default function ContactUs() {
     subject: '',
     message: ''
   });
+  const [loading, setLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your form submission logic here
-    console.log('Form submitted:', formData);
-    setIsSubmitted(true);
-    setTimeout(() => setIsSubmitted(false), 3000);
-    setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+    setLoading(true);
+    
+    try {
+      await submitContact(formData);
+      toast.success('Message sent successfully! We will get back to you soon.');
+      setIsSubmitted(true);
+      setTimeout(() => setIsSubmitted(false), 3000);
+      setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to send message. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -136,12 +147,12 @@ export default function ContactUs() {
                     required
                   ></textarea>
                 </div>
-                <button type="submit" className="submit-btn">
-                  Send Message <FiSend />
+                <button type="submit" className="submit-btn" disabled={loading}>
+                  {loading ? 'Sending...' : 'Send Message'} <FiSend />
                 </button>
                 {isSubmitted && (
                   <div className="success-message">
-                    ✓ Inquiry sent successfully! Our safety consultants will contact you soon.
+                    ✓ Inquiry sent successfully! Our team will contact you soon.
                   </div>
                 )}
               </form>
@@ -309,7 +320,11 @@ export default function ContactUs() {
           gap: 10px;
           transition: background 0.3s;
         }
-        .submit-btn:hover {
+        .submit-btn:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+        }
+        .submit-btn:hover:not(:disabled) {
           background: #a8885e;
         }
         .success-message {

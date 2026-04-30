@@ -41,14 +41,28 @@ const Register = () => {
       const { confirmPassword, ...registerData } = formData;
       const response = await axios.post('http://localhost:5000/api/auth/register', registerData);
       
-      if (response.data.success) {
-        localStorage.setItem('token', response.data.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.data));
-        toast.success('Account created successfully! Welcome to Horizon Supplies!');
-        navigate('/Login');
+      console.log('Registration response:', response.data); // Debug log
+      
+      // ✅ Fix: Check response structure
+      if (response.data.success || response.status === 201) {
+        // Save token if returned
+        if (response.data.data?.token) {
+          localStorage.setItem('token', response.data.data.token);
+          localStorage.setItem('user', JSON.stringify(response.data.data));
+        }
+        
+        toast.success('Account created successfully! Please login.');
+        
+        // Redirect to login page after 1.5 seconds
+        setTimeout(() => {
+          navigate('/login');
+        }, 1500);
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Registration failed. Please try again.');
+      console.error('Registration error:', error.response?.data);
+      
+      const errorMessage = error.response?.data?.message || 'Registration failed. Please try again.';
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }

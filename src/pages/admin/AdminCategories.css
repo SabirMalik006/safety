@@ -1,0 +1,254 @@
+.admin-categories {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.page-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 8px;
+}
+
+.page-header p {
+  color: #666;
+  font-size: 14px;
+}
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: #c4a47a;
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary:hover {
+  background: #a8885e;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: #f0f0f0;
+  border: none;
+  border-radius: 10px;
+  color: #666;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.category-card {
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.category-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.category-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #f1f3f5 100%);
+  border-bottom: 1px solid #e9ecef;
+}
+
+.category-order {
+  font-size: 12px;
+  font-weight: 600;
+  color: #c4a47a;
+  background: rgba(196, 164, 122, 0.1);
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.category-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-btn.edit {
+  background: rgba(52, 152, 219, 0.1);
+  color: #3498db;
+}
+
+.action-btn.edit:hover {
+  background: #3498db;
+  color: #fff;
+}
+
+.action-btn.delete {
+  background: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+}
+
+.action-btn.delete:hover {
+  background: #e74c3c;
+  color: #fff;
+}
+
+.category-card-body {
+  padding: 20px;
+}
+
+.category-card-body h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin-bottom: 8px;
+}
+
+.category-card-body p {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.category-slug {
+  font-size: 11px;
+  color: #c4a47a;
+  background: rgba(196, 164, 122, 0.1);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-family: monospace;
+}
+
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  color: #666;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 24px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #999;
+}
+
+.modal-content form {
+  padding: 24px;
+}
+
+.modal-content .form-group {
+  margin-bottom: 20px;
+}
+
+.modal-content .form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.modal-content .form-group input,
+.modal-content .form-group textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .categories-grid {
+    grid-template-columns: 1fr;
+  }
+}

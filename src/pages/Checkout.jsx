@@ -1,407 +1,360 @@
-// src/pages/Checkout.jsx
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { FiLock, FiChevronRight, FiCheckCircle, FiChevronDown } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { getCurrentUser } from '../services/authService';
+import { createOrderWithPaymentProof } from '../services/orderService';
+import { uploadPaymentScreenshot } from '../services/uploadService';
+import toast from 'react-hot-toast';
 import './Checkout.css';
 
 export default function Checkout() {
   const navigate = useNavigate();
-  const { cart, clearCart } = useCart();
+  const { cartItems, getCartTotal, clearCart } = useCart();
+  const user = getCurrentUser();
+  
+  const [loading, setLoading] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('bank_transfer');
+  const [paymentProof, setPaymentProof] = useState({
+    transactionId: '',
+    paymentAccount: '',
+    remarks: '',
+    screenshotFile: null,
+    screenshotPreview: null
+  });
+  
   const [formData, setFormData] = useState({
-    email: '',
-    firstName: '',
-    lastName: '',
+    fullName: user?.name || '',
     address: '',
     city: '',
-    postalCode: '',
+    state: '',
+    zipCode: '',
+    country: 'Pakistan',
     phone: '',
-    saveInfo: false,
-    sameAsShipping: true,
   });
-  const [paymentMethod, setPaymentMethod] = useState('');
-  const [openPayment, setOpenPayment] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [orderComplete, setOrderComplete] = useState(false);
 
-  const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const shipping = 199;
-  const total = subtotal + shipping;
-
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
+  // Bank account details to show to user
+  const bankAccounts = {
+    easypaisa: {
+      name: 'EasyPaisa',
+      account: '0344 1234567',
+      holder: 'Horizon Supplies'
+    },
+    jazzcash: {
+      name: 'JazzCash',
+      account: '0344 1234567', 
+      holder: 'Horizon Supplies'
+    },
+    bank_transfer: {
+      name: 'Bank Alfalah',
+      account: 'PK12 ALFH 0001 2345 6789',
+      holder: 'Horizon Supplies (PVT) Ltd',
+      bank: 'Bank Alfalah, Karachi'
+    }
   };
 
-  const handlePaymentSelect = (method) => {
-    setPaymentMethod(method);
-    setOpenPayment(method);
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('File too large! Max 5MB');
+        return;
+      }
+      const preview = URL.createObjectURL(file);
+      setPaymentProof(prev => ({ 
+        ...prev, 
+        screenshotFile: file, 
+        screenshotPreview: preview 
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!paymentMethod) {
-      alert('Please select a payment method');
+    if (!paymentProof.transactionId) {
+      toast.error('Please enter Transaction ID');
       return;
     }
     
-    setIsSubmitting(true);
+    if (!paymentProof.screenshotFile) {
+      toast.error('Please upload payment screenshot');
+      return;
+    }
     
-    // Simulate order processing
-    setTimeout(() => {
-      setOrderComplete(true);
-      clearCart();
-      setIsSubmitting(false);
+    setLoading(true);
+    
+    try {
+      // 1. Upload screenshot to Cloudinary
+      let screenshotUrl = '';
+      if (paymentProof.screenshotFile) {
+        const uploadRes = await uploadPaymentScreenshot(paymentProof.screenshotFile);
+        screenshotUrl = uploadRes.url;
+      }
       
-      // Redirect to home after 3 seconds
-      setTimeout(() => {
-        navigate('/');
-      }, 3000);
-    }, 1500);
+      // 2. Create order with payment proof
+      const orderData = {
+        orderItems: cartItems.map(item => ({
+          product: item.productId,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          image: item.image,
+          color: item.color,
+          size: item.size
+        })),
+        shippingAddress: formData,
+        paymentMethod: paymentMethod,
+        itemsPrice: getCartTotal(),
+        shippingPrice: 200,
+        totalPrice: getCartTotal() + 200,
+        paymentProof: {
+          screenshotUrl: screenshotUrl,
+          transactionId: paymentProof.transactionId,
+          paymentDate: new Date().toISOString(),
+          paymentAccount: paymentProof.paymentAccount,
+          remarks: paymentProof.remarks
+        }
+      };
+      
+      const response = await createOrderWithPaymentProof(orderData);
+      
+      if (response.success) {
+        toast.success('Order placed! Payment verification pending.');
+        clearCart();
+        navigate(`/order-success/${response.data._id}`);
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Order failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  if (orderComplete) {
-    return (
-      <div className="checkout-success">
-        <div className="success-container">
-          <FiCheckCircle className="success-icon" />
-          <h2>Order Placed Successfully!</h2>
-          <p>Thank you for your order. You will receive a confirmation email shortly.</p>
-          <Link to="/" className="continue-shopping-btn">Continue Shopping</Link>
-        </div>
-      </div>
-    );
-  }
+  const shippingCost = 200;
+  const total = getCartTotal() + shippingCost;
 
   return (
     <div className="checkout-page">
-      <div className="checkout-header">
-        <Link to="/cart" className="back-to-cart">
-          ← Back to Cart
-        </Link>
-        <h1 className="checkout-title">SafetyMe</h1>
-      </div>
-
-      <div className="checkout-container">
-        <form onSubmit={handleSubmit} className="checkout-form">
-          {/* Contact Section */}
-          <div className="form-section">
-            <h2 className="section-title">Contact</h2>
-            <div className="form-group">
-              <input
-                type="email"
-                name="email"
-                placeholder="Email or mobile phone number"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="form-input"
-              />
-            </div>
-            <label className="checkbox-label">
-              <input
-                type="checkbox"
-                name="newsletter"
-                onChange={() => {}}
-              />
-              <span>Email me with news and offers</span>
-            </label>
-          </div>
-
-          {/* Delivery Section */}
-          <div className="form-section">
-            <h2 className="section-title">Delivery</h2>
-            
-            <div className="form-row">
-              <div className="form-group">
-                <label>Country/Region</label>
-                <select className="form-input" defaultValue="PK">
-                  <option value="PK">Pakistan</option>
-                </select>
+      <div className="container">
+        <h1>Checkout</h1>
+        
+        <div className="checkout-grid">
+          {/* Left - Order Form */}
+          <div className="checkout-form">
+            <form onSubmit={handleSubmit}>
+              {/* Shipping Information */}
+              <div className="form-section">
+                <h3>Shipping Information</h3>
+                <div className="form-group">
+                  <input
+                    type="text"
+                    placeholder="Full Name *"
+                    value={formData.fullName}
+                    onChange={(e) => setFormData({...formData, fullName: e.target.value})}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <input
+                    type="text"
+                    placeholder="Address *"
+                    value={formData.address}
+                    onChange={(e) => setFormData({...formData, address: e.target.value})}
+                    required
+                  />
+                </div>
+                <div className="form-row">
+                  <input
+                    type="text"
+                    placeholder="City *"
+                    value={formData.city}
+                    onChange={(e) => setFormData({...formData, city: e.target.value})}
+                    required
+                  />
+                  <input
+                    type="text"
+                    placeholder="State *"
+                    value={formData.state}
+                    onChange={(e) => setFormData({...formData, state: e.target.value})}
+                    required
+                  />
+                </div>
+                <div className="form-row">
+                  <input
+                    type="text"
+                    placeholder="ZIP Code *"
+                    value={formData.zipCode}
+                    onChange={(e) => setFormData({...formData, zipCode: e.target.value})}
+                    required
+                  />
+                  <input
+                    type="text"
+                    placeholder="Phone *"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                    required
+                  />
+                </div>
               </div>
-            </div>
 
-            <div className="form-row two-col">
-              <div className="form-group">
-                <input
-                  type="text"
-                  name="firstName"
-                  placeholder="First name"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  required
-                  className="form-input"
-                />
-              </div>
-              <div className="form-group">
-                <input
-                  type="text"
-                  name="lastName"
-                  placeholder="Last name"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  required
-                  className="form-input"
-                />
-              </div>
-            </div>
-
-            <div className="form-group">
-              <input
-                type="text"
-                name="address"
-                placeholder="Address"
-                value={formData.address}
-                onChange={handleChange}
-                required
-                className="form-input"
-              />
-            </div>
-
-            <div className="form-row two-col">
-              <div className="form-group">
-                <input
-                  type="text"
-                  name="city"
-                  placeholder="City"
-                  value={formData.city}
-                  onChange={handleChange}
-                  required
-                  className="form-input"
-                />
-              </div>
-              <div className="form-group">
-                <input
-                  type="text"
-                  name="postalCode"
-                  placeholder="Postal code (optional)"
-                  value={formData.postalCode}
-                  onChange={handleChange}
-                  className="form-input"
-                />
-              </div>
-            </div>
-
-            <div className="form-group">
-              <input
-                type="tel"
-                name="phone"
-                placeholder="Phone"
-                value={formData.phone}
-                onChange={handleChange}
-                required
-                className="form-input"
-              />
-            </div>
-
-            <label className="checkbox-label">
-              <input
-                type="checkbox"
-                name="saveInfo"
-                checked={formData.saveInfo}
-                onChange={handleChange}
-              />
-              <span>Save this information for next time</span>
-            </label>
-          </div>
-
-          {/* Shipping Method */}
-          <div className="form-section">
-            <h2 className="section-title">Shipping method</h2>
-            <div className="shipping-option">
-              <div className="shipping-info">
-                <span className="shipping-name">Standard Shipping</span>
-                <span className="shipping-price">Rs {shipping.toLocaleString()}.00</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Payment Section - Updated with 3 separate boxes */}
-          <div className="form-section">
-            <h2 className="section-title">Payment</h2>
-            <p className="payment-security">
-              <FiLock /> All transactions are secure and encrypted.
-            </p>
-
-            <div className="payment-options-container">
-              {/* Cash on Delivery Option */}
-              <div className={`payment-box ${paymentMethod === 'cod' ? 'selected' : ''}`}>
-                <div 
-                  className="payment-box-header"
-                  onClick={() => handlePaymentSelect('cod')}
-                >
-                  <div className="payment-box-radio">
-                    <input
-                      type="radio"
-                      name="payment"
-                      value="cod"
-                      checked={paymentMethod === 'cod'}
-                      onChange={() => handlePaymentSelect('cod')}
-                    />
-                    <strong>Cash on Delivery (COD)</strong>
+              {/* Payment Method Selection */}
+              <div className="form-section">
+                <h3>Payment Method</h3>
+                
+                <label className="payment-option">
+                  <input
+                    type="radio"
+                    value="bank_transfer"
+                    checked={paymentMethod === 'bank_transfer'}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                  />
+                  <div>
+                    <strong>Bank Transfer</strong>
+                    <small>Pay via bank transfer (1-24 hours verification)</small>
                   </div>
-                  <FiChevronDown className={`payment-arrow ${openPayment === 'cod' ? 'open' : ''}`} />
+                </label>
+                
+                <label className="payment-option">
+                  <input
+                    type="radio"
+                    value="easypaisa"
+                    checked={paymentMethod === 'easypaisa'}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                  />
+                  <div>
+                    <strong>EasyPaisa</strong>
+                    <small>Pay via EasyPaisa mobile account</small>
+                  </div>
+                </label>
+                
+                <label className="payment-option">
+                  <input
+                    type="radio"
+                    value="jazzcash"
+                    checked={paymentMethod === 'jazzcash'}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                  />
+                  <div>
+                    <strong>JazzCash</strong>
+                    <small>Pay via JazzCash mobile account</small>
+                  </div>
+                </label>
+              </div>
+
+              {/* Payment Instructions */}
+              <div className="form-section payment-instructions">
+                <h3>Payment Instructions</h3>
+                <div className="bank-details">
+                  <p><strong>Send payment to:</strong></p>
+                  <div className="bank-info">
+                    <span>{bankAccounts[paymentMethod]?.name}</span>
+                    <strong>{bankAccounts[paymentMethod]?.account}</strong>
+                    <small>Account Holder: {bankAccounts[paymentMethod]?.holder}</small>
+                    {bankAccounts[paymentMethod]?.bank && (
+                      <small>Bank: {bankAccounts[paymentMethod]?.bank}</small>
+                    )}
+                  </div>
                 </div>
                 
-                {openPayment === 'cod' && (
-                  <div className="payment-box-content">
-                    <div className="payment-info">
-                      <p>Pay when you receive your order at your doorstep.</p>
-                      <div className="payment-note">
-                        <strong>Note:</strong>
-                        <p>Please keep exact cash ready for smooth delivery.</p>
+                <div className="payment-note">
+                  <p>⚠️ <strong>Important:</strong> After payment, please provide:</p>
+                  <ul>
+                    <li>Transaction ID / Reference Number</li>
+                    <li>Screenshot of payment confirmation</li>
+                  </ul>
+                  <p>Your order will be processed after payment verification (1-24 hours).</p>
+                </div>
+              </div>
+
+              {/* Payment Proof Upload */}
+              <div className="form-section payment-proof">
+                <h3>Payment Proof</h3>
+                
+                <div className="form-group">
+                  <label>Transaction ID *</label>
+                  <input
+                    type="text"
+                    placeholder="Enter transaction/reference ID"
+                    value={paymentProof.transactionId}
+                    onChange={(e) => setPaymentProof({...paymentProof, transactionId: e.target.value})}
+                    required
+                  />
+                </div>
+                
+                <div className="form-group">
+                  <label>Payment Account (Optional)</label>
+                  <input
+                    type="text"
+                    placeholder="Which account did you pay from?"
+                    value={paymentProof.paymentAccount}
+                    onChange={(e) => setPaymentProof({...paymentProof, paymentAccount: e.target.value})}
+                  />
+                </div>
+                
+                <div className="form-group">
+                  <label>Upload Screenshot *</label>
+                  <div className="file-upload">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      required
+                    />
+                    {paymentProof.screenshotPreview && (
+                      <div className="screenshot-preview">
+                        <img src={paymentProof.screenshotPreview} alt="Payment proof" />
+                        <button type="button" onClick={() => {
+                          setPaymentProof({...paymentProof, screenshotFile: null, screenshotPreview: null});
+                        }}>Remove</button>
                       </div>
-                    </div>
+                    )}
                   </div>
-                )}
-              </div>
-
-              {/* Easypaisa Option */}
-              <div className={`payment-box ${paymentMethod === 'easypaisa' ? 'selected' : ''}`}>
-                <div 
-                  className="payment-box-header"
-                  onClick={() => handlePaymentSelect('easypaisa')}
-                >
-                  <div className="payment-box-radio">
-                    <input
-                      type="radio"
-                      name="payment"
-                      value="easypaisa"
-                      checked={paymentMethod === 'easypaisa'}
-                      onChange={() => handlePaymentSelect('easypaisa')}
-                    />
-                    <strong>Easypaisa</strong>
-                  </div>
-                  <FiChevronDown className={`payment-arrow ${openPayment === 'easypaisa' ? 'open' : ''}`} />
+                  <small>Upload screenshot of payment confirmation (Max 5MB)</small>
                 </div>
                 
-                {openPayment === 'easypaisa' && (
-                  <div className="payment-box-content">
-                    <div className="bank-details">
-                      <p><strong>Account Details:</strong></p>
-                      <p>Account Name: SafetyMe Official</p>
-                      <p>Bank / Service: Easypaisa</p>
-                      <p>Account Number: 0329 7239880</p>
-                    </div>
-                    <div className="payment-note">
-                      <strong>Note:</strong>
-                      <p>To confirm your order, please send the payment screenshot along with your order details to +92 329 7239880 after completing the payment.</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Faysal Bank Option */}
-              <div className={`payment-box ${paymentMethod === 'faysal' ? 'selected' : ''}`}>
-                <div 
-                  className="payment-box-header"
-                  onClick={() => handlePaymentSelect('faysal')}
-                >
-                  <div className="payment-box-radio">
-                    <input
-                      type="radio"
-                      name="payment"
-                      value="faysal"
-                      checked={paymentMethod === 'faysal'}
-                      onChange={() => handlePaymentSelect('faysal')}
-                    />
-                    <strong>Faysal Bank</strong>
-                  </div>
-                  <FiChevronDown className={`payment-arrow ${openPayment === 'faysal' ? 'open' : ''}`} />
+                <div className="form-group">
+                  <label>Additional Remarks (Optional)</label>
+                  <textarea
+                    rows="3"
+                    placeholder="Any additional information about your payment..."
+                    value={paymentProof.remarks}
+                    onChange={(e) => setPaymentProof({...paymentProof, remarks: e.target.value})}
+                  />
                 </div>
-                
-                {openPayment === 'faysal' && (
-                  <div className="payment-box-content">
-                    <div className="bank-details">
-                      <p><strong>Bank Details:</strong></p>
-                      <p>Bank Name: Faysal Bank</p>
-                      <p>Account Title: SafetyMe</p>
-                      <p>Account Number: 1234-5678901</p>
-                      <p>IBAN: PK65FAYS1234567890123</p>
-                    </div>
-                    <div className="payment-note">
-                      <strong>Note:</strong>
-                      <p>After bank transfer, please send the payment screenshot to +92 329 7239880 for order confirmation.</p>
-                    </div>
-                  </div>
-                )}
               </div>
-            </div>
+              
+              <button type="submit" disabled={loading} className="place-order-btn">
+                {loading ? 'Placing Order...' : `Place Order - Rs.${total.toLocaleString()}`}
+              </button>
+            </form>
           </div>
 
-          {/* Billing Address */}
-          <div className="form-section">
-            <h2 className="section-title">Billing address</h2>
-            <label className="radio-label">
-              <input
-                type="radio"
-                name="billingAddress"
-                value="same"
-                checked={formData.sameAsShipping}
-                onChange={() => setFormData(prev => ({ ...prev, sameAsShipping: true }))}
-              />
-              <span>Same as shipping address</span>
-            </label>
-            <label className="radio-label">
-              <input
-                type="radio"
-                name="billingAddress"
-                value="different"
-                checked={!formData.sameAsShipping}
-                onChange={() => setFormData(prev => ({ ...prev, sameAsShipping: false }))}
-              />
-              <span>Use a different billing address</span>
-            </label>
-          </div>
-
-          {/* Submit Button */}
-          <button 
-            type="submit" 
-            className="complete-order-btn"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? 'Processing...' : 'Complete order'}
-          </button>
-
-          <div className="privacy-policy">
-            <Link to="/privacy-policy">Privacy policy</Link>
-          </div>
-        </form>
-
-        {/* Order Summary Sidebar */}
-        <div className="order-summary">
-          <h3 className="summary-title">Order summary</h3>
-          
-          <div className="summary-items">
-            {cart.map(item => (
-              <div key={item.id} className="summary-item">
-                <div className="item-info">
-                  <span className="item-quantity">{item.quantity}x</span>
-                  <span className="item-name">{item.name}</span>
-                </div>
-                <span className="item-price">Rs {(item.price * item.quantity).toLocaleString()}</span>
+          {/* Right - Order Summary */}
+          <div className="order-summary">
+            <h3>Order Summary</h3>
+            {cartItems.map((item, idx) => (
+              <div key={idx} className="summary-item">
+                <span>{item.name} x{item.quantity}</span>
+                <span>Rs.{(item.price * item.quantity).toLocaleString()}</span>
               </div>
             ))}
-          </div>
-
-          <div className="summary-totals">
-            <div className="summary-row">
-              <span>Subtotal</span>
-              <span>Rs {subtotal.toLocaleString()}</span>
+            <div className="summary-total">
+              <span>Subtotal:</span>
+              <span>Rs.{getCartTotal().toLocaleString()}</span>
             </div>
-            <div className="summary-row">
-              <span>Shipping</span>
-              <span>Rs {shipping.toLocaleString()}</span>
+            <div className="summary-total">
+              <span>Shipping:</span>
+              <span>Rs.{shippingCost.toLocaleString()}</span>
             </div>
-            <div className="summary-row total">
-              <span>Total</span>
-              <span>Rs {total.toLocaleString()}</span>
+            <div className="summary-grand">
+              <span>Total:</span>
+              <span>Rs.{total.toLocaleString()}</span>
             </div>
-            <p className="tax-note">Including Rs 0.00 in taxes</p>
+            
+            <div className="verification-note">
+              <p>✅ Your order will be processed after payment verification</p>
+              <p>📧 We'll email you when payment is verified</p>
+            </div>
           </div>
         </div>
       </div>
