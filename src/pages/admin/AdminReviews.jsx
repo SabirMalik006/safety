@@ -97,7 +97,7 @@ const AdminReviews = () => {
                 <div className="reviewer-info">
                   <div className="rev-avatar"><FiUser /></div>
                   <div>
-                    <h3>{review.name}</h3>
+                    <h3>{review.user?.name || review.guestName || 'Anonymous'}</h3>
                     <div className="rev-stars">
                       {[...Array(5)].map((_, i) => (
                         <FiStar key={i} className={i < review.rating ? 'filled' : ''} />
@@ -111,7 +111,7 @@ const AdminReviews = () => {
               </div>
               
               <div className="review-card-content">
-                <p className="rev-product">Product: <strong>{review.productName || 'N/A'}</strong></p>
+                <p className="rev-product">Product: <strong>{review.product?.name || 'General Feedback'}</strong></p>
                 <p className="rev-comment">"{review.comment}"</p>
               </div>
 
