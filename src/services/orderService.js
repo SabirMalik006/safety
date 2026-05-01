@@ -81,3 +81,21 @@ export const updateOrderStatus = async (orderId, status, trackingNumber = null) 
 };
 
 // ============================================
+// ADMIN: GET ALL ORDERS
+// ============================================
+export const getAllOrders = async () => {
+  const response = await api.get('/orders');
+  return response.data;
+};
+
+// ============================================
+// UPLOAD PAYMENT PROOF SCREENSHOT
+// ============================================
+export const uploadPaymentProof = async (formData) => {
+  const response = await api.post('/orders/upload-proof', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
+  return response.data;
+};

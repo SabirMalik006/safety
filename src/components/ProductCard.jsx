@@ -57,14 +57,14 @@ export default function ProductCard({ product }) {
   const inStock = product.inStock || product.stock > 0;
   const productName = product.name || 'Product';
   const productPrice = product.price || 0;
-  const productImage = product.image || product.images?.[0]?.url || '/images/placeholder.jpg';
-  const hoverImage = product.images?.[1] || productImage;
+  const productImage = typeof product.image === 'string' ? product.image : (product.images?.[0]?.url || product.images?.[0] || '/images/placeholder.jpg');
+  const hoverImage = product.images?.[1]?.url || product.images?.[1] || productImage;
   const productSlug = product.slug;
   const productColors = product.colors || [];
   const productDiscount = product.discount || 0;
 
   // Current image based on hover state
-  const currentImage = hovering ? hoverImage : productImage;
+  const currentImage = (hovering && hoverImage) ? hoverImage : productImage;
 
   return (
     <div

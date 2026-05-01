@@ -46,9 +46,53 @@ export const isAdmin = () => {
 };
 
 export const updateProfile = async (profileData) => {
-  const response = await api.put('/users/profile', profileData);
+  const response = await api.put('/auth/profile', profileData);
   if (response.data.success) {
     localStorage.setItem('user', JSON.stringify(response.data.data));
   }
+  return response.data;
+};
+
+export const getProfile = async () => {
+  const response = await api.get('/auth/profile');
+  if (response.data.success) {
+    localStorage.setItem('user', JSON.stringify(response.data.data));
+  }
+  return response.data;
+};
+
+export const forgotPassword = async (email) => {
+  const response = await api.post('/auth/forgot-password', { email });
+  return response.data;
+};
+
+export const verifyOTP = async (email, otp) => {
+  const response = await api.post('/auth/verify-otp', { email, otp });
+  return response.data;
+};
+
+export const resetPassword = async (email, otp, newPassword) => {
+  const response = await api.put('/auth/reset-password', { email, otp, newPassword });
+  return response.data;
+};
+
+// Address Management
+export const addAddress = async (addressData) => {
+  const response = await api.post('/auth/addresses', addressData);
+  return response.data;
+};
+
+export const updateAddress = async (id, addressData) => {
+  const response = await api.put(`/auth/addresses/${id}`, addressData);
+  return response.data;
+};
+
+export const deleteAddress = async (id) => {
+  const response = await api.delete(`/auth/addresses/${id}`);
+  return response.data;
+};
+
+export const setDefaultAddress = async (id) => {
+  const response = await api.patch(`/auth/addresses/${id}/default`);
   return response.data;
 };

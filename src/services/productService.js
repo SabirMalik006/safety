@@ -22,9 +22,8 @@ export const getProductById = async (id) => {
 
 // Get single product by slug
 export const getProductBySlug = async (slug) => {
-  const response = await api.get(`/products`);
-  const product = response.data.data.find(p => p.slug === slug);
-  return { success: true, data: product };
+  const response = await api.get(`/products/slug/${slug}`);
+  return response.data;
 };
 
 // Get featured products

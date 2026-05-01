@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { FiUser, FiMail, FiLock, FiArrowRight, FiCheckCircle, FiEye, FiEyeOff } from 'react-icons/fi';
+import { register } from '../services/authService';
 import toast from 'react-hot-toast';
 import './Register.css';
 
@@ -26,41 +27,25 @@ const Register = () => {
     e.preventDefault();
     
     if (formData.password !== formData.confirmPassword) {
-      toast.error('Passwords do not match!');
-      return;
+      return toast.error('Passwords do not match');
     }
-    
-    if (formData.password.length < 6) {
-      toast.error('Password must be at least 6 characters');
-      return;
-    }
-    
+
     setLoading(true);
-    
     try {
-      const { confirmPassword, ...registerData } = formData;
-      const response = await axios.post('http://localhost:5000/api/auth/register', registerData);
-      
-      console.log('Registration response:', response.data); // Debug log
-      
-      // ✅ Fix: Check response structure
-      if (response.data.success || response.status === 201) {
-        // Save token if returned
-        if (response.data.data?.token) {
-          localStorage.setItem('token', response.data.data.token);
-          localStorage.setItem('user', JSON.stringify(response.data.data));
-        }
-        
-        toast.success('Account created successfully! Please login.');
-        
-        // Redirect to login page after 1.5 seconds
-        setTimeout(() => {
-          navigate('/login');
-        }, 1500);
+      const response = await register({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password
+      });
+
+      if (response.token) {
+        toast.success('Account created successfully! Welcome to SafetyMe.');
+        navigate('/');
+      } else {
+        toast.error('Registration failed');
       }
     } catch (error) {
-      console.error('Registration error:', error.response?.data);
-      
+      console.error('Registration error:', error);
       const errorMessage = error.response?.data?.message || 'Registration failed. Please try again.';
       toast.error(errorMessage);
     } finally {
@@ -69,70 +54,77 @@ const Register = () => {
   };
 
   return (
-    <div className="register-container">
-      <div className="register-wrapper">
-        <div className="register-left">
-          <div className="brand">
-            <div className="brand-icon">
-              <span>HS</span>
+    <div className="auth-page">
+      <div className="auth-container">
+        {/* Left Side: Brand Info */}
+        <div className="auth-side-panel">
+          <div className="side-overlay"></div>
+          <img 
+            src="/safety_login_side_1777667349463.png" 
+            alt="Safety Gear" 
+            className="side-bg-image" 
+          />
+          <div className="side-content">
+            <Link to="/" className="auth-logo">
+              Safety<span>Me</span>
+            </Link>
+            <div className="side-text">
+              <h2>Join the Professionals</h2>
+              <p>Create an account to access bulk pricing, track shipments, and secure your industrial operations.</p>
             </div>
-            <h1>Join Horizon Supplies</h1>
-            <p>Create your account and start shopping today</p>
-          </div>
-          
-          <div className="benefits">
-            <div className="benefit">
-              <div className="benefit-icon">✅</div>
-              <div>
-                <h4>Easy Order Tracking</h4>
-                <p>Track your orders in real-time</p>
-              </div>
-            </div>
-            <div className="benefit">
-              <div className="benefit-icon">🎁</div>
-              <div>
-                <h4>Exclusive Offers</h4>
-                <p>Get special discounts and deals</p>
-              </div>
-            </div>
-            <div className="benefit">
-              <div className="benefit-icon">⚡</div>
-              <div>
-                <h4>Quick Checkout</h4>
-                <p>Save time with saved addresses</p>
-              </div>
+            
+            <ul className="benefits-list">
+              <li>
+                <FiCheckCircle className="benefit-icon" />
+                <span>Access to wholesale pricing</span>
+              </li>
+              <li>
+                <FiCheckCircle className="benefit-icon" />
+                <span>Dedicated safety consultancy</span>
+              </li>
+              <li>
+                <FiCheckCircle className="benefit-icon" />
+                <span>Custom branding on safety gear</span>
+              </li>
+            </ul>
+            
+            <div className="side-footer">
+              <p>© 2026 SafetyMe Solutions. All rights reserved.</p>
             </div>
           </div>
         </div>
 
-        <div className="register-right">
-          <div className="register-card">
-            <div className="register-header">
-              <h2>Create Account</h2>
-              <p>Fill in your details to get started</p>
+        {/* Right Side: Register Form */}
+        <div className="auth-form-panel">
+          <div className="auth-card">
+            <div className="auth-header">
+              <h1>Create Account</h1>
+              <p>Sign up to start shopping for industrial gear.</p>
             </div>
 
-            <form onSubmit={handleSubmit} className="register-form">
+            <form onSubmit={handleSubmit} className="auth-form">
               <div className="form-group">
-                <label>Full Name</label>
-                <div className="input-wrapper">
-                  <span className="input-icon">👤</span>
+                <label htmlFor="name">Full Name</label>
+                <div className="input-box">
+                  <FiUser className="input-icon" />
                   <input
+                    id="name"
                     type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="John Doe"
+                    placeholder="Enter your full name"
                     required
                   />
                 </div>
               </div>
 
               <div className="form-group">
-                <label>Email Address</label>
-                <div className="input-wrapper">
-                  <span className="input-icon">📧</span>
+                <label htmlFor="email">Email Address</label>
+                <div className="input-box">
+                  <FiMail className="input-icon" />
                   <input
+                    id="email"
                     type="email"
                     name="email"
                     value={formData.email}
@@ -144,56 +136,59 @@ const Register = () => {
               </div>
 
               <div className="form-group">
-                <label>Password</label>
-                <div className="input-wrapper">
-                  <span className="input-icon">🔒</span>
+                <label htmlFor="password">Password</label>
+                <div className="input-box">
+                  <FiLock className="input-icon" />
                   <input
+                    id="password"
                     type={showPassword ? 'text' : 'password'}
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
-                    placeholder="••••••••"
+                    placeholder="Min. 6 characters"
                     required
+                    minLength="6"
                   />
+                  <button
+                    type="button"
+                    className="pass-toggle"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <FiEyeOff /> : <FiEye />}
+                  </button>
                 </div>
               </div>
 
               <div className="form-group">
-                <label>Confirm Password</label>
-                <div className="input-wrapper">
-                  <span className="input-icon">🔒</span>
+                <label htmlFor="confirmPassword">Confirm Password</label>
+                <div className="input-box">
+                  <FiLock className="input-icon" />
                   <input
-                    type={showPassword ? 'text' : 'password'}
+                    id="confirmPassword"
+                    type="password"
                     name="confirmPassword"
                     value={formData.confirmPassword}
                     onChange={handleChange}
                     placeholder="••••••••"
                     required
                   />
-                  <button
-                    type="button"
-                    className="password-toggle"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? '🙈' : '👁️'}
-                  </button>
                 </div>
               </div>
 
-              <div className="terms">
-                <label className="checkbox">
-                  <input type="checkbox" required /> I agree to the 
-                  <a href="#"> Terms of Service</a> and 
-                  <a href="#"> Privacy Policy</a>
-                </label>
-              </div>
-
-              <button type="submit" disabled={loading} className="register-btn">
-                {loading ? 'Creating account...' : 'Create Account'}
+              <button type="submit" disabled={loading} className="auth-submit-btn">
+                {loading ? (
+                  <span className="loader-dots">
+                    <span>.</span><span>.</span><span>.</span>
+                  </span>
+                ) : (
+                  <>
+                    Create Account <FiArrowRight />
+                  </>
+                )}
               </button>
             </form>
 
-            <div className="login-link">
+            <div className="auth-footer">
               <p>Already have an account? <Link to="/login">Sign In</Link></p>
             </div>
           </div>

@@ -1,186 +1,124 @@
 .admin-reviews {
-  max-width: 1000px;
-  margin: 0 auto;
+  padding: 1rem;
 }
 
 .reviews-list {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 1.5rem;
+  margin-top: 2rem;
 }
 
-.review-item {
-  background: #fff;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+.review-admin-card {
+  background: white;
+  border-radius: 1.25rem;
+  border: 1px solid #e2e8f0;
+  padding: 1.5rem;
   transition: all 0.2s;
 }
 
-.review-item.pending {
-  border-left: 3px solid #f39c12;
-  background: #fffef8;
+.review-admin-card.pending {
+  border-left: 4px solid #c4a47a;
+  background: #fffbeb;
 }
 
-.review-header {
+.review-card-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
 }
 
 .reviewer-info {
   display: flex;
+  gap: 1rem;
   align-items: center;
-  gap: 12px;
 }
 
-.reviewer-avatar {
-  width: 44px;
-  height: 44px;
-  background: #c4a47a;
+.rev-avatar {
+  width: 40px;
+  height: 40px;
+  background: #f1f5f9;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #64748b;
+}
+
+.reviewer-info h3 {
+  font-size: 1rem;
   font-weight: 700;
-  font-size: 18px;
-  color: #fff;
+  margin-bottom: 0.2rem;
 }
 
-.reviewer-info div {
+.rev-stars {
   display: flex;
-  flex-direction: column;
+  gap: 0.2rem;
 }
 
-.reviewer-info strong {
-  font-size: 14px;
-  color: #333;
+.rev-stars svg {
+  font-size: 0.8rem;
+  color: #e2e8f0;
 }
 
-.reviewer-info span {
-  font-size: 11px;
-  color: #999;
+.rev-stars svg.filled {
+  color: #fbbf24;
 }
 
-.review-rating {
-  display: flex;
-  gap: 4px;
-}
-
-.review-rating svg {
-  color: #ddd;
-  font-size: 16px;
-}
-
-.review-rating svg.filled {
-  color: #f39c12;
-  fill: #f39c12;
-}
-
-.review-body h4 {
-  font-size: 16px;
-  font-weight: 600;
-  color: #1a1a2e;
-  margin-bottom: 8px;
-}
-
-.review-body p {
-  font-size: 14px;
-  color: #666;
-  line-height: 1.6;
-  margin-bottom: 12px;
-}
-
-.review-product {
-  font-size: 12px;
-  color: #c4a47a;
-  margin-top: 8px;
-}
-
-.review-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid #f0f0f0;
-}
-
-.approve-btn {
+.rev-date {
+  font-size: 0.8rem;
+  color: #94a3b8;
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  background: rgba(39, 174, 96, 0.1);
-  border: none;
-  border-radius: 8px;
-  color: #27ae60;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
+  gap: 0.4rem;
 }
 
-.delete-btn {
+.review-card-content {
+  margin-bottom: 1.5rem;
+}
+
+.rev-product {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+
+.rev-comment {
+  font-style: italic;
+  color: #0f172a;
+  line-height: 1.5;
+}
+
+.review-card-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.review-card-actions button {
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 700;
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  background: rgba(231, 76, 60, 0.1);
-  border: none;
-  border-radius: 8px;
-  color: #e74c3c;
-  font-size: 12px;
-  font-weight: 500;
+  gap: 0.5rem;
   cursor: pointer;
+  border: none;
+  transition: all 0.2s;
 }
 
-.review-detail {
-  padding: 8px 0;
+.btn-approve {
+  background: #10b981;
+  color: white;
 }
 
-.detail-row {
-  display: flex;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
+.btn-approve:hover { background: #059669; }
+
+.btn-delete {
+  background: #fee2e2;
+  color: #ef4444;
 }
 
-.detail-row label {
-  width: 100px;
-  font-weight: 600;
-  color: #555;
-  font-size: 13px;
-}
-
-.detail-row span {
-  flex: 1;
-  color: #333;
-  font-size: 13px;
-}
-
-.detail-rating {
-  display: flex;
-  gap: 4px;
-}
-
-.detail-rating svg {
-  color: #f39c12;
-  font-size: 14px;
-}
-
-.status-badge.approved {
-  background: rgba(39, 174, 96, 0.1);
-  color: #27ae60;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 11px;
-}
-
-.status-badge.pending {
-  background: rgba(243, 156, 18, 0.1);
-  color: #f39c12;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 11px;
-}
+.btn-delete:hover { background: #fecaca; }

@@ -6,19 +6,17 @@ import {
 import { 
   Chart as ChartJS, CategoryScale, LinearScale, PointElement, 
   LineElement, BarElement, Title, Tooltip, Legend, ArcElement,
-  Filler  // ✅ ADDED - Fixes the "fill" option warning
+  Filler
 } from 'chart.js';
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
-import { getProducts } from '../../services/productService';
-import { getCategories } from '../../services/productService';
+import { getProducts, getCategories } from '../../services/productService';
 import api from '../../services/api';
 import './AdminDashboard.css';
 
-// ✅ Register Filler plugin as well
 ChartJS.register(
   CategoryScale, LinearScale, PointElement, LineElement,
   BarElement, Title, Tooltip, Legend, ArcElement,
-  Filler  // ✅ ADDED
+  Filler
 );
 
 export default function AdminDashboard() {
@@ -27,14 +25,18 @@ export default function AdminDashboard() {
     totalOrders: 0,
     totalUsers: 0,
     totalRevenue: 0,
-    revenueChange: 12.5,
-    ordersChange: 8.2,
-    productsChange: 5.1,
-    usersChange: 15.3
+    revenueChange: 0,
+    ordersChange: 0,
+    productsChange: 0,
+    usersChange: 0
   });
   const [recentOrders, setRecentOrders] = useState([]);
   const [topProducts, setTopProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [chartData, setChartData] = useState({
+    revenue: { labels: [], datasets: [] },
+    categories: { labels: [], datasets: [] }
+  });
 
   useEffect(() => {
     fetchDashboardData();
@@ -51,6 +53,7 @@ export default function AdminDashboard() {
       ]);
 
       const products = productsRes.data || [];
+      const categories = categoriesRes.data || [];
       const orders = ordersRes.data?.data || [];
       const users = usersRes.data?.data || [];
 
@@ -68,7 +71,51 @@ export default function AdminDashboard() {
       });
 
       setRecentOrders(orders.slice(0, 5));
-      setTopProducts(products.slice(0, 5));
+      setTopProducts(products.sort((a, b) => b.price - a.price).slice(0, 5));
+
+      // Process Revenue Data for Chart
+      const monthlyRevenue = new Array(12).fill(0);
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      
+      orders.forEach(order => {
+        const date = new Date(order.createdAt);
+        monthlyRevenue[date.getMonth()] += order.totalPrice || 0;
+      });
+
+      const revData = {
+        labels: months,
+        datasets: [{
+          label: 'Revenue (Rs.)',
+          data: monthlyRevenue,
+          borderColor: '#f59e0b',
+          backgroundColor: 'rgba(245, 158, 11, 0.1)',
+          borderWidth: 2,
+          pointBackgroundColor: '#f59e0b',
+          pointBorderColor: '#fff',
+          pointRadius: 4,
+          fill: true,
+          tension: 0.4,
+        }]
+      };
+
+      // Process Category Data
+      const catCount = {};
+      products.forEach(p => {
+        const catName = p.category?.name || 'Uncategorized';
+        catCount[catName] = (catCount[catName] || 0) + 1;
+      });
+
+      const catData = {
+        labels: Object.keys(catCount),
+        datasets: [{
+          data: Object.values(catCount),
+          backgroundColor: ['#f59e0b', '#0f172a', '#3b82f6', '#10b981', '#ef4444', '#8b5cf6', '#ec4899'],
+          borderWidth: 0,
+        }]
+      };
+
+      setChartData({ revenue: revData, categories: catData });
+
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
     } finally {
@@ -76,31 +123,20 @@ export default function AdminDashboard() {
     }
   };
 
-  // ✅ Fixed: Added proper chart options to prevent errors
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: {
-        position: 'bottom',
-        labels: {
-          font: { size: 11 }
-        }
-      },
-      tooltip: {
-        backgroundColor: '#1a1a2e',
-        titleColor: '#c4a47a'
-      }
+      legend: { position: 'bottom', labels: { font: { size: 11 } } },
+      tooltip: { backgroundColor: '#0f172a', titleColor: '#f59e0b' }
     },
     scales: {
       y: {
         beginAtZero: true,
-        grid: { color: '#f0f0f0' },
-        ticks: { callback: (value) => `Rs.${value.toLocaleString()}` }
+        grid: { color: '#f1f5f9' },
+        ticks: { callback: (value) => `Rs.${value >= 1000 ? value/1000 + 'k' : value}` }
       },
-      x: {
-        grid: { display: false }
-      }
+      x: { grid: { display: false } }
     }
   };
 
@@ -108,65 +144,38 @@ export default function AdminDashboard() {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: {
-        position: 'right',
-        labels: { font: { size: 10 } }
-      }
-    }
-  };
-
-  const revenueData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    datasets: [{
-      label: 'Revenue (Rs.)',
-      data: [125000, 150000, 180000, 220000, 280000, 350000, 420000, 480000, 520000, 580000, 620000, 680000],
-      borderColor: '#c4a47a',
-      backgroundColor: 'rgba(196, 164, 122, 0.1)',
-      borderWidth: 2,
-      pointBackgroundColor: '#c4a47a',
-      pointBorderColor: '#fff',
-      pointRadius: 4,
-      pointHoverRadius: 6,
-      fill: true,
-      tension: 0.4,
-    }]
-  };
-
-  const categoryData = {
-    labels: ['Safety', 'Tools', 'Lighting', 'Storage', 'Gadgets', 'Power', 'Essentials'],
-    datasets: [{
-      data: [35, 25, 15, 10, 8, 5, 2],
-      backgroundColor: ['#c4a47a', '#2c3e50', '#e74c3c', '#27ae60', '#f39c12', '#3498db', '#9b59b6'],
-      borderWidth: 0,
-    }]
+      legend: { position: 'right', labels: { font: { size: 10 }, padding: 20 } }
+    },
+    cutout: '70%'
   };
 
   const StatCard = ({ title, value, icon, change, changeType }) => (
     <div className="stat-card">
-      <div className="stat-icon">{icon}</div>
-      <div className="stat-info">
-        <h3>{typeof value === 'number' ? value.toLocaleString() : value}</h3>
-        <p>{title}</p>
-        {change && (
-          <span className={`stat-change ${changeType}`}>
-            {changeType === 'up' ? <FiArrowUp /> : <FiArrowDown />} {change}%
-          </span>
-        )}
+      <div className="stat-icon-circle">{icon}</div>
+      <div className="stat-content">
+        <p className="stat-label">{title}</p>
+        <h3 className="stat-number">{typeof value === 'number' ? `Rs.${value.toLocaleString()}` : value}</h3>
+        <div className={`stat-trend ${changeType}`}>
+          {changeType === 'up' ? <FiArrowUp /> : <FiArrowDown />}
+          <span>{change}% vs last month</span>
+        </div>
       </div>
     </div>
   );
 
   if (loading) {
-    return <div className="admin-loading">Loading dashboard...</div>;
+    return <div className="admin-loading"><div className="spinner"></div><p>Analyzing industrial data...</p></div>;
   }
 
   return (
-    <div className="admin-dashboard">
-      <div className="dashboard-header">
-        <h1>Dashboard</h1>
-        <div className="date-range">
-          <FiCalendar />
-          <span>Last 30 days</span>
+    <div className="admin-dashboard-v2">
+      <div className="dashboard-top">
+        <div className="welcome-msg">
+          <h1>Industrial Insights</h1>
+          <p>Real-time overview of SafetyMe operations.</p>
+        </div>
+        <div className="date-picker">
+          <FiCalendar /> <span>This Month</span>
         </div>
       </div>
 
@@ -186,14 +195,14 @@ export default function AdminDashboard() {
           changeType="up"
         />
         <StatCard 
-          title="Total Products" 
+          title="Active Inventory" 
           value={stats.totalProducts} 
-          icon={<FiPackage />}
+          icon={<FiBox />}
           change={stats.productsChange}
           changeType="up"
         />
         <StatCard 
-          title="Total Users" 
+          title="Total Customers" 
           value={stats.totalUsers} 
           icon={<FiUsers />}
           change={stats.usersChange}
@@ -201,73 +210,75 @@ export default function AdminDashboard() {
         />
       </div>
 
-      <div className="charts-row">
-        <div className="chart-card revenue-chart">
-          <div className="chart-header">
-            <h3>Revenue Overview</h3>
-            <select>
-              <option>This Year</option>
-              <option>Last Year</option>
-            </select>
+      <div className="charts-layout">
+        <div className="chart-card main-chart">
+          <div className="chart-info">
+            <h3>Revenue Projection</h3>
+            <p>Monthly growth and income tracking</p>
           </div>
-          <Line data={revenueData} options={chartOptions} />
+          <div className="chart-container">
+            <Line data={chartData.revenue} options={chartOptions} />
+          </div>
         </div>
         
-        <div className="chart-card category-chart">
-          <div className="chart-header">
-            <h3>Category Distribution</h3>
+        <div className="chart-card side-chart">
+          <div className="chart-info">
+            <h3>Inventory Split</h3>
+            <p>Product distribution by category</p>
           </div>
-          <Doughnut data={categoryData} options={doughnutOptions} />
+          <div className="chart-container">
+            <Doughnut data={chartData.categories} options={doughnutOptions} />
+          </div>
         </div>
       </div>
 
-      <div className="tables-row">
-        <div className="data-table recent-orders">
-          <div className="table-header">
-            <h3>Recent Orders</h3>
-            <button className="view-all" onClick={() => window.location.href = '/admin/orders'}>View All</button>
+      <div className="data-sections">
+        <div className="data-card recent-activity">
+          <div className="card-top">
+            <h3>Recent Shipments</h3>
+            <button className="btn-link" onClick={() => window.location.href = '/admin/orders'}>View Logistics</button>
           </div>
-          <table>
-            <thead>
-              <tr>
-                <th>Order ID</th>
-                <th>Customer</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recentOrders.map(order => (
-                <tr key={order._id}>
-                  <td>#{order._id?.slice(-6)}</td>
-                  <td>{order.user?.name || 'Guest'}</td>
-                  <td>Rs.{order.totalPrice?.toLocaleString()}</td>
-                  <td><span className={`status-badge ${order.orderStatus}`}>{order.orderStatus}</span></td>
-                  <td>{new Date(order.createdAt).toLocaleDateString()}</td>
+          <div className="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Customer</th>
+                  <th>Amount</th>
+                  <th>Status</th>
                 </tr>
-              ))}
-              {recentOrders.length === 0 && <tr><td colSpan="5">No orders yet</td></tr>}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {recentOrders.map(order => (
+                  <tr key={order._id}>
+                    <td>#{order._id?.slice(-6).toUpperCase()}</td>
+                    <td>{order.user?.name || 'Guest'}</td>
+                    <td>Rs.{order.totalPrice?.toLocaleString()}</td>
+                    <td><span className={`status-pill ${order.orderStatus}`}>{order.orderStatus}</span></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        <div className="data-table top-products">
-          <div className="table-header">
-            <h3>Top Products</h3>
+        <div className="data-card elite-products">
+          <div className="card-top">
+            <h3>Premium Inventory</h3>
           </div>
-          <div className="product-list">
-            {topProducts.map((product, idx) => (
-              <div key={product._id} className="top-product-item">
-                <span className="product-rank">#{idx + 1}</span>
-                <div className="product-info">
-                  <span className="product-name">{product.name}</span>
-                  <span className="product-sales">Popular item</span>
+          <div className="elite-list">
+            {topProducts.map((product) => (
+              <div key={product._id} className="elite-item">
+                <div className="item-img">
+                  <img src={product.images?.[0]?.url || product.image || '/images/placeholder.jpg'} alt="" />
                 </div>
-                <span className="product-revenue">Rs.{product.price?.toLocaleString()}</span>
+                <div className="item-details">
+                  <h4>{product.name}</h4>
+                  <p>{product.category?.name || 'General'}</p>
+                </div>
+                <div className="item-price">Rs.{product.price?.toLocaleString()}</div>
               </div>
             ))}
-            {topProducts.length === 0 && <div className="empty-state">No products yet</div>}
           </div>
         </div>
       </div>

@@ -1,128 +1,161 @@
-import { Link } from 'react-router-dom';
-import { FiMinus, FiPlus, FiX, FiArrowRight, FiShoppingCart } from 'react-icons/fi';
 import { useCart } from '../context/CartContext';
+import { Link, useNavigate } from 'react-router-dom';
+import { FiMinus, FiPlus, FiTrash2, FiArrowRight, FiShoppingCart, FiShoppingBag, FiTruck, FiShield } from 'react-icons/fi';
 import './Cart.css';
 
 export default function Cart() {
-  // ✅ Fixed: Use correct variable names from CartContext
-  const { cartItems, removeFromCart, updateQuantity, getCartTotal, getCartCount } = useCart();
+  const { cartItems, removeFromCart, updateQuantity, getCartTotal } = useCart();
+  const navigate = useNavigate();
 
-  const total = getCartTotal();
-  const delivery = total >= 10000 ? 0 : 500;
+  const subtotal = getCartTotal();
+  const shippingThreshold = 10000;
+  const shipping = subtotal >= shippingThreshold ? 0 : 500;
+  const total = subtotal + shipping;
 
-  // ✅ Fixed: Use cartItems instead of cart
+  const handleCheckout = () => {
+    navigate('/checkout');
+    window.scrollTo(0, 0);
+  };
+
   if (!cartItems || cartItems.length === 0) {
     return (
-      <div className="cart-empty page-content">
-        <FiShoppingCart size={64} strokeWidth={1} />
-        <h2>Your cart is empty</h2>
-        <p>Add some essential safety equipment to your cart!</p>
-        <Link to="/collections/all-products" className="btn-shop">
-          Continue Shopping <FiArrowRight />
-        </Link>
+      <div className="cart-empty-page page-content">
+        <div className="container">
+          <div className="empty-cart-card">
+            <div className="empty-icon-wrap">
+              <FiShoppingCart size={64} />
+            </div>
+            <h1>Your cart is empty</h1>
+            <p>Looks like you haven't added any safety gear to your cart yet.</p>
+            <Link to="/collections/all-products" className="btn-primary">
+              Continue Shopping <FiArrowRight />
+            </Link>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="cart-page page-content">
-      <div className="container cart-header">
-        <h1>Shopping Cart</h1>
-        <span>{getCartCount()} item{cartItems.length !== 1 ? 's' : ''}</span>
-      </div>
+      <div className="container">
+        <header className="cart-header">
+          <h1>Shopping Cart</h1>
+          <p>You have {cartItems.reduce((acc, item) => acc + item.quantity, 0)} items in your cart</p>
+        </header>
 
-      <div className="container cart-body">
-        {/* Cart Items */}
-        <div className="cart-items">
-          {cartItems.map((item, index) => (
-            <div key={index} className="cart-item">
-              <Link to={`/products/${item.slug}`} className="cart-item-image">
-                <img src={item.image} alt={item.name} />
-              </Link>
+        <div className="cart-grid">
+          <div className="cart-items-section">
+            <div className="cart-labels">
+              <span>Product</span>
+              <span>Quantity</span>
+              <span>Total</span>
+            </div>
+            
+            <div className="cart-list">
+              {cartItems.map((item) => (
+                <div key={`${item.productId}-${item.color}-${item.size}`} className="cart-item">
+                  <div className="item-main">
+                    <div className="item-img">
+                      <img src={item.image} alt={item.name} />
+                    </div>
+                    <div className="item-details">
+                      <h3>{item.name}</h3>
+                      <div className="item-meta">
+                        {item.color && <span>Color: {item.color}</span>}
+                        {item.size && <span>Size: {item.size}</span>}
+                      </div>
+                      <div className="item-price-mobile">Rs.{item.price.toLocaleString()}</div>
+                      <button className="btn-remove-mobile" onClick={() => removeFromCart(item.productId, item.color, item.size)}>
+                        <FiTrash2 /> Remove
+                      </button>
+                    </div>
+                  </div>
 
-              <div className="cart-item-info">
-                <Link to={`/products/${item.slug}`} className="cart-item-name">
-                  {item.name}
-                </Link>
-                {item.color && <span className="cart-item-color">Color: {item.color}</span>}
-                <div className="cart-item-price">Rs.{item.price.toLocaleString()}</div>
+                  <div className="item-qty">
+                    <div className="qty-stepper">
+                      <button onClick={() => updateQuantity(item.productId, item.quantity - 1, item.color, item.size)} disabled={item.quantity <= 1}>
+                        <FiMinus />
+                      </button>
+                      <span>{item.quantity}</span>
+                      <button onClick={() => updateQuantity(item.productId, item.quantity + 1, item.color, item.size)}>
+                        <FiPlus />
+                      </button>
+                    </div>
+                  </div>
 
-                <div className="cart-item-actions">
-                  <div className="qty-ctrl">
-                    <button onClick={() => updateQuantity(index, item.quantity - 1)}>
-                      <FiMinus />
-                    </button>
-                    <span>{item.quantity}</span>
-                    <button onClick={() => updateQuantity(index, item.quantity + 1)}>
-                      <FiPlus />
+                  <div className="item-total">
+                    <strong>Rs.{(item.price * item.quantity).toLocaleString()}</strong>
+                    <button className="btn-remove-desktop" title="Remove Item" onClick={() => removeFromCart(item.productId, item.color, item.size)}>
+                      <FiXCircle />
                     </button>
                   </div>
-                  <span className="cart-item-subtotal">
-                    Rs.{(item.price * item.quantity).toLocaleString()}
-                  </span>
+                </div>
+              ))}
+            </div>
+
+            <div className="cart-footer-actions">
+              <Link to="/collections/all-products" className="btn-back-shop">
+                <FiArrowLeft /> Continue Shopping
+              </Link>
+            </div>
+          </div>
+
+          <aside className="cart-summary-section">
+            <div className="summary-card">
+              <h3>Order Summary</h3>
+              <div className="summary-rows">
+                <div className="summary-row">
+                  <span>Subtotal</span>
+                  <span>Rs.{subtotal.toLocaleString()}</span>
+                </div>
+                <div className="summary-row">
+                  <span>Shipping</span>
+                  <span>{shipping === 0 ? <span className="free">FREE</span> : `Rs.${shipping.toLocaleString()}`}</span>
+                </div>
+                {shipping > 0 && (
+                  <div className="shipping-info">
+                    <FiTruck /> Spend <strong>Rs.{(shippingThreshold - subtotal).toLocaleString()}</strong> more for FREE shipping!
+                  </div>
+                )}
+                <div className="summary-total">
+                  <span>Total</span>
+                  <span>Rs.{total.toLocaleString()}</span>
                 </div>
               </div>
 
-              <button
-                className="cart-item-remove"
-                onClick={() => removeFromCart(index)}
-              >
-                <FiX />
+              <button className="btn-checkout" onClick={handleCheckout}>
+                Secure Checkout <FiArrowRight />
               </button>
+
+              <div className="trust-badges">
+                <div className="badge"><FiShield /> Quality Certified</div>
+                <div className="badge"><FiTruck /> Fast Delivery</div>
+              </div>
             </div>
-          ))}
-        </div>
-
-        {/* Order Summary */}
-        <div className="order-summary">
-          <h3>Order Summary</h3>
-
-          <div className="summary-rows">
-            <div className="summary-row">
-              <span>Subtotal</span>
-              <span>Rs.{total.toLocaleString()}</span>
-            </div>
-            <div className="summary-row">
-              <span>Delivery</span>
-              <span className={delivery === 0 ? 'free' : ''}>
-                {delivery === 0 ? 'FREE' : `Rs.${delivery}`}
-              </span>
-            </div>
-            {delivery > 0 && (
-              <p className="free-shipping-notice">
-                Add Rs.{(10000 - total).toLocaleString()} more for free delivery!
-              </p>
-            )}
-          </div>
-
-          <div className="summary-total">
-            <span>Total</span>
-            <span>Rs.{(total + delivery).toLocaleString()}</span>
-          </div>
-
-          <div className="promo-input">
-            <input type="text" placeholder="Promo code..." />
-            <button>Apply</button>
-          </div>
-
-          <Link to="/checkout" className="btn-checkout">
-            Proceed to Checkout <FiArrowRight />
-          </Link>
-
-          <Link to="/collections/all-products" className="continue-shopping">
-            ← Continue Shopping
-          </Link>
-
-          <div className="payment-methods">
-            <span>We accept:</span>
-            <div className="pay-badges">
-              <span>COD</span>
-              <span>JazzCash</span>
-              <span>EasyPaisa</span>
-            </div>
-          </div>
+          </aside>
         </div>
       </div>
     </div>
+  );
+}
+
+// Subcomponent for better organization
+function FiXCircle() {
+  return (
+    <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="15" y1="9" x2="9" y2="15"></line>
+      <line x1="9" y1="9" x2="15" y2="15"></line>
+    </svg>
+  );
+}
+
+function FiArrowLeft() {
+  return (
+    <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+      <line x1="19" y1="12" x2="5" y2="12"></line>
+      <polyline points="12 19 5 12 12 5"></polyline>
+    </svg>
   );
 }

@@ -38,7 +38,7 @@ export default function Home() {
             title: hero.title,
             subtitle: hero.description || 'Premium safety equipment',
             cta: hero.buttonText || 'Shop Now',
-            ctaPath: hero.buttonLink || '/collections/all-bags',
+            ctaPath: hero.buttonLink || '/collections/all-products',
             image: hero.imageUrl,
           }));
           setHeroSlides(formattedHeroes);
@@ -51,7 +51,7 @@ export default function Home() {
               title: 'Protective Goggles',
               subtitle: 'Close-up Photo of Pliers and Protective Goggles',
               cta: 'Shop Now',
-              ctaPath: '/collections/best-selling',
+              ctaPath: '/collections/all-products',
               image: 'https://images.pexels.com/photos/9242909/pexels-photo-9242909.jpeg',
             },
             {
@@ -60,7 +60,7 @@ export default function Home() {
               title: 'Construction Helmet',
               subtitle: 'Yellow Construction Helmet on Industrial Site',
               cta: 'Explore Collection',
-              ctaPath: '/collections/best-selling',
+              ctaPath: '/collections/all-products',
               image: 'https://images.pexels.com/photos/34965713/pexels-photo-34965713.jpeg',
             },
             {
@@ -69,7 +69,7 @@ export default function Home() {
               title: 'Hand Tools',
               subtitle: 'Flat Lay Photography of Hand Tools',
               cta: 'Shop Wallets',
-              ctaPath: '/collections/best-selling',
+              ctaPath: '/collections/all-products',
               image: 'https://images.pexels.com/photos/1029243/pexels-photo-1029243.jpeg',
             },
           ]);
@@ -209,10 +209,10 @@ export default function Home() {
           </div>
 
           <div className="hero-bar">
-            <Link to="/collections/best-selling" className="hero-bar-btn">
+            <Link to="/collections/all-products" className="hero-bar-btn">
               Best Selling Items
             </Link>
-            <Link to="/collections/best-selling" className="hero-bar-btn">
+            <Link to="/collections/all-products" className="hero-bar-btn">
               Popular Items
             </Link>
           </div>
@@ -266,7 +266,7 @@ export default function Home() {
               {bestSellers.map(p => <ProductCard key={p.id} product={p} />)}
             </div>
             <div style={{ textAlign: 'center', marginTop: '3rem' }}>
-              <Link to="/collections/best-selling" className="btn-outline-large">
+              <Link to="/collections/all-products" className="btn-outline-large">
                 View All Products <FiArrowRight />
               </Link>
             </div>
@@ -280,7 +280,7 @@ export default function Home() {
               <span className="promo-tag">Limited Time Offer</span>
               <h2>Season End Sale — Up to 20% Off!</h2>
               <p>Grab your favourite styles before they're gone. Free delivery on orders above Rs.3,999.</p>
-              <Link to="/collections/all-bags" className="hero-btn">Shop the Sale <FiArrowRight /></Link>
+              <Link to="/collections/all-products" className="hero-btn">Shop the Sale <FiArrowRight /></Link>
             </div>
             <div className="promo-image">
               <img src="https://images.pexels.com/photos/5357150/pexels-photo-5357150.jpeg" alt="Sale" />

@@ -64,8 +64,18 @@ export default function AdminLayout() {
 
   const confirmLogout = () => {
     logout();
+    document.body.style.overflow = 'unset';
     navigate('/login');
   };
+
+  useEffect(() => {
+    if (logoutModalOpen || mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => { document.body.style.overflow = 'unset'; };
+  }, [logoutModalOpen, mobileMenuOpen]);
 
   if (checkingAuth) {
     return (

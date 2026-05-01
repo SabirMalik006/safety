@@ -1,178 +1,229 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { FiGrid, FiList, FiFilter, FiX, FiChevronDown } from 'react-icons/fi';
-import ProductCard from '../components/ProductCard';
-import { products } from '../data/products';
+import { useSearchParams, useParams } from 'react-router-dom';
+import { FiGrid, FiList, FiFilter, FiChevronDown, FiSearch, FiShoppingCart, FiHeart, FiStar } from 'react-icons/fi';
+import { getProducts, getCategories } from '../services/productService';
+import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
+import CategorySidebar from '../components/CategorySidebar';
+import { SkeletonGrid } from '../components/ProductSkeleton';
+import toast from 'react-hot-toast';
 import './Collections.css';
 
-const collectionMeta = {
-  'all-products': { title: 'All Equipment', desc: 'Explore our complete range of professional safety gear and industrial tools.' },
-  'best-selling': { title: 'Best Sellers', desc: 'Top-rated protective equipment trusted by industry professionals.' },
-  'head-eye-protection': { title: 'Head & Eye Protection', desc: 'Certified helmets and protective goggles for maximum workplace safety.' },
-  'power-tools': { title: 'Power Tools', desc: 'High-performance drilling machines and industrial power equipment.' },
-  'hand-tools': { title: 'Hand Tools', desc: 'Professional grade pliers, hammers, and essential hand tool sets.' },
-  'measuring-tools': { title: 'Measuring Equipment', desc: 'Precision digital tapes and industrial measuring instruments.' },
-};
-
-const sortOptions = [
-  { value: 'default', label: 'Featured' },
-  { value: 'price-asc', label: 'Price: Low to High' },
-  { value: 'price-desc', label: 'Price: High to Low' },
-  { value: 'discount', label: 'Best Discount' },
-];
-
-export default function Collections() {
+const Collections = () => {
   const { slug } = useParams();
-  const [view, setView] = useState('grid');
-  const [sort, setSort] = useState('default');
-  const [filterOpen, setFilterOpen] = useState(false);
-  const [selectedColors, setSelectedColors] = useState([]);
-  const [priceRange, setPriceRange] = useState([0, 10000]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [viewMode, setViewMode] = useState('grid');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sortOption, setSortOption] = useState('newest');
+  
+  // Filter States
+  const initialCategory = slug && slug !== 'all-products' && slug !== 'all' ? slug : (searchParams.get('category') || 'all');
+  const [activeCategory, setActiveCategory] = useState(initialCategory);
+  const [priceRange, setPriceRange] = useState([0, 100000]);
+  const [activeColor, setActiveColor] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const meta = collectionMeta[slug] || { title: 'Collection', desc: '' };
+  const { addToCart } = useCart();
+  const { toggleWishlist, isWishlisted } = useWishlist();
 
-  const allColors = [...new Set(products.flatMap(p => p.colors))];
+  useEffect(() => {
+    if (slug) {
+      const newCat = slug === 'all-products' || slug === 'all' ? 'all' : slug;
+      setActiveCategory(newCat);
+      window.scrollTo(0, 0);
+    }
+  }, [slug]);
 
-  let filtered = products.filter(p => {
-    if (slug === 'all-products') return true;
-    if (slug === 'best-selling') return p.id <= 7;
-    return p.category === slug;
-  });
+  useEffect(() => {
+    fetchData();
+  }, [activeCategory, sortOption, priceRange, activeColor]);
 
-  if (selectedColors.length > 0) {
-    filtered = filtered.filter(p => p.colors.some(c => selectedColors.includes(c)));
-  }
-
-  filtered = filtered.filter(p => p.price >= priceRange[0] && p.price <= priceRange[1]);
-
-  if (sort === 'price-asc') filtered = [...filtered].sort((a, b) => a.price - b.price);
-  else if (sort === 'price-desc') filtered = [...filtered].sort((a, b) => b.price - a.price);
-  else if (sort === 'discount') filtered = [...filtered].sort((a, b) => b.discount - a.discount);
-
-  const toggleColor = (color) => {
-    setSelectedColors(prev =>
-      prev.includes(color) ? prev.filter(c => c !== color) : [...prev, color]
-    );
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const filters = {
+        category: activeCategory !== 'all' ? activeCategory : undefined,
+        sort: sortOption,
+        minPrice: priceRange[0],
+        maxPrice: priceRange[1],
+        color: activeColor || undefined,
+        search: searchTerm || undefined
+      };
+      
+      const [prodRes, catRes] = await Promise.all([
+        getProducts(filters),
+        getCategories()
+      ]);
+      
+      setProducts(prodRes.data || []);
+      setCategories(catRes.data || []);
+    } catch (err) {
+      toast.error('Failed to load products');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const colorMap = {
-    'Black': '#1a1a1a', 'Brown': '#6B4226', 'Dark Brown': '#3E2C1C',
-    'Green': '#2E5E3E', 'Beige': '#C8AD8F', 'Pink': '#E8A4B0',
-    'White': '#F5F5F5', 'Off-White': '#EDE8E0', 'Natural': '#D4C4A0',
-    'Navy': '#1B2A4A', 'Olive': '#6B6E3E',
+  const handleSearch = (e) => {
+    e.preventDefault();
+    fetchData();
   };
 
   return (
     <div className="collections-page page-content">
-      {/* Header */}
-      <div className="collection-header">
-        <div className="container">
-          <h1>{meta.title}</h1>
-          <p>{meta.desc}</p>
-        </div>
-      </div>
-
-      <div className="container collections-body">
-        {/* Sidebar Filter */}
-        <aside className={`filter-sidebar ${filterOpen ? 'open' : ''}`}>
-          <div className="sidebar-header">
-            <h3>Filters</h3>
-            <button className="close-filter" onClick={() => setFilterOpen(false)}>
-              <FiX />
-            </button>
-          </div>
-
-          <div className="filter-group">
-            <h4>Price Range <FiChevronDown /></h4>
-            <div className="price-display">
-              <span>Rs.{priceRange[0].toLocaleString()}</span>
-              <span>Rs.{priceRange[1].toLocaleString()}</span>
-            </div>
-            <input
-              type="range"
-              min="0" max="10000" step="100"
-              value={priceRange[1]}
-              onChange={(e) => setPriceRange([priceRange[0], +e.target.value])}
-              className="price-slider"
-            />
-          </div>
-
-          <div className="filter-group">
-            <h4>Colors <FiChevronDown /></h4>
-            <div className="color-filter-list">
-              {allColors.map(color => (
-                <label key={color} className="color-filter-item">
-                  <div
-                    className={`color-dot ${selectedColors.includes(color) ? 'selected' : ''}`}
-                    style={{ background: colorMap[color] || '#ccc' }}
-                    onClick={() => toggleColor(color)}
-                  />
-                  <span>{color}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          {(selectedColors.length > 0) && (
-            <button className="clear-filters" onClick={() => { setSelectedColors([]); setPriceRange([0, 10000]); }}>
-              Clear All Filters
-            </button>
-          )}
-        </aside>
-
-        {/* Main Content */}
-        <div className="collections-main">
-          {/* Toolbar */}
-          <div className="collections-toolbar">
-            <button className="filter-toggle" onClick={() => setFilterOpen(true)}>
+      <div className="container">
+        {/* Top bar */}
+        <div className="collections-top">
+          <div className="top-left">
+            <button className="mobile-filter-btn" onClick={() => setSidebarOpen(true)}>
               <FiFilter /> Filters
-              {selectedColors.length > 0 && <span className="filter-count">{selectedColors.length}</span>}
             </button>
-
-            <span className="result-count">{filtered.length} products</span>
-
-            <div className="toolbar-right">
-              <select
-                value={sort}
-                onChange={(e) => setSort(e.target.value)}
-                className="sort-select"
+            <div className="view-toggles">
+              <button 
+                className={viewMode === 'grid' ? 'active' : ''} 
+                onClick={() => setViewMode('grid')}
               >
-                {sortOptions.map(o => (
-                  <option key={o.value} value={o.value}>{o.label}</option>
-                ))}
-              </select>
-
-              <div className="view-toggle">
-                <button className={view === 'grid' ? 'active' : ''} onClick={() => setView('grid')}>
-                  <FiGrid />
-                </button>
-                <button className={view === 'list' ? 'active' : ''} onClick={() => setView('list')}>
-                  <FiList />
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Products */}
-          {filtered.length === 0 ? (
-            <div className="no-products">
-              <p>No products found matching your filters.</p>
-              <button onClick={() => { setSelectedColors([]); setPriceRange([0, 10000]); }}>
-                Reset Filters
+                <FiGrid />
+              </button>
+              <button 
+                className={viewMode === 'list' ? 'active' : ''} 
+                onClick={() => setViewMode('list')}
+              >
+                <FiList />
               </button>
             </div>
-          ) : (
-            <div className={`collection-grid ${view === 'list' ? 'list-view' : ''}`}>
-              {filtered.map(p => (
-                <ProductCard key={p.id} product={p} />
-              ))}
+            <span className="results-count">
+              Showing <strong>{products.length}</strong> products
+            </span>
+          </div>
+
+          <div className="top-right">
+            <form className="search-form" onSubmit={handleSearch}>
+              <FiSearch />
+              <input 
+                type="text" 
+                placeholder="Search products..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </form>
+            <div className="sort-wrapper">
+              <select 
+                value={sortOption} 
+                onChange={(e) => setSortOption(e.target.value)}
+              >
+                <option value="newest">Newest First</option>
+                <option value="price_low">Price: Low to High</option>
+                <option value="price_high">Price: High to Low</option>
+                <option value="rating">Top Rated</option>
+              </select>
             </div>
-          )}
+          </div>
+        </div>
+
+        <div className="collections-main">
+          <CategorySidebar 
+            categories={categories}
+            activeCategory={activeCategory}
+            onCategoryChange={setActiveCategory}
+            priceRange={priceRange}
+            onPriceChange={setPriceRange}
+            activeColor={activeColor}
+            onColorChange={setActiveColor}
+            isOpen={sidebarOpen}
+            onClose={() => setSidebarOpen(false)}
+          />
+
+          <main className={`products-container ${viewMode}`}>
+            {loading ? (
+              <SkeletonGrid count={8} />
+            ) : products.length === 0 ? (
+              <div className="no-results">
+                <img src="/images/no-results.png" alt="No results" onError={(e) => e.target.style.display='none'} />
+                <h3>No products found</h3>
+                <p>Try adjusting your filters or search terms.</p>
+                <button className="btn-primary" onClick={() => {
+                  setActiveCategory('all');
+                  setPriceRange([0, 100000]);
+                  setActiveColor(null);
+                  setSearchTerm('');
+                }}>Clear All Filters</button>
+              </div>
+            ) : (
+              <div className="products-grid">
+                {products.map(product => (
+                  <ProductCard 
+                    key={product._id} 
+                    product={product} 
+                    viewMode={viewMode}
+                    onAddToCart={addToCart}
+                    onWishlist={toggleWishlist}
+                    isWishlisted={isWishlisted(product._id)}
+                  />
+                ))}
+              </div>
+            )}
+          </main>
         </div>
       </div>
-
-      {/* Overlay for mobile filter */}
-      {filterOpen && <div className="filter-overlay" onClick={() => setFilterOpen(false)} />}
     </div>
   );
-}
+};
+
+const ProductCard = ({ product, viewMode, onAddToCart, onWishlist, isWishlisted }) => {
+  return (
+    <div className={`product-card ${viewMode}`}>
+      <div className="card-image-wrap">
+        <img src={product.images?.[0]?.url || product.image || '/images/placeholder.jpg'} alt={product.name} />
+        {product.comparePrice > product.price && (
+          <span className="sale-badge">Sale</span>
+        )}
+        <div className="card-actions">
+          <button 
+            className={`action-btn ${isWishlisted ? 'active' : ''}`}
+            onClick={() => onWishlist(product)}
+            title="Add to Wishlist"
+          >
+            <FiHeart />
+          </button>
+          <button className="action-btn" onClick={() => onAddToCart(product)} title="Quick Add">
+            <FiShoppingCart />
+          </button>
+        </div>
+      </div>
+      
+      <div className="card-info">
+        <div className="card-category">{product.category?.name}</div>
+        <h3 className="card-title">
+          <a href={`/products/${product.slug}`}>{product.name}</a>
+        </h3>
+        <div className="card-rating">
+          {[...Array(5)].map((_, i) => (
+            <FiStar key={i} className={i < Math.floor(product.rating || 0) ? 'filled' : ''} />
+          ))}
+          <span>({product.numReviews || 0})</span>
+        </div>
+        <div className="card-price">
+          <span className="current-price">Rs.{product.price?.toLocaleString()}</span>
+          {product.comparePrice > product.price && (
+            <span className="old-price">Rs.{product.comparePrice?.toLocaleString()}</span>
+          )}
+        </div>
+        
+        {viewMode === 'list' && (
+          <div className="list-description">
+            <p>{product.description?.substring(0, 150)}...</p>
+            <button className="btn-add-cart" onClick={() => onAddToCart(product)}>
+              Add to Cart <FiShoppingCart />
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Collections;
