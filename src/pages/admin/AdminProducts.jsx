@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FiPlus, FiEdit2, FiTrash2, FiX, FiImage, FiSearch } from 'react-icons/fi';
+import { FiPlus, FiEdit2, FiTrash2, FiX, FiSearch, FiAlertTriangle, FiPackage } from 'react-icons/fi';
 import { getProducts, createProduct, updateProduct, deleteProduct, getCategories } from '../../services/productService';
 import toast from 'react-hot-toast';
 import './AdminProducts.css';
@@ -10,12 +10,16 @@ export default function AdminProducts() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState(null);
   const [editingProduct, setEditingProduct] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '', description: '', price: '', comparePrice: '', category: '',
     stock: '', images: [], colors: [], sizes: [], isFeatured: false
   });
   const [colorInput, setColorInput] = useState('');
+  const [imageInput, setImageInput] = useState('');
 
   useEffect(() => {
     fetchData();
@@ -39,6 +43,7 @@ export default function AdminProducts() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitting(true);
     try {
       const productData = {
         ...formData,
@@ -60,18 +65,26 @@ export default function AdminProducts() {
       closeModal();
     } catch (error) {
       toast.error(error.response?.data?.message || 'Operation failed');
+    } finally {
+      setSubmitting(false);
     }
   };
 
-  const handleDelete = async (product) => {
-    if (window.confirm(`Delete "${product.name}"?`)) {
-      try {
-        await deleteProduct(product._id);
-        toast.success('Product deleted!');
-        fetchData();
-      } catch (error) {
-        toast.error('Failed to delete product');
-      }
+  const openDeleteModal = (product) => {
+    setProductToDelete(product);
+    setDeleteModalOpen(true);
+  };
+
+  const handleDelete = async () => {
+    if (!productToDelete) return;
+    try {
+      await deleteProduct(productToDelete._id);
+      toast.success('Product deleted!');
+      fetchData();
+      setDeleteModalOpen(false);
+      setProductToDelete(null);
+    } catch (error) {
+      toast.error('Failed to delete product');
     }
   };
 
@@ -86,8 +99,8 @@ export default function AdminProducts() {
         category: product.category?._id || product.category,
         stock: product.stock,
         images: product.images || [],
-        colors: product.colors?.map(c => c.name) || [],
-        sizes: product.sizes?.map(s => s.name) || [],
+        colors: product.colors?.map(c => typeof c === 'string' ? c : c.name) || [],
+        sizes: product.sizes?.map(s => typeof s === 'string' ? s : s.name) || [],
         isFeatured: product.isFeatured || false
       });
     } else {
@@ -97,23 +110,40 @@ export default function AdminProducts() {
         stock: '', images: [], colors: [], sizes: [], isFeatured: false
       });
     }
+    setColorInput('');
+    setImageInput('');
     setModalOpen(true);
   };
 
   const closeModal = () => {
     setModalOpen(false);
     setEditingProduct(null);
+    setColorInput('');
+    setImageInput('');
   };
 
   const addColor = () => {
-    if (colorInput.trim() && !formData.colors.includes(colorInput.trim())) {
-      setFormData({ ...formData, colors: [...formData.colors, colorInput.trim()] });
+    const trimmed = colorInput.trim();
+    if (trimmed && !formData.colors.includes(trimmed)) {
+      setFormData({ ...formData, colors: [...formData.colors, trimmed] });
       setColorInput('');
     }
   };
 
   const removeColor = (color) => {
     setFormData({ ...formData, colors: formData.colors.filter(c => c !== color) });
+  };
+
+  const addImage = () => {
+    const trimmed = imageInput.trim();
+    if (trimmed) {
+      setFormData({ ...formData, images: [...formData.images, { url: trimmed }] });
+      setImageInput('');
+    }
+  };
+
+  const removeImage = (idx) => {
+    setFormData({ ...formData, images: formData.images.filter((_, i) => i !== idx) });
   };
 
   const filteredProducts = products.filter(p =>
@@ -127,7 +157,7 @@ export default function AdminProducts() {
       <div className="page-header">
         <div>
           <h1>Products</h1>
-          <p>Manage your product inventory</p>
+          <p>Manage your product inventory — {products.length} items</p>
         </div>
         <button className="btn-primary" onClick={() => openModal()}>
           <FiPlus /> Add Product
@@ -138,55 +168,79 @@ export default function AdminProducts() {
         <FiSearch />
         <input
           type="text"
-          placeholder="Search products..."
+          placeholder="Search products by name..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+        {searchTerm && (
+          <button className="search-clear" onClick={() => setSearchTerm('')}>
+            <FiX />
+          </button>
+        )}
       </div>
 
       <div className="products-table-container">
-        <table className="products-table">
-          <thead>
-            <tr>
-              <th>Image</th>
-              <th>Name</th>
-              <th>Category</th>
-              <th>Price</th>
-              <th>Stock</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredProducts.map(product => (
-              <tr key={product._id}>
-                <td className="product-image-cell">
-                  <img src={product.images?.[0]?.url || '/placeholder.jpg'} alt={product.name} />
-                </td>
-                <td className="product-name-cell">{product.name}</td>
-                <td>{product.category?.name || 'Uncategorized'}</td>
-                <td>Rs.{product.price?.toLocaleString()}</td>
-                <td className={product.stock < 10 ? 'low-stock' : ''}>{product.stock}</td>
-                <td>
-                  <span className={`status-badge ${product.stock > 0 ? 'in-stock' : 'out-stock'}`}>
-                    {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
-                  </span>
-                </td>
-                <td className="actions-cell">
-                  <button onClick={() => openModal(product)} className="action-btn edit">
-                    <FiEdit2 />
-                  </button>
-                  <button onClick={() => handleDelete(product)} className="action-btn delete">
-                    <FiTrash2 />
-                  </button>
-                </td>
+        {filteredProducts.length === 0 ? (
+          <div className="products-empty">
+            <FiPackage size={40} />
+            <p>{searchTerm ? 'No products match your search.' : 'No products yet. Add your first product!'}</p>
+          </div>
+        ) : (
+          <table className="products-table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Status</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredProducts.map(product => (
+                <tr key={product._id}>
+                  <td className="product-image-cell">
+                    <img src={product.images?.[0]?.url || '/placeholder.jpg'} alt={product.name} />
+                  </td>
+                  <td className="product-name-cell">
+                    <span className="product-name">{product.name}</span>
+                    {product.isFeatured && <span className="featured-badge">Featured</span>}
+                  </td>
+                  <td className="product-category-cell">{product.category?.name || 'Uncategorized'}</td>
+                  <td>
+                    <div className="price-cell">
+                      <span className="price-main">Rs.{product.price?.toLocaleString()}</span>
+                      {product.comparePrice > 0 && (
+                        <span className="price-compare">Rs.{product.comparePrice?.toLocaleString()}</span>
+                      )}
+                    </div>
+                  </td>
+                  <td className={product.stock < 10 ? 'low-stock' : 'stock-cell'}>
+                    {product.stock}
+                  </td>
+                  <td>
+                    <span className={`status-badge ${product.stock > 0 ? 'in-stock' : 'out-stock'}`}>
+                      {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
+                    </span>
+                  </td>
+                  <td className="actions-cell">
+                    <button onClick={() => openModal(product)} className="action-btn edit" title="Edit">
+                      <FiEdit2 />
+                    </button>
+                    <button onClick={() => openDeleteModal(product)} className="action-btn delete" title="Delete">
+                      <FiTrash2 />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
 
-      {/* Modal */}
+      {/* Add / Edit Modal */}
       {modalOpen && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content large" onClick={(e) => e.stopPropagation()}>
@@ -198,11 +252,21 @@ export default function AdminProducts() {
               <div className="form-row">
                 <div className="form-group">
                   <label>Product Name *</label>
-                  <input type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
+                  <input
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    placeholder="Enter product name"
+                    required
+                  />
                 </div>
                 <div className="form-group">
                   <label>Category *</label>
-                  <select value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })} required>
+                  <select
+                    value={formData.category}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    required
+                  >
                     <option value="">Select Category</option>
                     {categories.map(cat => <option key={cat._id} value={cat._id}>{cat.name}</option>)}
                   </select>
@@ -211,21 +275,65 @@ export default function AdminProducts() {
 
               <div className="form-group">
                 <label>Description</label>
-                <textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} rows="3" />
+                <textarea
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  rows="3"
+                  placeholder="Describe the product..."
+                />
               </div>
 
-              <div className="form-row">
+              <div className="form-row three-col">
                 <div className="form-group">
                   <label>Price (Rs.) *</label>
-                  <input type="number" value={formData.price} onChange={(e) => setFormData({ ...formData, price: e.target.value })} required />
+                  <input
+                    type="number"
+                    value={formData.price}
+                    onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                    placeholder="0"
+                    required
+                  />
                 </div>
                 <div className="form-group">
                   <label>Compare Price (Original)</label>
-                  <input type="number" value={formData.comparePrice} onChange={(e) => setFormData({ ...formData, comparePrice: e.target.value })} />
+                  <input
+                    type="number"
+                    value={formData.comparePrice}
+                    onChange={(e) => setFormData({ ...formData, comparePrice: e.target.value })}
+                    placeholder="0"
+                  />
                 </div>
                 <div className="form-group">
                   <label>Stock Quantity *</label>
-                  <input type="number" value={formData.stock} onChange={(e) => setFormData({ ...formData, stock: e.target.value })} required />
+                  <input
+                    type="number"
+                    value={formData.stock}
+                    onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
+                    placeholder="0"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label>Product Images</label>
+                <div className="tags-input">
+                  {formData.images.map((img, idx) => (
+                    <span key={idx} className="tag image-tag">
+                      <img src={img.url || img} alt="" onError={(e) => e.target.style.display='none'} />
+                      <button type="button" onClick={() => removeImage(idx)}><FiX /></button>
+                    </span>
+                  ))}
+                  <div className="tag-add">
+                    <input
+                      type="text"
+                      value={imageInput}
+                      onChange={(e) => setImageInput(e.target.value)}
+                      placeholder="Paste image URL..."
+                      onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addImage())}
+                    />
+                    <button type="button" onClick={addImage}>Add</button>
+                  </div>
                 </div>
               </div>
 
@@ -252,16 +360,43 @@ export default function AdminProducts() {
 
               <div className="form-group checkbox">
                 <label>
-                  <input type="checkbox" checked={formData.isFeatured} onChange={(e) => setFormData({ ...formData, isFeatured: e.target.checked })} />
+                  <input
+                    type="checkbox"
+                    checked={formData.isFeatured}
+                    onChange={(e) => setFormData({ ...formData, isFeatured: e.target.checked })}
+                  />
                   Featured Product (Shows on Homepage)
                 </label>
               </div>
 
               <div className="modal-actions">
                 <button type="button" onClick={closeModal} className="btn-secondary">Cancel</button>
-                <button type="submit" className="btn-primary">{editingProduct ? 'Update' : 'Create'}</button>
+                <button type="submit" className="btn-primary" disabled={submitting}>
+                  {submitting ? 'Saving...' : editingProduct ? 'Update Product' : 'Create Product'}
+                </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {deleteModalOpen && productToDelete && (
+        <div className="modal-overlay" onClick={() => setDeleteModalOpen(false)}>
+          <div className="confirm-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="confirm-modal-icon delete-icon">
+              <FiAlertTriangle />
+            </div>
+            <h3>Delete Product</h3>
+            <p>Are you sure you want to delete <strong>"{productToDelete.name}"</strong>? This action cannot be undone.</p>
+            <div className="confirm-modal-actions">
+              <button className="confirm-cancel-btn" onClick={() => setDeleteModalOpen(false)}>
+                Cancel
+              </button>
+              <button className="confirm-danger-btn" onClick={handleDelete}>
+                Yes, Delete
+              </button>
+            </div>
           </div>
         </div>
       )}

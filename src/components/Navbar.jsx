@@ -24,13 +24,14 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   
-  // ✅ FIXED: Use correct variable names from contexts
-  const { cartItems } = useCart();           // cartItems not cart
-  const { wishlist } = useWishlist();        // wishlist is correct
+  const { cartItems } = useCart();
+  const { wishlist } = useWishlist();
 
-  // ✅ FIXED: calculate count from cartItems
-  const cartCount = cartItems?.reduce((acc, item) => acc + (item.quantity || 1), 0) || 0;
-  const wishlistCount = wishlist?.length || 0;
+  // ✅ Safety checks
+  const cartCount = (cartItems && Array.isArray(cartItems)) 
+    ? cartItems.reduce((acc, item) => acc + (item.quantity || 1), 0) 
+    : 0;
+  const wishlistCount = (wishlist && Array.isArray(wishlist)) ? wishlist.length : 0;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80);
@@ -41,7 +42,7 @@ export default function Navbar() {
   useEffect(() => {
     if (searchQuery.length > 1) {
       const results = products
-        .filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()))
+        .filter(p => p.name?.toLowerCase().includes(searchQuery.toLowerCase()))
         .slice(0, 5);
       setSearchResults(results);
     } else {
@@ -118,7 +119,7 @@ export default function Navbar() {
             Horizon
           </Link>
 
-          {/* Hamburger (mobil) */}
+          {/* Hamburger */}
           <button
             className="nb-hamburger"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -166,10 +167,10 @@ export default function Navbar() {
                     <ul className="nb-results">
                       {searchResults.map(p => (
                         <li key={p.id} onClick={() => handleSearchSelect(p.slug)}>
-                          <img src={p.images[0]} alt={p.name} />
+                          <img src={p.images?.[0]} alt={p.name} />
                           <div>
                             <span className="r-name">{p.name}</span>
-                            <span className="r-price">Rs.{p.price.toLocaleString()}</span>
+                            <span className="r-price">Rs.{p.price?.toLocaleString()}</span>
                           </div>
                         </li>
                       ))}
@@ -191,10 +192,10 @@ export default function Navbar() {
               {cartCount > 0 && <span className="nb-badge">{cartCount}</span>}
             </Link>
 
-            {/* Account */}
-            <button className="nb-icon nb-user">
+            {/* Profile */}
+            <Link to="/profile" className="nb-icon" title="My Profile">
               <FiUser size={20} />
-            </button>
+            </Link>
           </div>
         </div>
 

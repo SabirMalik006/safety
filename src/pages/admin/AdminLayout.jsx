@@ -3,7 +3,7 @@ import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { 
   FiGrid, FiPackage, FiShoppingBag, FiStar, FiMail, FiUsers, 
   FiMenu, FiX, FiLogOut, FiHome, FiSliders, FiBell, FiUser,
-  FiChevronRight, FiChevronLeft
+  FiChevronRight, FiChevronLeft, FiCreditCard
 } from 'react-icons/fi';
 import { getCurrentUser, logout } from '../../services/authService';
 import './AdminLayout.css';
@@ -24,30 +24,24 @@ export default function AdminLayout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [checkingAuth, setCheckingAuth] = useState(true);
+  const [logoutModalOpen, setLogoutModalOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     const checkAuth = () => {
       const currentUser = getCurrentUser();
-      console.log('Current user in AdminLayout:', currentUser); // Debug log
-      
       if (!currentUser) {
-        console.log('No user found, redirecting to login');
         navigate('/login');
         return;
       }
-      
       if (currentUser.role !== 'admin') {
-        console.log('User is not admin, redirecting to dashboard');
         navigate('/dashboard');
         return;
       }
-      
       setUser(currentUser);
       setCheckingAuth(false);
     };
-    
     checkAuth();
   }, [navigate]);
 
@@ -65,12 +59,21 @@ export default function AdminLayout() {
   }, []);
 
   const handleLogout = () => {
+    setLogoutModalOpen(true);
+  };
+
+  const confirmLogout = () => {
     logout();
     navigate('/login');
   };
 
   if (checkingAuth) {
-    return <div className="admin-loading">Checking authentication...</div>;
+    return (
+      <div className="admin-auth-loading">
+        <div className="auth-spinner"></div>
+        <span>Verifying access...</span>
+      </div>
+    );
   }
 
   const NavContent = () => (
@@ -88,9 +91,11 @@ export default function AdminLayout() {
             key={item.path}
             to={item.path}
             className={`admin-nav-link ${location.pathname === item.path || (item.path === '/admin/dashboard' && location.pathname === '/admin') ? 'active' : ''}`}
+            onClick={() => setMobileMenuOpen(false)}
           >
             <span className="nav-icon">{item.icon}</span>
             <span className="nav-label">{item.label}</span>
+            {(location.pathname === item.path) && <span className="nav-active-dot"></span>}
           </Link>
         ))}
       </nav>
@@ -135,7 +140,7 @@ export default function AdminLayout() {
       </aside>
 
       {/* Main Content */}
-      <main className="admin-main">
+      <main className={`admin-main ${sidebarOpen ? '' : 'sidebar-collapsed'}`}>
         <div className="admin-topbar">
           <button 
             className="sidebar-toggle" 
@@ -165,6 +170,27 @@ export default function AdminLayout() {
           <Outlet />
         </div>
       </main>
+
+      {/* Logout Confirmation Modal */}
+      {logoutModalOpen && (
+        <div className="confirm-modal-overlay" onClick={() => setLogoutModalOpen(false)}>
+          <div className="confirm-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="confirm-modal-icon logout-icon">
+              <FiLogOut />
+            </div>
+            <h3>Sign Out</h3>
+            <p>Are you sure you want to log out of the admin panel?</p>
+            <div className="confirm-modal-actions">
+              <button className="confirm-cancel-btn" onClick={() => setLogoutModalOpen(false)}>
+                Cancel
+              </button>
+              <button className="confirm-danger-btn" onClick={confirmLogout}>
+                Yes, Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

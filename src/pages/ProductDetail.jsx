@@ -26,6 +26,7 @@ export default function ProductDetail() {
   const [related, setRelated] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [activeImage, setActiveImage] = useState(0);
   const [selectedColor, setSelectedColor] = useState('');
   const [quantity, setQuantity] = useState(1);
@@ -38,6 +39,7 @@ export default function ProductDetail() {
   useEffect(() => {
     const fetchProductData = async () => {
       setLoading(true);
+      setError(null);
       try {
         // Fetch product by slug
         const productRes = await getProductBySlug(slug);
@@ -64,9 +66,12 @@ export default function ProductDetail() {
               setRelated(filtered);
             }
           }
+        } else {
+          setError('Product not found');
         }
       } catch (error) {
         console.error('Error fetching product:', error);
+        setError('Failed to load product');
       } finally {
         setLoading(false);
       }
@@ -145,10 +150,10 @@ export default function ProductDetail() {
     );
   }
 
-  if (!product) {
+  if (error || !product) {
     return (
       <div className="not-found container page-content">
-        <h2>Product not found</h2>
+        <h2>{error || 'Product not found'}</h2>
         <Link to="/collections/all-products">Back to All Equipment</Link>
       </div>
     );
@@ -165,7 +170,10 @@ export default function ProductDetail() {
     originalPrice: p.comparePrice,
     discount: p.comparePrice && p.comparePrice > p.price 
       ? Math.round(((p.comparePrice - p.price) / p.comparePrice) * 100) 
-      : 0
+      : 0,
+    slug: p.slug,
+    colors: p.colors?.map(c => c.name) || [],
+    inStock: p.stock > 0
   }));
 
   return (

@@ -15,6 +15,7 @@ import Checkout from './pages/Checkout';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile';
 
 // Admin Imports
 import AdminLayout from './pages/admin/AdminLayout';
@@ -33,7 +34,7 @@ function Layout({ children }) {
   const location = useLocation();
   
   // Pages where Navbar and Footer should be hidden
-  const hideNavFooterPages = ['/checkout', '/login', '/register', '/dashboard'];
+  const hideNavFooterPages = ['/checkout', '/login', '/register', '/dashboard', '/profile'];
   // Also hide on admin routes
   const isAdminRoute = location.pathname.startsWith('/admin');
   const shouldHideNavFooter = hideNavFooterPages.includes(location.pathname) || isAdminRoute;
@@ -68,6 +69,7 @@ export default function App() {
               <Route path="/pages/reviews" element={<Reviews />} />
               <Route path="/contact" element={<ContactUs />} />
               <Route path="/about" element={<AboutUs />} />
+              <Route path="/profile" element={<Profile />} />
               
               {/* Checkout - No Navbar/Footer */}
               <Route path="/checkout" element={<Checkout />} />
@@ -83,7 +85,7 @@ export default function App() {
               {/* Auth Pages - No Navbar/Footer */}
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+              <Route path="/dashboard" element={<Dashboard />} />
               
               {/* Admin Routes - No Navbar/Footer, Protected Layout */}
               <Route path="/admin" element={<AdminLayout />}>

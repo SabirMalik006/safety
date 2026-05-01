@@ -3,34 +3,70 @@
   margin: 0 auto;
 }
 
+.hero-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 80px 0;
+  color: #bbb;
+  background: #fff;
+  border-radius: 20px;
+  border: 2px dashed #e0e0e0;
+  font-size: 14px;
+}
+
 .hero-slides-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 22px;
 }
 
 .hero-slide-card {
   background: #fff;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border: 1px solid #f0f0f0;
   transition: all 0.2s;
 }
 
+.hero-slide-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 36px rgba(0,0,0,0.1);
+}
+
 .hero-slide-card.inactive {
-  opacity: 0.6;
+  opacity: 0.65;
 }
 
 .hero-slide-preview {
   position: relative;
   height: 200px;
   overflow: hidden;
+  background: #f5f5f5;
 }
 
 .hero-slide-preview img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.hero-slide-card:hover .hero-slide-preview img {
+  transform: scale(1.04);
+}
+
+.hero-no-image {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ccc;
+  background: linear-gradient(135deg, #f8f9fa, #f1f3f5);
 }
 
 .hero-slide-overlay {
@@ -38,14 +74,16 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-  padding: 16px;
+  background: linear-gradient(to top, rgba(0,0,0,0.72), transparent);
+  padding: 18px 16px 14px;
 }
 
 .hero-slide-text h3 {
   color: #fff;
-  font-size: 18px;
+  font-size: 16px;
+  font-weight: 700;
   margin-bottom: 4px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.3);
 }
 
 .hero-slide-text p {
@@ -53,23 +91,38 @@
   font-size: 12px;
 }
 
+.hero-inactive-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0,0,0,0.65);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
 .hero-slide-info {
-  padding: 16px;
+  padding: 16px 18px;
 }
 
 .hero-slide-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .hero-order {
-  font-size: 11px;
+  font-size: 11.5px;
+  font-weight: 700;
   color: #c4a47a;
-  background: rgba(196,164,122,0.1);
-  padding: 4px 8px;
+  background: rgba(196, 164, 122, 0.12);
+  padding: 4px 10px;
   border-radius: 20px;
+  letter-spacing: 0.3px;
 }
 
 .toggle-switch {
@@ -77,6 +130,7 @@
   display: inline-block;
   width: 44px;
   height: 24px;
+  cursor: pointer;
 }
 
 .toggle-switch input {
@@ -87,12 +141,8 @@
 
 .toggle-slider {
   position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ddd;
   transition: 0.3s;
   border-radius: 24px;
 }
@@ -104,9 +154,10 @@
   width: 18px;
   left: 3px;
   bottom: 3px;
-  background-color: white;
+  background-color: #fff;
   transition: 0.3s;
   border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
 }
 
 input:checked + .toggle-slider {
@@ -117,10 +168,48 @@ input:checked + .toggle-slider:before {
   transform: translateX(20px);
 }
 
+.hero-slide-btn-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 12px;
+}
+
+.hero-btn-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #333;
+}
+
+.hero-btn-link {
+  font-size: 11px;
+  color: #bbb;
+  font-family: 'Courier New', monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .hero-slide-actions {
   display: flex;
   gap: 8px;
   justify-content: flex-end;
+}
+
+/* Image preview in form */
+.image-preview {
+  margin-top: 12px;
+  border-radius: 12px;
+  overflow: hidden;
+  max-height: 150px;
+  border: 1px solid #f0f0f0;
+}
+
+.image-preview img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  display: block;
 }
 
 .form-row {
@@ -133,6 +222,7 @@ input:checked + .toggle-slider:before {
   .hero-slides-grid {
     grid-template-columns: 1fr;
   }
+
   .form-row {
     grid-template-columns: 1fr;
   }

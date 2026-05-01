@@ -4,11 +4,14 @@ import { useCart } from '../context/CartContext';
 import './Cart.css';
 
 export default function Cart() {
-  const { cart, removeFromCart, updateQuantity, total } = useCart();
+  // ✅ Fixed: Use correct variable names from CartContext
+  const { cartItems, removeFromCart, updateQuantity, getCartTotal, getCartCount } = useCart();
 
+  const total = getCartTotal();
   const delivery = total >= 10000 ? 0 : 500;
 
-  if (cart.length === 0) {
+  // ✅ Fixed: Use cartItems instead of cart
+  if (!cartItems || cartItems.length === 0) {
     return (
       <div className="cart-empty page-content">
         <FiShoppingCart size={64} strokeWidth={1} />
@@ -25,32 +28,32 @@ export default function Cart() {
     <div className="cart-page page-content">
       <div className="container cart-header">
         <h1>Shopping Cart</h1>
-        <span>{cart.length} item{cart.length !== 1 ? 's' : ''}</span>
+        <span>{getCartCount()} item{cartItems.length !== 1 ? 's' : ''}</span>
       </div>
 
       <div className="container cart-body">
         {/* Cart Items */}
         <div className="cart-items">
-          {cart.map(item => (
-            <div key={`${item.id}-${item.selectedColor}`} className="cart-item">
+          {cartItems.map((item, index) => (
+            <div key={index} className="cart-item">
               <Link to={`/products/${item.slug}`} className="cart-item-image">
-                <img src={item.images[0]} alt={item.name} />
+                <img src={item.image} alt={item.name} />
               </Link>
 
               <div className="cart-item-info">
                 <Link to={`/products/${item.slug}`} className="cart-item-name">
                   {item.name}
                 </Link>
-                <span className="cart-item-color">Color: {item.selectedColor}</span>
+                {item.color && <span className="cart-item-color">Color: {item.color}</span>}
                 <div className="cart-item-price">Rs.{item.price.toLocaleString()}</div>
 
                 <div className="cart-item-actions">
                   <div className="qty-ctrl">
-                    <button onClick={() => updateQuantity(item.id, item.selectedColor, item.quantity - 1)}>
+                    <button onClick={() => updateQuantity(index, item.quantity - 1)}>
                       <FiMinus />
                     </button>
                     <span>{item.quantity}</span>
-                    <button onClick={() => updateQuantity(item.id, item.selectedColor, item.quantity + 1)}>
+                    <button onClick={() => updateQuantity(index, item.quantity + 1)}>
                       <FiPlus />
                     </button>
                   </div>
@@ -62,7 +65,7 @@ export default function Cart() {
 
               <button
                 className="cart-item-remove"
-                onClick={() => removeFromCart(item.id, item.selectedColor)}
+                onClick={() => removeFromCart(index)}
               >
                 <FiX />
               </button>
@@ -102,7 +105,6 @@ export default function Cart() {
             <button>Apply</button>
           </div>
 
-          {/* ✅ ONLY THIS LINE CHANGED - Added Link to checkout page */}
           <Link to="/checkout" className="btn-checkout">
             Proceed to Checkout <FiArrowRight />
           </Link>

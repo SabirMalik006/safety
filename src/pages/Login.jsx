@@ -27,35 +27,50 @@ const Login = () => {
     try {
       const response = await axios.post('http://localhost:5000/api/auth/login', formData);
       
-      console.log('Login response:', response.data); // Debug log
+      console.log('Full response:', response);
+      console.log('Response data:', response.data);
       
-      // ✅ Fix: Check response structure
-      if (response.data.success || response.status === 200) {
-        if (response.data.data?.token) {
-          localStorage.setItem('token', response.data.data.token);
-          localStorage.setItem('user', JSON.stringify(response.data.data));
-        }
+      // ✅ Check both response structures
+      // Structure 1: { success: true, data: { token, user } }
+      // Structure 2: { success: true, token, user }
+      
+      let token = null;
+      let user = null;
+      
+      if (response.data.data) {
+        // Structure 1
+        token = response.data.data.token;
+        user = response.data.data;
+      } else {
+        // Structure 2
+        token = response.data.token;
+        user = response.data.user || response.data;
+      }
+      
+      if (token) {
+        // Save to localStorage
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(user));
+        
+        console.log('Token saved:', localStorage.getItem('token'));
+        console.log('User saved:', localStorage.getItem('user'));
         
         toast.success('Login successful! Welcome back!');
         
         // Check if user is admin
-        const user = response.data.data;
         if (user?.role === 'admin') {
           navigate('/admin/dashboard');
         } else {
           navigate('/');
         }
+      } else {
+        toast.error('Invalid response from server');
       }
     } catch (error) {
       console.error('Login error:', error.response?.data);
       
       const errorMessage = error.response?.data?.message || 'Login failed. Please try again.';
       toast.error(errorMessage);
-      
-      // Agar "User already exists" error aa raha hai to register karo
-      if (errorMessage.includes('already exists')) {
-        toast.info('Please login with your credentials');
-      }
     } finally {
       setLoading(false);
     }

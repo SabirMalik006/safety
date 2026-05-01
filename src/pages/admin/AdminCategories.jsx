@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FiPlus, FiEdit2, FiTrash2, FiX, FiCheck } from 'react-icons/fi';
+import { FiPlus, FiEdit2, FiTrash2, FiX, FiAlertTriangle } from 'react-icons/fi';
 import { getCategories, createCategory, updateCategory, deleteCategory } from '../../services/productService';
 import toast from 'react-hot-toast';
 import './AdminCategories.css';
@@ -18,8 +18,11 @@ export default function AdminCategories() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [categoryToDelete, setCategoryToDelete] = useState(null);
   const [editingCategory, setEditingCategory] = useState(null);
   const [formData, setFormData] = useState({ name: '', description: '', order: 0 });
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     fetchCategories();
@@ -32,7 +35,6 @@ export default function AdminCategories() {
       if (res.success && res.data.length > 0) {
         setCategories(res.data);
       } else {
-        // Seed default categories if none exist
         await seedDefaultCategories();
       }
     } catch (error) {
@@ -58,6 +60,7 @@ export default function AdminCategories() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitting(true);
     try {
       if (editingCategory) {
         await updateCategory(editingCategory._id, formData);
@@ -70,18 +73,26 @@ export default function AdminCategories() {
       closeModal();
     } catch (error) {
       toast.error(error.response?.data?.message || 'Operation failed');
+    } finally {
+      setSubmitting(false);
     }
   };
 
-  const handleDelete = async (category) => {
-    if (window.confirm(`Delete "${category.name}"? Products under this category will be affected.`)) {
-      try {
-        await deleteCategory(category._id);
-        toast.success('Category deleted!');
-        fetchCategories();
-      } catch (error) {
-        toast.error('Failed to delete category');
-      }
+  const openDeleteModal = (category) => {
+    setCategoryToDelete(category);
+    setDeleteModalOpen(true);
+  };
+
+  const handleDelete = async () => {
+    if (!categoryToDelete) return;
+    try {
+      await deleteCategory(categoryToDelete._id);
+      toast.success('Category deleted!');
+      fetchCategories();
+      setDeleteModalOpen(false);
+      setCategoryToDelete(null);
+    } catch (error) {
+      toast.error('Failed to delete category');
     }
   };
 
@@ -115,7 +126,7 @@ export default function AdminCategories() {
       </div>
 
       {loading ? (
-        <div className="loading-state">Loading categories...</div>
+        <div className="admin-loading">Loading categories...</div>
       ) : (
         <div className="categories-grid">
           {categories.map((category) => (
@@ -126,7 +137,7 @@ export default function AdminCategories() {
                   <button onClick={() => openModal(category)} className="action-btn edit">
                     <FiEdit2 />
                   </button>
-                  <button onClick={() => handleDelete(category)} className="action-btn delete">
+                  <button onClick={() => openDeleteModal(category)} className="action-btn delete">
                     <FiTrash2 />
                   </button>
                 </div>
@@ -141,7 +152,7 @@ export default function AdminCategories() {
         </div>
       )}
 
-      {/* Modal */}
+      {/* Add / Edit Modal */}
       {modalOpen && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -156,6 +167,7 @@ export default function AdminCategories() {
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  placeholder="e.g. Safety Equipment"
                   required
                 />
               </div>
@@ -165,6 +177,7 @@ export default function AdminCategories() {
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows="3"
+                  placeholder="Brief description of this category..."
                 />
               </div>
               <div className="form-group">
@@ -173,15 +186,37 @@ export default function AdminCategories() {
                   type="number"
                   value={formData.order}
                   onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) })}
+                  min="1"
                 />
               </div>
               <div className="modal-actions">
                 <button type="button" onClick={closeModal} className="btn-secondary">Cancel</button>
-                <button type="submit" className="btn-primary">
-                  {editingCategory ? 'Update' : 'Create'}
+                <button type="submit" className="btn-primary" disabled={submitting}>
+                  {submitting ? 'Saving...' : editingCategory ? 'Update' : 'Create'}
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {deleteModalOpen && categoryToDelete && (
+        <div className="modal-overlay" onClick={() => setDeleteModalOpen(false)}>
+          <div className="confirm-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="confirm-modal-icon delete-icon">
+              <FiAlertTriangle />
+            </div>
+            <h3>Delete Category</h3>
+            <p>Are you sure you want to delete <strong>"{categoryToDelete.name}"</strong>? Products under this category will be affected.</p>
+            <div className="confirm-modal-actions">
+              <button className="confirm-cancel-btn" onClick={() => setDeleteModalOpen(false)}>
+                Cancel
+              </button>
+              <button className="confirm-danger-btn" onClick={handleDelete}>
+                Yes, Delete
+              </button>
+            </div>
           </div>
         </div>
       )}

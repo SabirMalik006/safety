@@ -1,97 +1,78 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FiTruck, FiShield, FiClock, FiCreditCard, FiSmartphone, FiCheckCircle, FiArrowRight, FiMapPin, FiPhone, FiUser, FiMail } from 'react-icons/fi';
 import { useCart } from '../context/CartContext';
 import { getCurrentUser } from '../services/authService';
-import { createOrderWithPaymentProof } from '../services/orderService';
-import { uploadPaymentScreenshot } from '../services/uploadService';
+import { createOrder } from '../services/orderService';
 import toast from 'react-hot-toast';
 import './Checkout.css';
 
 export default function Checkout() {
   const navigate = useNavigate();
-  const { cartItems, getCartTotal, clearCart } = useCart();
+  const { cartItems, getCartTotal, clearCart, loading } = useCart();
+  const [submitting, setSubmitting] = useState(false);
+  const [activeStep, setActiveStep] = useState(1);
   const user = getCurrentUser();
-  
-  const [loading, setLoading] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState('bank_transfer');
-  const [paymentProof, setPaymentProof] = useState({
-    transactionId: '',
-    paymentAccount: '',
-    remarks: '',
-    screenshotFile: null,
-    screenshotPreview: null
-  });
-  
+
+  // Form state
   const [formData, setFormData] = useState({
     fullName: user?.name || '',
+    email: user?.email || '',
+    phone: '',
     address: '',
     city: '',
     state: '',
     zipCode: '',
     country: 'Pakistan',
-    phone: '',
+    orderNotes: ''
   });
 
-  // Bank account details to show to user
-  const bankAccounts = {
-    easypaisa: {
-      name: 'EasyPaisa',
-      account: '0344 1234567',
-      holder: 'Horizon Supplies'
-    },
-    jazzcash: {
-      name: 'JazzCash',
-      account: '0344 1234567', 
-      holder: 'Horizon Supplies'
-    },
-    bank_transfer: {
-      name: 'Bank Alfalah',
-      account: 'PK12 ALFH 0001 2345 6789',
-      holder: 'Horizon Supplies (PVT) Ltd',
-      bank: 'Bank Alfalah, Karachi'
+  const [paymentMethod, setPaymentMethod] = useState('cod');
+  const [errors, setErrors] = useState({});
+
+  // Redirect if cart is empty
+  useEffect(() => {
+    if (!loading && (!cartItems || cartItems.length === 0)) {
+      navigate('/cart');
     }
+  }, [cartItems, loading, navigate]);
+
+  const subtotal = getCartTotal();
+  const shipping = subtotal > 3999 ? 0 : 200;
+  const total = subtotal + shipping;
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.fullName.trim()) newErrors.fullName = 'Full name is required';
+    if (!formData.email.trim()) newErrors.email = 'Email is required';
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid';
+    if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
+    if (!formData.address.trim()) newErrors.address = 'Address is required';
+    if (!formData.city.trim()) newErrors.city = 'City is required';
+    if (!formData.state.trim()) newErrors.state = 'State is required';
+    if (!formData.zipCode.trim()) newErrors.zipCode = 'ZIP code is required';
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error('File too large! Max 5MB');
-        return;
-      }
-      const preview = URL.createObjectURL(file);
-      setPaymentProof(prev => ({ 
-        ...prev, 
-        screenshotFile: file, 
-        screenshotPreview: preview 
-      }));
-    }
-  };
-
-  const handleSubmit = async (e) => {
+  const handlePlaceOrder = async (e) => {
     e.preventDefault();
     
-    if (!paymentProof.transactionId) {
-      toast.error('Please enter Transaction ID');
+    if (!validateForm()) {
+      toast.error('Please fill all required fields');
       return;
     }
-    
-    if (!paymentProof.screenshotFile) {
-      toast.error('Please upload payment screenshot');
+
+    if (!user) {
+      toast.error('Please login to place order');
+      navigate('/login');
       return;
     }
-    
-    setLoading(true);
+
+    setSubmitting(true);
     
     try {
-      // 1. Upload screenshot to Cloudinary
-      let screenshotUrl = '';
-      if (paymentProof.screenshotFile) {
-        const uploadRes = await uploadPaymentScreenshot(paymentProof.screenshotFile);
-        screenshotUrl = uploadRes.url;
-      }
-      
-      // 2. Create order with payment proof
       const orderData = {
         orderItems: cartItems.map(item => ({
           product: item.productId,
@@ -102,258 +83,365 @@ export default function Checkout() {
           color: item.color,
           size: item.size
         })),
-        shippingAddress: formData,
+        shippingAddress: {
+          fullName: formData.fullName,
+          address: formData.address,
+          city: formData.city,
+          state: formData.state,
+          zipCode: formData.zipCode,
+          country: formData.country,
+          phone: formData.phone,
+          email: formData.email
+        },
         paymentMethod: paymentMethod,
-        itemsPrice: getCartTotal(),
-        shippingPrice: 200,
-        totalPrice: getCartTotal() + 200,
-        paymentProof: {
-          screenshotUrl: screenshotUrl,
-          transactionId: paymentProof.transactionId,
-          paymentDate: new Date().toISOString(),
-          paymentAccount: paymentProof.paymentAccount,
-          remarks: paymentProof.remarks
-        }
+        itemsPrice: subtotal,
+        shippingPrice: shipping,
+        totalPrice: total,
+        orderNotes: formData.orderNotes
       };
       
-      const response = await createOrderWithPaymentProof(orderData);
+      const response = await createOrder(orderData);
       
       if (response.success) {
-        toast.success('Order placed! Payment verification pending.');
+        toast.success('Order placed successfully!');
         clearCart();
         navigate(`/order-success/${response.data._id}`);
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Order failed');
+      console.error('Order error:', error);
+      toast.error(error.response?.data?.message || 'Failed to place order. Please try again.');
     } finally {
-      setLoading(false);
+      setSubmitting(false);
     }
   };
 
-  const shippingCost = 200;
-  const total = getCartTotal() + shippingCost;
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (errors[e.target.name]) {
+      setErrors({ ...errors, [e.target.name]: '' });
+    }
+  };
+
+  if (loading || !cartItems || cartItems.length === 0) {
+    return (
+      <div className="checkout-loading">
+        <div className="loading-spinner"></div>
+        <p>Loading checkout...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="checkout-page">
-      <div className="container">
-        <h1>Checkout</h1>
-        
+      <div className="checkout-container">
+        {/* Header */}
+        <div className="checkout-header">
+          <h1>Checkout</h1>
+          <div className="checkout-steps">
+            <div className={`step ${activeStep >= 1 ? 'active' : ''}`}>
+              <span className="step-number">1</span>
+              <span className="step-label">Shipping</span>
+            </div>
+            <div className="step-line"></div>
+            <div className={`step ${activeStep >= 2 ? 'active' : ''}`}>
+              <span className="step-number">2</span>
+              <span className="step-label">Payment</span>
+            </div>
+            <div className="step-line"></div>
+            <div className={`step ${activeStep >= 3 ? 'active' : ''}`}>
+              <span className="step-number">3</span>
+              <span className="step-label">Confirm</span>
+            </div>
+          </div>
+        </div>
+
         <div className="checkout-grid">
-          {/* Left - Order Form */}
-          <div className="checkout-form">
-            <form onSubmit={handleSubmit}>
+          {/* Left Column - Form */}
+          <div className="checkout-form-section">
+            <form onSubmit={handlePlaceOrder}>
               {/* Shipping Information */}
-              <div className="form-section">
-                <h3>Shipping Information</h3>
-                <div className="form-group">
-                  <input
-                    type="text"
-                    placeholder="Full Name *"
-                    value={formData.fullName}
-                    onChange={(e) => setFormData({...formData, fullName: e.target.value})}
-                    required
-                  />
+              <div className="form-card">
+                <div className="form-card-header">
+                  <FiMapPin className="card-icon" />
+                  <h2>Shipping Information</h2>
                 </div>
-                <div className="form-group">
-                  <input
-                    type="text"
-                    placeholder="Address *"
-                    value={formData.address}
-                    onChange={(e) => setFormData({...formData, address: e.target.value})}
-                    required
-                  />
-                </div>
+                
                 <div className="form-row">
-                  <input
-                    type="text"
-                    placeholder="City *"
-                    value={formData.city}
-                    onChange={(e) => setFormData({...formData, city: e.target.value})}
-                    required
-                  />
-                  <input
-                    type="text"
-                    placeholder="State *"
-                    value={formData.state}
-                    onChange={(e) => setFormData({...formData, state: e.target.value})}
-                    required
-                  />
+                  <div className="form-group">
+                    <label>Full Name *</label>
+                    <div className="input-wrapper">
+                      <FiUser className="input-icon" />
+                      <input
+                        type="text"
+                        name="fullName"
+                        value={formData.fullName}
+                        onChange={handleChange}
+                        placeholder="John Doe"
+                        className={errors.fullName ? 'error' : ''}
+                      />
+                    </div>
+                    {errors.fullName && <span className="error-text">{errors.fullName}</span>}
+                  </div>
+                  
+                  <div className="form-group">
+                    <label>Email Address *</label>
+                    <div className="input-wrapper">
+                      <FiMail className="input-icon" />
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder="you@example.com"
+                        className={errors.email ? 'error' : ''}
+                      />
+                    </div>
+                    {errors.email && <span className="error-text">{errors.email}</span>}
+                  </div>
                 </div>
-                <div className="form-row">
-                  <input
-                    type="text"
-                    placeholder="ZIP Code *"
-                    value={formData.zipCode}
-                    onChange={(e) => setFormData({...formData, zipCode: e.target.value})}
-                    required
-                  />
-                  <input
-                    type="text"
-                    placeholder="Phone *"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                    required
-                  />
-                </div>
-              </div>
 
-              {/* Payment Method Selection */}
-              <div className="form-section">
-                <h3>Payment Method</h3>
-                
-                <label className="payment-option">
-                  <input
-                    type="radio"
-                    value="bank_transfer"
-                    checked={paymentMethod === 'bank_transfer'}
-                    onChange={(e) => setPaymentMethod(e.target.value)}
-                  />
-                  <div>
-                    <strong>Bank Transfer</strong>
-                    <small>Pay via bank transfer (1-24 hours verification)</small>
-                  </div>
-                </label>
-                
-                <label className="payment-option">
-                  <input
-                    type="radio"
-                    value="easypaisa"
-                    checked={paymentMethod === 'easypaisa'}
-                    onChange={(e) => setPaymentMethod(e.target.value)}
-                  />
-                  <div>
-                    <strong>EasyPaisa</strong>
-                    <small>Pay via EasyPaisa mobile account</small>
-                  </div>
-                </label>
-                
-                <label className="payment-option">
-                  <input
-                    type="radio"
-                    value="jazzcash"
-                    checked={paymentMethod === 'jazzcash'}
-                    onChange={(e) => setPaymentMethod(e.target.value)}
-                  />
-                  <div>
-                    <strong>JazzCash</strong>
-                    <small>Pay via JazzCash mobile account</small>
-                  </div>
-                </label>
-              </div>
-
-              {/* Payment Instructions */}
-              <div className="form-section payment-instructions">
-                <h3>Payment Instructions</h3>
-                <div className="bank-details">
-                  <p><strong>Send payment to:</strong></p>
-                  <div className="bank-info">
-                    <span>{bankAccounts[paymentMethod]?.name}</span>
-                    <strong>{bankAccounts[paymentMethod]?.account}</strong>
-                    <small>Account Holder: {bankAccounts[paymentMethod]?.holder}</small>
-                    {bankAccounts[paymentMethod]?.bank && (
-                      <small>Bank: {bankAccounts[paymentMethod]?.bank}</small>
-                    )}
-                  </div>
-                </div>
-                
-                <div className="payment-note">
-                  <p>⚠️ <strong>Important:</strong> After payment, please provide:</p>
-                  <ul>
-                    <li>Transaction ID / Reference Number</li>
-                    <li>Screenshot of payment confirmation</li>
-                  </ul>
-                  <p>Your order will be processed after payment verification (1-24 hours).</p>
-                </div>
-              </div>
-
-              {/* Payment Proof Upload */}
-              <div className="form-section payment-proof">
-                <h3>Payment Proof</h3>
-                
                 <div className="form-group">
-                  <label>Transaction ID *</label>
-                  <input
-                    type="text"
-                    placeholder="Enter transaction/reference ID"
-                    value={paymentProof.transactionId}
-                    onChange={(e) => setPaymentProof({...paymentProof, transactionId: e.target.value})}
-                    required
-                  />
-                </div>
-                
-                <div className="form-group">
-                  <label>Payment Account (Optional)</label>
-                  <input
-                    type="text"
-                    placeholder="Which account did you pay from?"
-                    value={paymentProof.paymentAccount}
-                    onChange={(e) => setPaymentProof({...paymentProof, paymentAccount: e.target.value})}
-                  />
-                </div>
-                
-                <div className="form-group">
-                  <label>Upload Screenshot *</label>
-                  <div className="file-upload">
+                  <label>Phone Number *</label>
+                  <div className="input-wrapper">
+                    <FiPhone className="input-icon" />
                     <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleFileChange}
-                      required
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="+92 300 1234567"
+                      className={errors.phone ? 'error' : ''}
                     />
-                    {paymentProof.screenshotPreview && (
-                      <div className="screenshot-preview">
-                        <img src={paymentProof.screenshotPreview} alt="Payment proof" />
-                        <button type="button" onClick={() => {
-                          setPaymentProof({...paymentProof, screenshotFile: null, screenshotPreview: null});
-                        }}>Remove</button>
-                      </div>
-                    )}
                   </div>
-                  <small>Upload screenshot of payment confirmation (Max 5MB)</small>
+                  {errors.phone && <span className="error-text">{errors.phone}</span>}
                 </div>
-                
+
                 <div className="form-group">
-                  <label>Additional Remarks (Optional)</label>
-                  <textarea
-                    rows="3"
-                    placeholder="Any additional information about your payment..."
-                    value={paymentProof.remarks}
-                    onChange={(e) => setPaymentProof({...paymentProof, remarks: e.target.value})}
+                  <label>Street Address *</label>
+                  <input
+                    type="text"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleChange}
+                    placeholder="House #, Street, Area"
+                    className={errors.address ? 'error' : ''}
                   />
+                  {errors.address && <span className="error-text">{errors.address}</span>}
+                </div>
+
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>City *</label>
+                    <input
+                      type="text"
+                      name="city"
+                      value={formData.city}
+                      onChange={handleChange}
+                      placeholder="Karachi"
+                      className={errors.city ? 'error' : ''}
+                    />
+                    {errors.city && <span className="error-text">{errors.city}</span>}
+                  </div>
+                  
+                  <div className="form-group">
+                    <label>State *</label>
+                    <input
+                      type="text"
+                      name="state"
+                      value={formData.state}
+                      onChange={handleChange}
+                      placeholder="Sindh"
+                      className={errors.state ? 'error' : ''}
+                    />
+                    {errors.state && <span className="error-text">{errors.state}</span>}
+                  </div>
+                </div>
+
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>ZIP Code *</label>
+                    <input
+                      type="text"
+                      name="zipCode"
+                      value={formData.zipCode}
+                      onChange={handleChange}
+                      placeholder="12345"
+                      className={errors.zipCode ? 'error' : ''}
+                    />
+                    {errors.zipCode && <span className="error-text">{errors.zipCode}</span>}
+                  </div>
+                  
+                  <div className="form-group">
+                    <label>Country *</label>
+                    <input
+                      type="text"
+                      name="country"
+                      value={formData.country}
+                      onChange={handleChange}
+                      placeholder="Pakistan"
+                    />
+                  </div>
                 </div>
               </div>
-              
-              <button type="submit" disabled={loading} className="place-order-btn">
-                {loading ? 'Placing Order...' : `Place Order - Rs.${total.toLocaleString()}`}
+
+              {/* Payment Method */}
+              <div className="form-card">
+                <div className="form-card-header">
+                  <FiCreditCard className="card-icon" />
+                  <h2>Payment Method</h2>
+                </div>
+
+                <div className="payment-options">
+                  <label className={`payment-option ${paymentMethod === 'cod' ? 'selected' : ''}`}>
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="cod"
+                      checked={paymentMethod === 'cod'}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                    />
+                    <div className="payment-option-content">
+                      <div className="payment-icon">
+                        <FiTruck />
+                      </div>
+                      <div className="payment-details">
+                        <strong>Cash on Delivery</strong>
+                        <span>Pay when you receive your order</span>
+                      </div>
+                      <FiCheckCircle className="payment-check" />
+                    </div>
+                  </label>
+
+                  <label className={`payment-option ${paymentMethod === 'easypaisa' ? 'selected' : ''}`}>
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="easypaisa"
+                      checked={paymentMethod === 'easypaisa'}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                    />
+                    <div className="payment-option-content">
+                      <div className="payment-icon">
+                        <FiSmartphone />
+                      </div>
+                      <div className="payment-details">
+                        <strong>EasyPaisa</strong>
+                        <span>Pay via EasyPaisa mobile account</span>
+                      </div>
+                      <FiCheckCircle className="payment-check" />
+                    </div>
+                  </label>
+
+                  <label className={`payment-option ${paymentMethod === 'jazzcash' ? 'selected' : ''}`}>
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="jazzcash"
+                      checked={paymentMethod === 'jazzcash'}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                    />
+                    <div className="payment-option-content">
+                      <div className="payment-icon">
+                        <FiSmartphone />
+                      </div>
+                      <div className="payment-details">
+                        <strong>JazzCash</strong>
+                        <span>Pay via JazzCash mobile account</span>
+                      </div>
+                      <FiCheckCircle className="payment-check" />
+                    </div>
+                  </label>
+                </div>
+
+                {paymentMethod !== 'cod' && (
+                  <div className="payment-info">
+                    <p>⚠️ After placing order, you'll receive payment instructions via SMS/Email</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Order Notes */}
+              <div className="form-card">
+                <div className="form-card-header">
+                  <FiClock className="card-icon" />
+                  <h2>Order Notes (Optional)</h2>
+                </div>
+                <textarea
+                  name="orderNotes"
+                  rows="3"
+                  value={formData.orderNotes}
+                  onChange={handleChange}
+                  placeholder="Special delivery instructions or notes about your order..."
+                />
+              </div>
+
+              {/* Submit Button */}
+              <button 
+                type="submit" 
+                className="place-order-btn"
+                disabled={submitting}
+              >
+                {submitting ? (
+                  <>Processing Order <span className="spinner"></span></>
+                ) : (
+                  <>Place Order - Rs.{total.toLocaleString()} <FiArrowRight /></>
+                )}
               </button>
             </form>
           </div>
 
-          {/* Right - Order Summary */}
-          <div className="order-summary">
-            <h3>Order Summary</h3>
-            {cartItems.map((item, idx) => (
-              <div key={idx} className="summary-item">
-                <span>{item.name} x{item.quantity}</span>
-                <span>Rs.{(item.price * item.quantity).toLocaleString()}</span>
+          {/* Right Column - Order Summary */}
+          <div className="order-summary-section">
+            <div className="summary-card">
+              <h3>Order Summary</h3>
+              
+              <div className="summary-items">
+                {cartItems.map((item, idx) => (
+                  <div key={idx} className="summary-item">
+                    <div className="item-image">
+                      <img src={item.image} alt={item.name} />
+                      <span className="item-qty">{item.quantity}</span>
+                    </div>
+                    <div className="item-details">
+                      <p className="item-name">{item.name}</p>
+                      {item.color && <span className="item-variant">Color: {item.color}</span>}
+                    </div>
+                    <div className="item-price">
+                      Rs.{(item.price * item.quantity).toLocaleString()}
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-            <div className="summary-total">
-              <span>Subtotal:</span>
-              <span>Rs.{getCartTotal().toLocaleString()}</span>
-            </div>
-            <div className="summary-total">
-              <span>Shipping:</span>
-              <span>Rs.{shippingCost.toLocaleString()}</span>
-            </div>
-            <div className="summary-grand">
-              <span>Total:</span>
-              <span>Rs.{total.toLocaleString()}</span>
-            </div>
-            
-            <div className="verification-note">
-              <p>✅ Your order will be processed after payment verification</p>
-              <p>📧 We'll email you when payment is verified</p>
+
+              <div className="summary-totals">
+                <div className="total-row">
+                  <span>Subtotal</span>
+                  <span>Rs.{subtotal.toLocaleString()}</span>
+                </div>
+                <div className="total-row">
+                  <span>Shipping</span>
+                  <span className={shipping === 0 ? 'free' : ''}>
+                    {shipping === 0 ? 'FREE' : `Rs.${shipping.toLocaleString()}`}
+                  </span>
+                </div>
+                {shipping > 0 && (
+                  <div className="shipping-note">
+                    Add Rs.{(3999 - subtotal).toLocaleString()} more for free shipping
+                  </div>
+                )}
+                <div className="total-row grand-total">
+                  <span>Total</span>
+                  <span>Rs.{total.toLocaleString()}</span>
+                </div>
+              </div>
+
+              <div className="guarantee-badge">
+                <FiShield />
+                <div>
+                  <strong>Secure Checkout</strong>
+                  <span>Your information is protected</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>

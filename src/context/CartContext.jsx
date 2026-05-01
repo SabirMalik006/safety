@@ -4,7 +4,24 @@ import { isAuthenticated } from '../services/authService';
 
 const CartContext = createContext();
 
-export const useCart = () => useContext(CartContext);
+export const useCart = () => {
+  const context = useContext(CartContext);
+  // ✅ Safe fallback if context is not available
+  if (!context) {
+    return { 
+      cartItems: [], 
+      addToCart: () => {}, 
+      removeFromCart: () => {}, 
+      updateQuantity: () => {}, 
+      getCartTotal: () => 0, 
+      getCartCount: () => 0, 
+      clearCart: () => {},
+      placeOrder: async () => {},
+      loading: false 
+    };
+  }
+  return context;
+};
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
@@ -14,13 +31,21 @@ export const CartProvider = ({ children }) => {
   useEffect(() => {
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
-      setCartItems(JSON.parse(savedCart));
+      try {
+        const parsed = JSON.parse(savedCart);
+        setCartItems(Array.isArray(parsed) ? parsed : []);
+      } catch (e) {
+        console.error('Error loading cart:', e);
+        setCartItems([]);
+      }
     }
   }, []);
 
   // Save cart to localStorage
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cartItems));
+    if (cartItems.length >= 0) {
+      localStorage.setItem('cart', JSON.stringify(cartItems));
+    }
   }, [cartItems]);
 
   const addToCart = (product, quantity = 1, selectedColor = null, selectedSize = null) => {
@@ -41,11 +66,12 @@ export const CartProvider = ({ children }) => {
         productId: product._id,
         name: product.name,
         price: product.price,
-        image: product.images?.[0]?.url || '/images/placeholder.jpg',
-        quantity,
+        image: product.images?.[0]?.url || product.image || '/images/placeholder.jpg',
+        quantity: quantity,
         color: selectedColor,
         size: selectedSize,
-        stock: product.stock
+        stock: product.stock,
+        slug: product.slug
       }];
     });
   };
@@ -65,11 +91,11 @@ export const CartProvider = ({ children }) => {
   };
 
   const getCartTotal = () => {
-    return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+    return cartItems.reduce((total, item) => total + (item.price * (item.quantity || 1)), 0);
   };
 
   const getCartCount = () => {
-    return cartItems.reduce((count, item) => count + item.quantity, 0);
+    return cartItems.reduce((count, item) => count + (item.quantity || 1), 0);
   };
 
   const clearCart = () => {
