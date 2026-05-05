@@ -39,35 +39,26 @@ const DashboardProfile = ({ user, onUpdate }) => {
           <div className="form-grid">
             <div className="form-group">
               <label>Full Name</label>
-              <div className="input-with-icon">
-                <FiUser />
-                <input 
-                  type="text" 
-                  value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  required 
-                />
-              </div>
+              <input 
+                type="text" 
+                value={formData.name}
+                onChange={(e) => setFormData({...formData, name: e.target.value})}
+                required 
+              />
             </div>
             <div className="form-group">
               <label>Email Address</label>
-              <div className="input-with-icon disabled">
-                <FiMail />
-                <input type="email" value={formData.email} disabled />
-              </div>
+              <input type="email" value={formData.email} disabled className="disabled-input" />
               <small>Email cannot be changed</small>
             </div>
             <div className="form-group">
               <label>Phone Number</label>
-              <div className="input-with-icon">
-                <FiPhone />
-                <input 
-                  type="text" 
-                  value={formData.phone}
-                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                  placeholder="e.g. +92 300 1234567"
-                />
-              </div>
+              <input 
+                type="text" 
+                value={formData.phone}
+                onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                placeholder="e.g. +92 300 1234567"
+              />
             </div>
           </div>
 

@@ -241,8 +241,10 @@ export default function Checkout() {
 
     if (!validateForm()) return;
 
-    if (paymentMethod !== 'cod' && !paymentProof.transactionId) {
-      return toast.error('Please enter Transaction ID for verification');
+    if (paymentMethod !== 'cod') {
+      if (!paymentProof.transactionId || !paymentProof.paymentAccount || !screenshotFile) {
+        return toast.error('All fields are required for online payments (Transaction ID, Account Name, and Screenshot)');
+      }
     }
 
     setSubmitting(true);
@@ -316,11 +318,11 @@ export default function Checkout() {
   if (loading || !cartItems || cartItems.length === 0) return null;
 
   return (
-    <div className="checkout-page page-content has-navbar">
+    <div className="checkout-page page-content">
       <header className="checkout-header">
         <div className="container">
           <Link to="/cart" className="back-link"><FiChevronLeft /> Return to Cart</Link>
-          <div className="logo">Safety<span>Me</span></div>
+          <div className="logo">The Horizon <span>Hub</span></div>
           <div className="secure-badge"><FiLock /> Secure Checkout</div>
         </div>
       </header>
@@ -434,7 +436,7 @@ export default function Checkout() {
                   icon={FiSmartphone}
                   title="JazzCash"
                   desc="Transfer to our JazzCash account"
-                  accounts={[{ label: 'JazzCash', value: '0300-7654321 (SafetyMe)' }]}
+                  accounts={[{ label: 'JazzCash', value: '0300-7654321 (The Horizon Hub)' }]}
                   isSelected={paymentMethod === 'jazzcash'}
                   onSelect={setPaymentMethod}
                   paymentProof={paymentProof}

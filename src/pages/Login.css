@@ -3,9 +3,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f8fafc;
+  background: radial-gradient(900px 420px at 15% 10%, rgba(196, 164, 122, 0.22) 0%, rgba(196, 164, 122, 0) 60%),
+              radial-gradient(800px 380px at 85% 15%, rgba(15, 23, 42, 0.18) 0%, rgba(15, 23, 42, 0) 62%),
+              linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
   padding: 2rem;
   font-family: 'Inter', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-page::before {
+  content: '';
+  position: absolute;
+  inset: -120px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(196, 164, 122, 0.10) 0%, rgba(196, 164, 122, 0) 45%),
+    radial-gradient(circle at 80% 30%, rgba(15, 23, 42, 0.08) 0%, rgba(15, 23, 42, 0) 50%),
+    radial-gradient(circle at 60% 90%, rgba(196, 164, 122, 0.08) 0%, rgba(196, 164, 122, 0) 55%);
+  filter: blur(2px);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .auth-container {
@@ -17,6 +34,8 @@
   border-radius: 1.5rem;
   overflow: hidden;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
 }
 
 /* ═══════════════════════════════════════════════════

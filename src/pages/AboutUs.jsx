@@ -24,7 +24,7 @@ export default function AboutUs() {
             <div className="story-content">
               <span className="story-tag">Our Background</span>
               <h2>Your Partner in Industrial Excellence</h2>
-              <p>Founded in 2020, SafetyMe was established with a clear mission: to bridge the gap in Pakistan's industrial sector by providing certified, high-performance safety equipment and precision tools. What began as a specialized consultancy has evolved into a leading distributor of professional-grade gear.</p>
+              <p>Founded in 2020, The Horizon Hub was established with a clear mission: to bridge the gap in Pakistan's industrial sector by providing certified, high-performance safety equipment and precision tools. What began as a specialized consultancy has evolved into a leading distributor of professional-grade gear.</p>
               <p>Every piece of equipment in our catalog is rigorously tested to meet international safety standards (CE, ANSI). We believe that the right tools and protection don't just prevent accidents—they empower workers to perform at their definitive best.</p>
               <div className="story-stats">
                 <div className="stat">
@@ -105,7 +105,7 @@ export default function AboutUs() {
         <div className="container">
           <div className="section-header">
             <span className="section-tag">Meet the Experts</span>
-            <h2>The Leadership Behind SafetyMe</h2>
+            <h2>The Leadership Behind The Horizon Hub</h2>
             <p>Industry veterans dedicated to ensuring workplace safety across Pakistan.</p>
           </div>
           <div className="team-grid">
@@ -129,7 +129,7 @@ export default function AboutUs() {
       <section className="why-us">
         <div className="container">
           <div className="why-us-content">
-            <h2>Why Choose SafetyMe?</h2>
+            <h2>Why Choose The Horizon Hub?</h2>
             <div className="features-grid">
               <div className="feature">
                 <FiStar />

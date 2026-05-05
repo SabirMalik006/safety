@@ -53,7 +53,7 @@ const DashboardOrders = () => {
           <FiShoppingBag size={48} />
           <h3>No orders found</h3>
           <p>It seems you haven't placed any orders yet. Check out our latest products!</p>
-          <Link to="/collections" className="btn-primary">Browse Products</Link>
+          <Link to="/collections/all-products" className="btn-primary">Browse Products</Link>
         </div>
       ) : (
         <div className="orders-full-list">

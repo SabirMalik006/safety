@@ -43,6 +43,34 @@
   font-size: 1rem;
 }
 
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.section-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.view-all-link {
+  color: #c4a47a;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.view-all-link:hover {
+  color: #a88a64;
+  text-decoration: underline;
+}
+
 /* Stats Grid */
 .dashboard-stats-grid {
   display: grid;
@@ -138,6 +166,44 @@
   cursor: not-allowed;
 }
 
+/* Default form group styling for inputs without icons */
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.form-group input, 
+.form-group select, 
+.form-group textarea {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  transition: all 0.2s;
+  background: #f8fafc;
+  font-family: inherit;
+}
+
+.form-group input:focus, 
+.form-group select:focus, 
+.form-group textarea:focus {
+  outline: none;
+  border-color: #c4a47a;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(196, 164, 122, 0.1);
+}
+
+.form-group small {
+  display: block;
+  margin-top: 0.5rem;
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
 .security-card {
   display: flex;
   justify-content: space-between;
@@ -189,6 +255,85 @@
   to { transform: rotate(360deg); }
 }
 
+/* Dashboard Orders Styles */
+.order-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 350px;
+}
+
+.order-search svg {
+  position: absolute;
+  left: 1rem;
+  color: #94a3b8;
+  font-size: 1.1rem;
+}
+
+.order-search input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.8rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 2rem;
+  font-size: 0.95rem;
+  background: white;
+  transition: all 0.2s;
+  outline: none;
+}
+
+.order-search input:focus {
+  border-color: #c4a47a;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(196, 164, 122, 0.15);
+}
+
+.empty-state-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 1.5rem;
+  padding: 4rem 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.empty-state-card svg {
+  color: #cbd5e1;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state-card h3 {
+  font-size: 1.5rem;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.empty-state-card p {
+  color: #64748b;
+  margin-bottom: 1.5rem;
+  max-width: 400px;
+}
+
+.orders-full-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.no-search-results {
+  background: white;
+  border: 1px dashed #cbd5e1;
+  border-radius: 1rem;
+  padding: 3rem 2rem;
+  text-align: center;
+  color: #64748b;
+  font-weight: 500;
+}
+
 @media (max-width: 1024px) {
   .dashboard-container {
     flex-direction: column;
@@ -209,5 +354,9 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 1.5rem;
+  }
+  
+  .order-search {
+    max-width: 100%;
   }
 }

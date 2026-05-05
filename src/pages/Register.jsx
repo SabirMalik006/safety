@@ -39,7 +39,7 @@ const Register = () => {
       });
 
       if (response.token) {
-        toast.success('Account created successfully! Welcome to SafetyMe.');
+        toast.success('Account created successfully! Welcome to The Horizon Hub.');
         navigate('/');
       } else {
         toast.error('Registration failed');
@@ -66,7 +66,7 @@ const Register = () => {
           />
           <div className="side-content">
             <Link to="/" className="auth-logo">
-              Safety<span>Me</span>
+              The Horizon <span>Hub</span>
             </Link>
             <div className="side-text">
               <h2>Join the Professionals</h2>
@@ -89,7 +89,7 @@ const Register = () => {
             </ul>
             
             <div className="side-footer">
-              <p>© 2026 SafetyMe Solutions. All rights reserved.</p>
+              <p>© 2026 The Horizon Hub. All rights reserved.</p>
             </div>
           </div>
         </div>

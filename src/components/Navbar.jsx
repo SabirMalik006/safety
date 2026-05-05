@@ -5,12 +5,12 @@ import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { getProducts, getCategories } from '../services/productService';
 import { getCurrentUser } from '../services/authService';
+import horizonHubLogo from '../assets/helo.jpeg';
 import './Navbar.css';
 
 const navLinks = [
   { label: 'Home', path: '/' },
   { label: 'Shop', path: '/collections/all-products' },
-  { label: 'Wholesale', path: '/pages/wholesale' },
   { label: 'About', path: '/about' },
   { label: 'Contact', path: '/contact' },
 ];
@@ -140,7 +140,13 @@ export default function Navbar() {
       <nav className={`navbar ${scrolled ? 'scrolled' : ''} ${menuOpen ? 'menu-open' : ''}`}>
         <div className="container nb-container">
           <Link to="/" className="nb-logo" onClick={handleNavClick}>
-            Safety<span>Me</span>
+            <span className="nb-brand">
+              <span className="nb-brand-mark" aria-hidden="true">
+                <img src={horizonHubLogo} alt="" />
+              </span>
+              <span className="nb-brand-byline">by Horizon-Integrated Solutions</span>
+              <span className="sr-only">The Horizon Hub</span>
+            </span>
           </Link>
 
           <button className="nb-hamburger" onClick={() => setMenuOpen(!menuOpen)}>

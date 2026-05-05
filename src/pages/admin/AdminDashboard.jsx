@@ -172,7 +172,7 @@ export default function AdminDashboard() {
       <div className="dashboard-top">
         <div className="welcome-msg">
           <h1>Industrial Insights</h1>
-          <p>Real-time overview of SafetyMe operations.</p>
+          <p>Real-time overview of The Horizon Hub operations.</p>
         </div>
         <div className="date-picker">
           <FiCalendar /> <span>This Month</span>

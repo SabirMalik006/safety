@@ -29,7 +29,7 @@ const Login = () => {
       const response = await login(formData.email, formData.password);
       
       if (response.token) {
-        toast.success('Welcome back to SafetyMe!');
+        toast.success('Welcome back to The Horizon Hub!');
         
         // Redirect based on role
         if (response.user?.role === 'admin') {
@@ -62,11 +62,11 @@ const Login = () => {
           />
           <div className="side-content">
             <Link to="/" className="auth-logo">
-              Safety<span>Me</span>
+              The Horizon <span>Hub</span>
             </Link>
             <div className="side-text">
               <h2>Empowering Industrial Safety</h2>
-              <p>Join thousands of professionals who trust SafetyMe for premium industrial protection and equipment.</p>
+              <p>Join thousands of professionals who trust The Horizon Hub for premium industrial protection and equipment.</p>
             </div>
             
             <ul className="benefits-list">
@@ -85,7 +85,7 @@ const Login = () => {
             </ul>
             
             <div className="side-footer">
-              <p>© 2026 SafetyMe Solutions. All rights reserved.</p>
+              <p>© 2026 The Horizon Hub. All rights reserved.</p>
             </div>
           </div>
         </div>

@@ -95,19 +95,64 @@
 
 /* LOGO */
 .nb-logo {
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: #fff;
   text-decoration: none;
-  letter-spacing: -0.02em;
   z-index: 2001;
   display: flex;
   align-items: center;
   height: 100%;
 }
 
-.nb-logo span {
-  color: var(--navbar-accent);
+.nb-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  line-height: 1;
+  width: 140px;
+}
+
+/* Show only top portion of the logo image */
+.nb-brand-mark {
+  width: 140px;
+  height: 45px;
+  overflow: hidden;
+  border-radius: 3px;
+}
+
+.nb-brand-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.navbar.scrolled .nb-brand {
+  width: 175px;  /* ← YEH BLOCK ADD KARO */
+}
+.navbar.scrolled .nb-brand-mark {
+  height: 30px;
+  width: 175px;
+}
+
+.nb-brand-byline {
+  font-size: 7px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-align: center;  /* ← YEH LINE ADD KARO */
+  width: 100%;         /* ← YEH LINE ADD KARO */
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }
 
 /* NAVIGATION LINKS */

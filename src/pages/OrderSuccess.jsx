@@ -74,14 +74,13 @@ export default function OrderSuccess() {
         </div>
 
         {order?.paymentMethod !== 'cod' && (
-          <div className="payment-instructions">
-            <h4>Payment Instructions</h4>
-            <p>Please send <strong>Rs.{order?.totalPrice?.toLocaleString()}</strong> to the following account:</p>
-            <div className="account-details">
-              <p><strong>Account Name:</strong> SafetyMe Supplies</p>
-              <p><strong>{order?.paymentMethod === 'easypaisa' ? 'EasyPaisa' : 'JazzCash'} #:</strong> 0300-1234567</p>
+          <div className="payment-instructions" style={{ background: 'rgba(39, 174, 96, 0.05)', borderColor: 'rgba(39, 174, 96, 0.2)' }}>
+            <h4 style={{ color: '#27ae60' }}>Payment Verification Pending</h4>
+            <p>Your payment details have been submitted successfully. Our admin team will verify your transaction and proceed with your order shortly. You can track the status in your dashboard's order section.</p>
+            <div className="account-details" style={{ marginTop: '15px', background: '#fff' }}>
+              <p><strong>Transaction ID:</strong> {order?.paymentProof?.transactionId || 'N/A'}</p>
+              <p><strong>Paid From:</strong> {order?.paymentProof?.paymentAccount || 'N/A'}</p>
             </div>
-            <p className="note">⚠️ Please upload the screenshot of your payment in the dashboard to verify your order.</p>
           </div>
         )}
 

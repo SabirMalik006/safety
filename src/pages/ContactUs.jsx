@@ -64,8 +64,8 @@ export default function ContactUs() {
             <div className="contact-card">
               <div className="contact-icon"><FiMail /></div>
               <h3>Email Us</h3>
-              <p>support@safetyme.pk</p>
-              <p>sales@safetyme.pk</p>
+              <p>support@thehorizonhub.com</p>
+              <p>sales@thehorizonhub.com</p>
             </div>
           </div>
         </div>

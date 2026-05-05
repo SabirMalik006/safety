@@ -154,9 +154,29 @@ export default function Home() {
           alignItems: 'center', 
           justifyContent: 'center',
           background: 'var(--steel)',
-          color: 'white'
+          flexDirection: 'column',
+          gap: '2rem'
         }}>
-          Loading...
+          <div style={{
+            width: '50px',
+            height: '50px',
+            border: '4px solid rgba(245, 158, 11, 0.2)',
+            borderTopColor: 'var(--hero-accent)',
+            borderRadius: '50%',
+            animation: 'spin 0.8s linear infinite'
+          }}></div>
+          <p style={{ 
+            color: 'rgba(255,255,255,0.6)', 
+            fontFamily: 'var(--font-body)',
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            fontSize: '0.75rem'
+          }}>Loading...</p>
+          <style>{`
+            @keyframes spin {
+              to { transform: rotate(360deg); }
+            }
+          `}</style>
         </div>
       </div>
     );

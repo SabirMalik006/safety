@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FiPlus, FiEdit2, FiTrash2, FiX, FiSearch, FiAlertTriangle, FiPackage, FiStar, FiImage } from 'react-icons/fi';
-import { getProducts, createProduct, updateProduct, deleteProduct, getCategories } from '../../services/productService';
+import { getProducts, createProduct, updateProduct, deleteProduct, getCategories, uploadProductImages, deleteProductImage } from '../../services/productService';
 import toast from 'react-hot-toast';
 import './AdminProducts.css';
 
@@ -14,6 +14,7 @@ export default function AdminProducts() {
   const [productToDelete, setProductToDelete] = useState(null);
   const [editingProduct, setEditingProduct] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const [uploadingImages, setUploadingImages] = useState(false);
   
   const [formData, setFormData] = useState({
     name: '', description: '', price: '', comparePrice: '', category: '',
@@ -148,6 +149,41 @@ export default function AdminProducts() {
     }
   };
 
+  const handleFileUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
+
+    const data = new FormData();
+    files.forEach(file => data.append('images', file));
+
+    setUploadingImages(true);
+    try {
+      const res = await uploadProductImages(data);
+      if (res.success) {
+        setFormData({ ...formData, images: [...formData.images, ...res.data] });
+        toast.success('Images uploaded successfully');
+      }
+    } catch (error) {
+      toast.error('Failed to upload images');
+    } finally {
+      setUploadingImages(false);
+    }
+  };
+
+  const handleRemoveImage = async (imgToRemove) => {
+    if (imgToRemove.publicId) {
+      try {
+        await deleteProductImage(imgToRemove.publicId);
+      } catch (error) {
+        console.error('Failed to delete from Cloudinary', error);
+      }
+    }
+    setFormData({
+      ...formData,
+      images: formData.images.filter(img => img !== imgToRemove)
+    });
+  };
+
   const filteredProducts = products.filter(p =>
     p.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -165,7 +201,7 @@ export default function AdminProducts() {
       </div>
 
       <div className="admin-controls-row">
-        <div className="search-box">
+        <div className="search-bar">
           <FiSearch />
           <input
             type="text"
@@ -298,22 +334,38 @@ export default function AdminProducts() {
                 </div>
 
                 <div className="form-group full">
-                  <label>Images (URL)</label>
+                  <label>Product Images</label>
                   <div className="tags-wrap">
                     {formData.images.map((img, idx) => (
                       <div key={idx} className="tag image-tag">
                         <img src={img.url} alt="" />
-                        <button type="button" onClick={() => setFormData({...formData, images: formData.images.filter((_, i) => i !== idx)})}>×</button>
+                        <button type="button" onClick={() => handleRemoveImage(img)}>×</button>
                       </div>
                     ))}
-                    <div className="tag-input-box">
+                  </div>
+                  
+                  <div className="image-upload-area">
+                    <input 
+                      type="file" 
+                      multiple 
+                      accept="image/*"
+                      onChange={handleFileUpload}
+                      id="product-image-upload"
+                      className="file-input-hidden"
+                      disabled={uploadingImages}
+                    />
+                    <label htmlFor="product-image-upload" className="upload-btn">
+                      <FiImage /> {uploadingImages ? 'Uploading...' : 'Upload Images'}
+                    </label>
+                    <span className="upload-hint">Or paste URL below:</span>
+                    <div className="tag-input-box" style={{marginTop: '0.5rem', width: '100%'}}>
                       <input 
                         type="text" 
                         value={imageInput} 
                         onChange={(e) => setImageInput(e.target.value)} 
                         placeholder="Paste image URL..." 
                       />
-                      <button type="button" onClick={addImage}>Add</button>
+                      <button type="button" onClick={addImage}>Add URL</button>
                     </div>
                   </div>
                 </div>

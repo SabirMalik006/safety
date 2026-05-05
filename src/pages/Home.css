@@ -39,8 +39,7 @@
   display: flex;
   height: 100%;
   width: 100%;
-  transition: transform 0.9s cubic-bezier(0.76, 0, 0.24, 1);
-  will-change: transform;
+  transition: transform 0.3s ease;
 }
 
 .hero-slide {
@@ -72,12 +71,7 @@
   height: 100%;
   object-fit: cover;
   object-position: center center;
-  transition: transform 9s ease-out;
   clip-path: polygon(8% 0%, 100% 0%, 100% 100%, 0% 100%);
-}
-
-.hero-slide.active .hero-img {
-  transform: scale(1.05);
 }
 
 .hero-scrim {
@@ -117,23 +111,12 @@
   z-index: 10;
   opacity: 0;
   pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
 .hero-slide.active .hero-body {
   opacity: 1;
   pointer-events: all;
-  animation: slideInLeft 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
-}
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateY(calc(-50% + 20px));
-  }
-  to {
-    opacity: 1;
-    transform: translateY(-50%);
-  }
 }
 
 .hero-title {
@@ -454,11 +437,11 @@
   position: relative;
   aspect-ratio: 3/4;
   display: block;
-  transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+  transition: box-shadow 0.2s ease;
 }
 
 .cat-card:hover {
-  transform: translateY(-6px);
+  box-shadow: 0 8px 24px rgba(28, 25, 23, 0.15);
 }
 
 .cat-image {
@@ -471,12 +454,11 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s ease;
   filter: saturate(0.85);
+  transition: filter 0.2s ease;
 }
 
 .cat-card:hover .cat-image img {
-  transform: scale(1.06);
   filter: saturate(1);
 }
 
@@ -503,11 +485,6 @@
   height: 2px;
   background: var(--hero-accent);
   margin-bottom: 0.6rem;
-  transition: width 0.3s ease;
-}
-
-.cat-card:hover .cat-info::before {
-  width: 48px;
 }
 
 .cat-info h3 {
@@ -529,11 +506,6 @@
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--hero-accent);
-  transition: gap 0.3s ease;
-}
-
-.cat-card:hover .cat-info span {
-  gap: 10px;
 }
 
 
@@ -710,28 +682,13 @@
   -webkit-mask-image: linear-gradient(to right, transparent, rgba(0,0,0,1) 8%, rgba(0,0,0,1) 92%, transparent);
 }
 
-.section-pad.reveal {
-  opacity: 0;
-  transform: translateY(30px);
-  animation: revealUp 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
 
-@keyframes revealUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
 .reviews-track {
   display: flex;
   gap: 1.5rem;
   width: max-content;
-  animation: reviewsScroll 50s linear infinite;
-}
-
-.reviews-track:hover {
-  animation-play-state: paused;
+  animation: reviewsScroll 80s linear infinite;
 }
 
 @keyframes reviewsScroll {
@@ -745,8 +702,6 @@
   border: 1px solid var(--border-light);
   border-radius: 4px;
   padding: 2rem;
-  transition: transform 0.4s cubic-bezier(0.22,1,0.36,1),
-              box-shadow 0.4s cubic-bezier(0.22,1,0.36,1);
   display: flex;
   flex-direction: column;
   position: relative;
@@ -762,17 +717,6 @@
   right: 0;
   height: 2px;
   background: var(--hero-accent);
-  transform: scaleX(0);
-  transition: transform 0.3s ease;
-}
-
-.review-card:hover::before {
-  transform: scaleX(1);
-}
-
-.review-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 60px rgba(28,25,23,0.1);
 }
 
 .review-stars {
@@ -855,36 +799,39 @@
   aspect-ratio: 1;
   overflow: hidden;
   cursor: pointer;
+  transition: box-shadow 0.2s ease;
+}
+
+.ig-item:hover {
+  box-shadow: 0 4px 16px rgba(28, 25, 23, 0.15);
 }
 
 .ig-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.22,1,0.36,1);
   filter: saturate(0.8);
+  transition: filter 0.2s ease;
 }
 
 .ig-item:hover img {
-  transform: scale(1.1);
   filter: saturate(1);
 }
 
 .ig-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(28,25,23,0);
+  background: rgba(28,25,23,0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--hero-accent);
   font-size: 1.5rem;
-  transition: background 0.3s ease;
   opacity: 0;
+  transition: opacity 0.2s ease;
 }
 
 .ig-item:hover .ig-overlay {
-  background: rgba(28,25,23,0.5);
   opacity: 1;
 }
 

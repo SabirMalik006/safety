@@ -1,6 +1,7 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import api from '../services/api';
 import { isAuthenticated } from '../services/authService';
+import { getCart as apiGetCart, addToCart as apiAddToCart, updateCartItem as apiUpdateCartItem, removeFromCart as apiRemoveFromCart, clearCart as apiClearCart } from '../services/cartService';
 
 const CartContext = createContext();
 
@@ -27,67 +28,143 @@ export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Load cart from localStorage
-  useEffect(() => {
-    const savedCart = localStorage.getItem('cart');
-    if (savedCart) {
+  const fetchCart = useCallback(async () => {
+    if (isAuthenticated()) {
       try {
-        const parsed = JSON.parse(savedCart);
-        setCartItems(Array.isArray(parsed) ? parsed : []);
+        const response = await apiGetCart();
+        const cartData = response?.data?.items ? response.data : response?.data?.data;
+
+        if (cartData && cartData.items) {
+          const formattedItems = cartData.items.map(item => ({
+            itemId: item._id,
+            productId: item.product?._id || item.product,
+            name: item.name,
+            price: item.price,
+            image:
+              (typeof item.image === 'string' && item.image.startsWith('http') ? item.image : '') ||
+              item.product?.images?.[0]?.url ||
+              item.product?.images?.[0] ||
+              '/images/placeholder.jpg',
+            quantity: item.quantity,
+            color: item.selectedColor,
+            stock: item.product?.inStock || 100,
+            slug: item.product?.slug || ''
+          }));
+          setCartItems(formattedItems);
+        }
       } catch (e) {
-        console.error('Error loading cart:', e);
-        setCartItems([]);
+        console.error('Error fetching cart from backend:', e);
+      }
+    } else {
+      const savedCart = localStorage.getItem('cart');
+      if (savedCart) {
+        try {
+          const parsed = JSON.parse(savedCart);
+          setCartItems(Array.isArray(parsed) ? parsed : []);
+        } catch (e) {
+          setCartItems([]);
+        }
       }
     }
   }, []);
 
-  // Save cart to localStorage
   useEffect(() => {
-    if (cartItems.length >= 0) {
+    fetchCart();
+    
+    const handleAuthChange = () => {
+      if (!isAuthenticated()) {
+        setCartItems([]);
+        localStorage.removeItem('cart');
+      } else {
+        fetchCart();
+      }
+    };
+    
+    window.addEventListener('auth-change', handleAuthChange);
+    return () => window.removeEventListener('auth-change', handleAuthChange);
+  }, [fetchCart]);
+
+  useEffect(() => {
+    if (!isAuthenticated()) {
       localStorage.setItem('cart', JSON.stringify(cartItems));
     }
   }, [cartItems]);
 
-  const addToCart = (product, quantity = 1, selectedColor = null, selectedSize = null) => {
-    setCartItems(prevItems => {
-      const existingIndex = prevItems.findIndex(
-        item => item.productId === product._id && 
-                item.color === selectedColor && 
-                item.size === selectedSize
-      );
-
-      if (existingIndex > -1) {
-        const updated = [...prevItems];
-        updated[existingIndex].quantity += quantity;
-        return updated;
+  const addToCart = async (product, quantity = 1, selectedColor = null, selectedSize = null) => {
+    const productId = product._id || product.id;
+    
+    if (isAuthenticated()) {
+      try {
+        await apiAddToCart(productId, quantity, selectedColor || '');
+        await fetchCart();
+      } catch (e) {
+        console.error('Error adding to backend cart:', e);
       }
+    } else {
+      setCartItems(prevItems => {
+        const existingIndex = prevItems.findIndex(
+          item => item.productId === productId && 
+                  item.color === selectedColor && 
+                  item.size === selectedSize
+        );
 
-      return [...prevItems, {
-        productId: product._id,
-        name: product.name,
-        price: product.price,
-        image: product.images?.[0]?.url || product.image || '/images/placeholder.jpg',
-        quantity: quantity,
-        color: selectedColor,
-        size: selectedSize,
-        stock: product.stock,
-        slug: product.slug
-      }];
-    });
-  };
+        if (existingIndex > -1) {
+          const updated = [...prevItems];
+          updated[existingIndex].quantity += quantity;
+          return updated;
+        }
 
-  const removeFromCart = (index) => {
-    setCartItems(prev => prev.filter((_, i) => i !== index));
-  };
-
-  const updateQuantity = (index, newQuantity) => {
-    if (newQuantity < 1) {
-      removeFromCart(index);
-      return;
+        return [...prevItems, {
+          productId: productId,
+          name: product.name,
+          price: product.price,
+          image: product.images?.[0]?.url || product.image || '/images/placeholder.jpg',
+          quantity: quantity,
+          color: selectedColor,
+          size: selectedSize,
+          stock: product.stock || 100,
+          slug: product.slug
+        }];
+      });
     }
-    setCartItems(prev => prev.map((item, i) => 
-      i === index ? { ...item, quantity: newQuantity } : item
-    ));
+  };
+
+  const removeFromCart = async (index) => {
+    const item = cartItems[index];
+    if (!item) return;
+
+    if (isAuthenticated() && item.itemId) {
+      try {
+        await apiRemoveFromCart(item.itemId);
+        await fetchCart();
+      } catch (e) {
+        console.error('Error removing from backend cart:', e);
+      }
+    } else {
+      setCartItems(prev => prev.filter((_, i) => i !== index));
+    }
+  };
+
+  const updateQuantity = async (index, newQuantity) => {
+    const item = cartItems[index];
+    if (!item) return;
+
+    if (newQuantity < 1) {
+      return removeFromCart(index);
+    }
+    
+    if (isAuthenticated() && item.itemId) {
+      try {
+        await apiUpdateCartItem(item.itemId, newQuantity);
+        await fetchCart();
+      } catch (e) {
+        console.error('Error updating backend cart:', e);
+      }
+    } else {
+      setCartItems(prev => prev.map((it, i) => 
+        i === index ? { ...it, quantity: newQuantity } : it
+      ));
+    }
   };
 
   const getCartTotal = () => {
@@ -98,8 +175,18 @@ export const CartProvider = ({ children }) => {
     return cartItems.reduce((count, item) => count + (item.quantity || 1), 0);
   };
 
-  const clearCart = () => {
-    setCartItems([]);
+  const clearCart = async () => {
+    if (isAuthenticated()) {
+      try {
+        await apiClearCart();
+        setCartItems([]);
+      } catch (e) {
+        console.error('Error clearing backend cart:', e);
+      }
+    } else {
+      setCartItems([]);
+      localStorage.removeItem('cart');
+    }
   };
 
   const placeOrder = async (orderData) => {

@@ -77,3 +77,19 @@ export const deleteProduct = async (id) => {
   const response = await api.delete(`/products/${id}`);
   return response.data;
 };
+
+// Upload product images (admin)
+export const uploadProductImages = async (formData) => {
+  const response = await api.post('/products/upload-images', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  });
+  return response.data;
+};
+
+// Delete product image (admin)
+export const deleteProductImage = async (publicId) => {
+  const response = await api.delete('/products/delete-image', {
+    data: { publicId }
+  });
+  return response.data;
+};

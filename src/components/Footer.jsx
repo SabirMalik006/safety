@@ -49,7 +49,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer-top container">
         <div className="footer-brand">
-          <Link to="/" className="footer-logo">Safety<span>Me</span></Link>
+          <Link to="/" className="footer-logo">The Horizon <span>Hub</span></Link>
           <p>Pakistan's trusted destination for premium safety equipment and industrial protection gear. Quality you can trust, safety you can rely on.</p>
           <div className="social-links">
             <a href="#" aria-label="Instagram"><FiInstagram /></a>
@@ -106,7 +106,7 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom container">
-        <p>© {new Date().getFullYear()} SafetyMe. All rights reserved. Made with ♥ in Pakistan</p>
+        <p>© {new Date().getFullYear()} The Horizon Hub. All rights reserved. Made with ♥ in Pakistan</p>
         <div className="payment-badges">
           <span>COD</span>
           <span>JazzCash</span>

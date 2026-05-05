@@ -65,7 +65,7 @@ const DashboardOverview = ({ user }) => {
           <div className="empty-orders">
             <FiClock />
             <p>You haven't placed any orders yet.</p>
-            <Link to="/collections" className="btn-primary">Start Shopping</Link>
+            <Link to="/collections/all-products" className="btn-primary">Start Shopping</Link>
           </div>
         ) : (
           <div className="orders-list">

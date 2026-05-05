@@ -70,17 +70,21 @@ const PageLoader = () => (
 function Layout({ children }) {
   const location = useLocation();
   
-  // Pages where Navbar and Footer should be hidden
-  const hideNavFooterPages = ['/checkout', '/login', '/register', '/dashboard', '/profile'];
-  // Also hide on admin routes
+  // Navbar/Footer visibility rules
+  // - Show Navbar on checkout (requested)
+  // - Hide Navbar on auth pages + admin routes
+  // - Hide Footer on checkout + auth pages + admin routes
+  const hideNavbarPages = ['/login', '/register'];
+  const hideFooterPages = ['/checkout', '/login', '/register'];
   const isAdminRoute = location.pathname.startsWith('/admin');
-  const shouldHideNavFooter = hideNavFooterPages.includes(location.pathname) || isAdminRoute;
+  const shouldHideNavbar = hideNavbarPages.includes(location.pathname) || isAdminRoute;
+  const shouldHideFooter = hideFooterPages.includes(location.pathname) || isAdminRoute;
   
   return (
     <>
-      {!shouldHideNavFooter && <Navbar />}
-      <main className={!shouldHideNavFooter ? 'has-navbar' : ''}>{children}</main>
-      {!shouldHideNavFooter && <Footer />}
+      {!shouldHideNavbar && <Navbar />}
+      <main className={!shouldHideNavbar ? 'has-navbar' : ''}>{children}</main>
+      {!shouldHideFooter && <Footer />}
     </>
   );
 }
@@ -118,7 +122,7 @@ export default function App() {
               <Route path="/pages/wholesale" element={
                 <div className="page-content" style={{ padding: '6rem 0', textAlign: 'center' }}>
                   <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem' }}>Wholesale Inquiry</h2>
-                  <p style={{ color: 'var(--text-muted)', marginTop: '1rem' }}>Contact us at info@safetyme.pk for industrial bulk orders.</p>
+                  <p style={{ color: 'var(--text-muted)', marginTop: '1rem' }}>Contact us at info@thehorizonhub.com for industrial bulk orders.</p>
                 </div>
               } />
               
