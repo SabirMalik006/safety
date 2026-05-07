@@ -345,7 +345,7 @@ export default function Navbar() {
               
               <div className="mobile-contact-info">
                 <p>Need Help? Call us:</p>
-                <a href="tel:+923001234567">+92 300 1234567</a>
+                <a href="tel:+923215366666">+92 3215366666</a>
               </div>
             </div>
           </div>

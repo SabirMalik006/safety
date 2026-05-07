@@ -39,11 +39,11 @@ const DashboardProfile = ({ user, onUpdate }) => {
           <div className="form-grid">
             <div className="form-group">
               <label>Full Name</label>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 value={formData.name}
-                onChange={(e) => setFormData({...formData, name: e.target.value})}
-                required 
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                required
               />
             </div>
             <div className="form-group">
@@ -53,11 +53,11 @@ const DashboardProfile = ({ user, onUpdate }) => {
             </div>
             <div className="form-group">
               <label>Phone Number</label>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 value={formData.phone}
-                onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                placeholder="e.g. +92 300 1234567"
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                placeholder="e.g. +92 3215366666"
               />
             </div>
           </div>

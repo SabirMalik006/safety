@@ -58,14 +58,14 @@ export default function ContactUs() {
             <div className="contact-card">
               <div className="contact-icon"><FiPhoneCall /></div>
               <h3>Call Us</h3>
-              <p>+92 300 1234567</p>
+              <p>+92 3215366666</p>
               <p>Mon-Fri: 10am - 8pm</p>
             </div>
             <div className="contact-card">
               <div className="contact-icon"><FiMail /></div>
               <h3>Email Us</h3>
-              <p>support@thehorizonhub.com</p>
-              <p>sales@thehorizonhub.com</p>
+              <p>info@horizonintegratedsolutions@gmail.com</p>
+              <p>info@horizonintegratedsolutions@gmail.com</p>
             </div>
           </div>
         </div>

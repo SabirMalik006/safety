@@ -368,7 +368,7 @@ export default function Checkout() {
                 </div>
                 <div className={`form-group ${errors.phone ? 'error' : ''}`}>
                   <label>Phone Number</label>
-                  <input name="phone" value={formData.phone} onChange={handleChange} placeholder="+92 300 1234567" />
+                  <input name="phone" value={formData.phone} onChange={handleChange} placeholder="+92 3215366666" />
                   {errors.phone && <span className="error-text">{errors.phone}</span>}
                 </div>
                 <div className={`form-group ${errors.address ? 'error' : ''} full`}>
@@ -419,7 +419,7 @@ export default function Checkout() {
                   icon={FiSmartphone}
                   title="EasyPaisa"
                   desc="Transfer to our EasyPaisa account"
-                  accounts={[{ label: 'EasyPaisa', value: '0300-1234567 (Horizon)' }]}
+                  accounts={[{ label: 'EasyPaisa', value: '0321-5366666 (Horizon)' }]}
                   isSelected={paymentMethod === 'easypaisa'}
                   onSelect={setPaymentMethod}
                   paymentProof={paymentProof}
@@ -436,7 +436,7 @@ export default function Checkout() {
                   icon={FiSmartphone}
                   title="JazzCash"
                   desc="Transfer to our JazzCash account"
-                  accounts={[{ label: 'JazzCash', value: '0300-7654321 (The Horizon Hub)' }]}
+                  accounts={[{ label: 'JazzCash', value: '0321-5366666 (The Horizon Hub)' }]}
                   isSelected={paymentMethod === 'jazzcash'}
                   onSelect={setPaymentMethod}
                   paymentProof={paymentProof}
