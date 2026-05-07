@@ -101,31 +101,8 @@ export const CartProvider = ({ children }) => {
         console.error('Error adding to backend cart:', e);
       }
     } else {
-      setCartItems(prevItems => {
-        const existingIndex = prevItems.findIndex(
-          item => item.productId === productId && 
-                  item.color === selectedColor && 
-                  item.size === selectedSize
-        );
-
-        if (existingIndex > -1) {
-          const updated = [...prevItems];
-          updated[existingIndex].quantity += quantity;
-          return updated;
-        }
-
-        return [...prevItems, {
-          productId: productId,
-          name: product.name,
-          price: product.price,
-          image: product.images?.[0]?.url || product.image || '/images/placeholder.jpg',
-          quantity: quantity,
-          color: selectedColor,
-          size: selectedSize,
-          stock: product.stock || 100,
-          slug: product.slug
-        }];
-      });
+      // Guest addition disabled as per requirements
+      console.log('Guest addition blocked');
     }
   };
 

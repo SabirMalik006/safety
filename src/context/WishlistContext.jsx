@@ -64,14 +64,8 @@ export function WishlistProvider({ children }) {
         console.error('Error toggling wishlist on backend:', e);
       }
     } else {
-      setWishlist(prev => {
-        const exists = prev.some(p => (p._id || p.id) === productId);
-        if (exists) {
-          return prev.filter(p => (p._id || p.id) !== productId);
-        } else {
-          return [...prev, { ...product, id: productId }];
-        }
-      });
+      // Guest wishlist blocked as per requirements
+      console.log('Guest wishlist blocked');
     }
   };
 

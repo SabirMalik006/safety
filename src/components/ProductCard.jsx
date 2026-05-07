@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiHeart, FiShoppingCart, FiEye } from 'react-icons/fi';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
+import { isAuthenticated } from '../services/authService';
+import toast from 'react-hot-toast';
 import './ProductCard.css';
 
 export default function ProductCard({ product }) {
@@ -13,6 +15,7 @@ export default function ProductCard({ product }) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const { addToCart } = useCart();
   const { toggleWishlist, isWishlisted } = useWishlist();
+  const navigate = useNavigate();
 
   // ✅ Safety check
   if (!product) {
@@ -36,6 +39,13 @@ export default function ProductCard({ product }) {
   const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    if (!isAuthenticated()) {
+      toast.error('Please login to add items to cart');
+      navigate('/login');
+      return;
+    }
+
     if (product.inStock || product.stock > 0) {
       addToCart(product, 1, selectedColor);
     }
@@ -44,6 +54,13 @@ export default function ProductCard({ product }) {
   const handleWishlistClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
+
+    if (!isAuthenticated()) {
+      toast.error('Please login to add items to wishlist');
+      navigate('/login');
+      return;
+    }
+
     toggleWishlist(product);
   };
 
@@ -73,7 +90,6 @@ export default function ProductCard({ product }) {
       onMouseLeave={() => setHovering(false)}
     >
       <Link to={`/products/${productSlug}`} className="product-image-wrap">
-        {/* ✅ Lazy Load Image - Sirf ye change hai */}
         <LazyLoadImage
           src={currentImage}
           alt={productName}

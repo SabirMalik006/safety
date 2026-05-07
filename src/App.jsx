@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
 import { Toaster } from 'react-hot-toast';
+import { Navigate } from 'react-router-dom';
+import { isAuthenticated } from './services/authService';
 
 // Core Components
 import Navbar from './components/Navbar';
@@ -38,6 +40,17 @@ const AdminReviews = lazy(() => import('./pages/admin/AdminReviews'));
 const AdminContacts = lazy(() => import('./pages/admin/AdminContacts'));
 const AdminUsers = lazy(() => import('./pages/admin/AdminUsers'));
 const AdminPaymentVerification = lazy(() => import('./pages/admin/AdminPaymentVerification'));
+
+// Protected Route Component
+const ProtectedRoute = ({ children }) => {
+  const location = useLocation();
+  
+  if (!isAuthenticated()) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+  
+  return children;
+};
 
 // Loading Spinner Component
 const PageLoader = () => (
@@ -107,12 +120,12 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/collections/:slug" element={<Collections />} />
               <Route path="/products/:slug" element={<ProductDetail />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/pages/wishlist" element={<Wishlist />} />
+              <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
+              <Route path="/pages/wishlist" element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />
               <Route path="/pages/reviews" element={<Reviews />} />
               <Route path="/contact" element={<ContactUs />} />
               <Route path="/about" element={<AboutUs />} />
-              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
               
               {/* Checkout - No Navbar/Footer */}
               <Route path="/checkout" element={<Checkout />} />

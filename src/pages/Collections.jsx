@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams, useParams } from 'react-router-dom';
+import { useSearchParams, useParams, useNavigate } from 'react-router-dom';
 import { FiGrid, FiList, FiFilter, FiChevronDown, FiSearch, FiShoppingCart, FiHeart, FiStar } from 'react-icons/fi';
 import { getProducts, getCategories } from '../services/productService';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
+import { isAuthenticated } from '../services/authService';
 import CategorySidebar from '../components/CategorySidebar';
 import { SkeletonGrid } from '../components/ProductSkeleton';
 import toast from 'react-hot-toast';
@@ -18,7 +19,7 @@ const Collections = () => {
   const [viewMode, setViewMode] = useState('grid');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sortOption, setSortOption] = useState('newest');
-  
+
   // Filter States
   const initialCategory = slug && slug !== 'all-products' && slug !== 'all' ? slug : (searchParams.get('category') || 'all');
   const [activeCategory, setActiveCategory] = useState(initialCategory);
@@ -28,6 +29,7 @@ const Collections = () => {
 
   const { addToCart } = useCart();
   const { toggleWishlist, isWishlisted } = useWishlist();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (slug) {
@@ -52,12 +54,12 @@ const Collections = () => {
         color: activeColor || undefined,
         search: searchTerm || undefined
       };
-      
+
       const [prodRes, catRes] = await Promise.all([
         getProducts(filters),
         getCategories()
       ]);
-      
+
       setProducts(prodRes.data || []);
       setCategories(catRes.data || []);
     } catch (err) {
@@ -82,14 +84,14 @@ const Collections = () => {
               <FiFilter /> Filters
             </button>
             <div className="view-toggles">
-              <button 
-                className={viewMode === 'grid' ? 'active' : ''} 
+              <button
+                className={viewMode === 'grid' ? 'active' : ''}
                 onClick={() => setViewMode('grid')}
               >
                 <FiGrid />
               </button>
-              <button 
-                className={viewMode === 'list' ? 'active' : ''} 
+              <button
+                className={viewMode === 'list' ? 'active' : ''}
                 onClick={() => setViewMode('list')}
               >
                 <FiList />
@@ -103,16 +105,16 @@ const Collections = () => {
           <div className="top-right">
             <form className="search-form" onSubmit={handleSearch}>
               <FiSearch />
-              <input 
-                type="text" 
-                placeholder="Search products..." 
+              <input
+                type="text"
+                placeholder="Search products..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </form>
             <div className="sort-wrapper">
-              <select 
-                value={sortOption} 
+              <select
+                value={sortOption}
                 onChange={(e) => setSortOption(e.target.value)}
               >
                 <option value="newest">Newest First</option>
@@ -125,7 +127,7 @@ const Collections = () => {
         </div>
 
         <div className="collections-main">
-          <CategorySidebar 
+          <CategorySidebar
             categories={categories}
             activeCategory={activeCategory}
             onCategoryChange={setActiveCategory}
@@ -142,7 +144,7 @@ const Collections = () => {
               <SkeletonGrid count={8} />
             ) : products.length === 0 ? (
               <div className="no-results">
-                <img src="/images/no-results.png" alt="No results" onError={(e) => e.target.style.display='none'} />
+                <img src="/images/no-results.png" alt="No results" onError={(e) => e.target.style.display = 'none'} />
                 <h3>No products found</h3>
                 <p>Try adjusting your filters or search terms.</p>
                 <button className="btn-primary" onClick={() => {
@@ -155,12 +157,26 @@ const Collections = () => {
             ) : (
               <div className="products-grid">
                 {products.map(product => (
-                  <ProductCard 
-                    key={product._id} 
-                    product={product} 
+                  <ProductCard
+                    key={product._id}
+                    product={product}
                     viewMode={viewMode}
-                    onAddToCart={addToCart}
-                    onWishlist={toggleWishlist}
+                    onAddToCart={(p) => {
+                      if (!isAuthenticated()) {
+                        toast.error('Please login to add items to cart');
+                        navigate('/login');
+                        return;
+                      }
+                      addToCart(p);
+                    }}
+                    onWishlist={(p) => {
+                      if (!isAuthenticated()) {
+                        toast.error('Please login to add items to wishlist');
+                        navigate('/login');
+                        return;
+                      }
+                      toggleWishlist(p);
+                    }}
                     isWishlisted={isWishlisted(product._id)}
                   />
                 ))}
@@ -182,7 +198,7 @@ const ProductCard = ({ product, viewMode, onAddToCart, onWishlist, isWishlisted 
           <span className="sale-badge">Sale</span>
         )}
         <div className="card-actions">
-          <button 
+          <button
             className={`action-btn ${isWishlisted ? 'active' : ''}`}
             onClick={() => onWishlist(product)}
             title="Add to Wishlist"
@@ -194,7 +210,7 @@ const ProductCard = ({ product, viewMode, onAddToCart, onWishlist, isWishlisted 
           </button>
         </div>
       </div>
-      
+
       <div className="card-info">
         <div className="card-category">{product.category?.name}</div>
         <h3 className="card-title">
@@ -212,7 +228,7 @@ const ProductCard = ({ product, viewMode, onAddToCart, onWishlist, isWishlisted 
             <span className="old-price">Rs.{product.comparePrice?.toLocaleString()}</span>
           )}
         </div>
-        
+
         {viewMode === 'list' && (
           <div className="list-description">
             <p>{product.description?.substring(0, 150)}...</p>

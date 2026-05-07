@@ -53,8 +53,8 @@ export default function Cart() {
             </div>
             
             <div className="cart-list">
-              {cartItems.map((item) => (
-                <div key={`${item.productId}-${item.color}-${item.size}`} className="cart-item">
+              {cartItems.map((item, index) => (
+                <div key={`${item.productId}-${item.color}-${item.size}-${index}`} className="cart-item">
                   <div className="item-main">
                     <div className="item-img">
                       <img src={item.image} alt={item.name} />
@@ -66,7 +66,7 @@ export default function Cart() {
                         {item.size && <span>Size: {item.size}</span>}
                       </div>
                       <div className="item-price-mobile">Rs.{item.price.toLocaleString()}</div>
-                      <button className="btn-remove-mobile" onClick={() => removeFromCart(item.productId, item.color, item.size)}>
+                      <button className="btn-remove-mobile" onClick={() => removeFromCart(index)}>
                         <FiTrash2 /> Remove
                       </button>
                     </div>
@@ -74,11 +74,11 @@ export default function Cart() {
 
                   <div className="item-qty">
                     <div className="qty-stepper">
-                      <button onClick={() => updateQuantity(item.productId, item.quantity - 1, item.color, item.size)} disabled={item.quantity <= 1}>
+                      <button onClick={() => updateQuantity(index, item.quantity - 1)} disabled={item.quantity <= 1}>
                         <FiMinus />
                       </button>
                       <span>{item.quantity}</span>
-                      <button onClick={() => updateQuantity(item.productId, item.quantity + 1, item.color, item.size)}>
+                      <button onClick={() => updateQuantity(index, item.quantity + 1)}>
                         <FiPlus />
                       </button>
                     </div>
@@ -86,7 +86,7 @@ export default function Cart() {
 
                   <div className="item-total">
                     <strong>Rs.{(item.price * item.quantity).toLocaleString()}</strong>
-                    <button className="btn-remove-desktop" title="Remove Item" onClick={() => removeFromCart(item.productId, item.color, item.size)}>
+                    <button className="btn-remove-desktop" title="Remove Item" onClick={() => removeFromCart(index)}>
                       <FiXCircle />
                     </button>
                   </div>

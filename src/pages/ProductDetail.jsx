@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { FiHeart, FiShoppingCart, FiShare2, FiTruck, FiRefreshCw, FiShield, FiStar, FiMinus, FiPlus, FiChevronRight } from 'react-icons/fi';
 import ProductCard from '../components/ProductCard';
 import { useCart } from '../context/CartContext';
@@ -7,6 +7,7 @@ import { useWishlist } from '../context/WishlistContext';
 import { getProductBySlug, getProducts } from '../services/productService';
 import { getProductReviews, createReview } from '../services/reviewService';
 import { isAuthenticated } from '../services/authService';
+import toast from 'react-hot-toast';
 import './ProductDetail.css';
 
 const colorMap = {
@@ -21,6 +22,7 @@ export default function ProductDetail() {
   const { slug } = useParams();
   const { addToCart } = useCart();
   const { toggleWishlist, isWishlisted } = useWishlist();
+  const navigate = useNavigate();
 
   const [product, setProduct] = useState(null);
   const [related, setRelated] = useState([]);
@@ -46,18 +48,18 @@ export default function ProductDetail() {
         if (productRes.success && productRes.data) {
           const fetchedProduct = productRes.data;
           setProduct(fetchedProduct);
-          
+
           // Set default selected color
           if (fetchedProduct.colors && fetchedProduct.colors.length > 0) {
             setSelectedColor(fetchedProduct.colors[0].name);
           }
-          
+
           // Fetch reviews
           const reviewsRes = await getProductReviews(fetchedProduct._id);
           if (reviewsRes.success) {
             setReviews(reviewsRes.data || []);
           }
-          
+
           // Fetch related products (same category)
           if (fetchedProduct.category?._id) {
             const relatedRes = await getProducts({ category: fetchedProduct.category._id });
@@ -76,7 +78,7 @@ export default function ProductDetail() {
         setLoading(false);
       }
     };
-    
+
     if (slug) {
       fetchProductData();
     }
@@ -84,6 +86,13 @@ export default function ProductDetail() {
 
   const handleAddToCart = () => {
     if (!product) return;
+
+    if (!isAuthenticated()) {
+      toast.error('Please login to add items to cart');
+      navigate('/login');
+      return;
+    }
+
     const color = selectedColor || product.colors?.[0]?.name || '';
     addToCart(product, quantity, color);
     setAdded(true);
@@ -93,7 +102,8 @@ export default function ProductDetail() {
   const handleSubmitReview = async (e) => {
     e.preventDefault();
     if (!isAuthenticated()) {
-      alert('Please login to submit a review');
+      toast.error('Please login to submit a review');
+      navigate('/login');
       return;
     }
     setReviewSubmitting(true);
@@ -136,7 +146,7 @@ export default function ProductDetail() {
   };
 
   const inStock = product?.stock > 0;
-  const discount = product?.comparePrice && product.comparePrice > product.price 
+  const discount = product?.comparePrice && product.comparePrice > product.price
     ? Math.round(((product.comparePrice - product.price) / product.comparePrice) * 100)
     : 0;
 
@@ -168,8 +178,8 @@ export default function ProductDetail() {
     id: p._id,
     image: p.images?.[0]?.url || '/images/placeholder.jpg',
     originalPrice: p.comparePrice,
-    discount: p.comparePrice && p.comparePrice > p.price 
-      ? Math.round(((p.comparePrice - p.price) / p.comparePrice) * 100) 
+    discount: p.comparePrice && p.comparePrice > p.price
+      ? Math.round(((p.comparePrice - p.price) / p.comparePrice) * 100)
       : 0,
     slug: p.slug,
     colors: p.colors?.map(c => c.name) || [],
@@ -287,7 +297,14 @@ export default function ProductDetail() {
             </button>
             <button
               className={`btn-wishlist ${isWishlisted(product._id) ? 'active' : ''}`}
-              onClick={() => toggleWishlist({ ...product, id: product._id })}
+              onClick={() => {
+                if (!isAuthenticated()) {
+                  toast.error('Please login to add items to wishlist');
+                  navigate('/login');
+                  return;
+                }
+                toggleWishlist({ ...product, id: product._id });
+              }}
             >
               <FiHeart />
             </button>
@@ -355,14 +372,14 @@ export default function ProductDetail() {
             <div className="tab-pane">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                 <h3>Customer Reviews</h3>
-                <button 
+                <button
                   onClick={() => setShowReviewForm(!showReviewForm)}
                   style={{ padding: '8px 16px', background: '#000', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
                 >
                   Write a Review
                 </button>
               </div>
-              
+
               <div className="review-summary">
                 <span className="big-rating">{product.rating || 0}</span>
                 <div>
@@ -380,9 +397,9 @@ export default function ProductDetail() {
                   <h4>Write Your Review</h4>
                   <div style={{ marginBottom: '1rem' }}>
                     <label>Rating: </label>
-                    <select 
-                      value={reviewForm.rating} 
-                      onChange={(e) => setReviewForm({...reviewForm, rating: Number(e.target.value)})}
+                    <select
+                      value={reviewForm.rating}
+                      onChange={(e) => setReviewForm({ ...reviewForm, rating: Number(e.target.value) })}
                       style={{ marginLeft: '1rem', padding: '5px' }}
                     >
                       <option value={5}>5 - Excellent</option>
@@ -392,19 +409,19 @@ export default function ProductDetail() {
                       <option value={1}>1 - Poor</option>
                     </select>
                   </div>
-                  <input 
-                    type="text" 
-                    placeholder="Review Title" 
+                  <input
+                    type="text"
+                    placeholder="Review Title"
                     value={reviewForm.title}
-                    onChange={(e) => setReviewForm({...reviewForm, title: e.target.value})}
+                    onChange={(e) => setReviewForm({ ...reviewForm, title: e.target.value })}
                     style={{ width: '100%', padding: '10px', marginBottom: '1rem', border: '1px solid #ddd', borderRadius: '4px' }}
                     required
                   />
-                  <textarea 
-                    placeholder="Your Review" 
+                  <textarea
+                    placeholder="Your Review"
                     rows="4"
                     value={reviewForm.comment}
-                    onChange={(e) => setReviewForm({...reviewForm, comment: e.target.value})}
+                    onChange={(e) => setReviewForm({ ...reviewForm, comment: e.target.value })}
                     style={{ width: '100%', padding: '10px', marginBottom: '1rem', border: '1px solid #ddd', borderRadius: '4px' }}
                     required
                   />

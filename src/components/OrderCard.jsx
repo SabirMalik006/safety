@@ -59,12 +59,6 @@ const OrderCard = ({ order }) => {
           </div>
         </div>
       </div>
-
-      <div className="order-card-footer">
-        <Link to={`/dashboard/orders/${order._id}`} className="view-details-btn">
-          View Details <FiChevronRight />
-        </Link>
-      </div>
     </div>
   );
 };
