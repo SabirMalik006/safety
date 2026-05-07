@@ -208,27 +208,27 @@ export const products = [
 export const categories = [
   {
     id: 1,
-    name: "Head & Eye Protection",
+    name: " powerful hydraulic rescue tool",
     slug: "head-eye-protection",
-    image: "https://images.pexels.com/photos/11878301/pexels-photo-11878301.jpeg",
+    image: "https://images.pexels.com/photos/5965114/pexels-photo-5965114.jpeg",
   },
   {
     id: 2,
     name: "Power Tools",
     slug: "power-tools",
-    image: "https://images.pexels.com/photos/4504497/pexels-photo-4504497.jpeg",
+    image: "https://images.pexels.com/photos/8487723/pexels-photo-8487723.jpeg",
   },
   {
     id: 3,
     name: "Hand Tools",
     slug: "hand-tools",
-    image: "https://images.pexels.com/photos/5324976/pexels-photo-5324976.jpeg",
+    image: "https://images.pexels.com/photos/1094767/pexels-photo-1094767.jpeg",
   },
   {
     id: 4,
     name: "Measuring Equipment",
     slug: "measuring-tools",
-    image: "https://images.pexels.com/photos/1160031/pexels-photo-1160031.jpeg",
+    image: "https://images.pexels.com/photos/5324926/pexels-photo-5324926.jpeg",
   },
 ];
 
