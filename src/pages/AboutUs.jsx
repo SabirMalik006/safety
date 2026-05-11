@@ -18,7 +18,7 @@ export default function AboutUs() {
           <div className="story-grid">
             <div className="story-image">
               <img 
-                src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=800&q=80" 
+                src="https://images.pexels.com/photos/8470884/pexels-photo-8470884.jpeg" 
                 alt="Industrial safety team at work"
               />
             </div>
@@ -187,14 +187,12 @@ export default function AboutUs() {
         }
 
         .container {
-          max-width: 1280px;
-          margin: 0 auto;
-          padding: 0 65px;
+          /* Using global container styles */
         }
 
         /* Hero Section */
         .about-hero {
-          background: linear-gradient(135deg, #faf7f2 0%, #f0ebe3 100%);
+          background:#1C1917;
           padding: 100px 0 90px;
           text-align: center;
           position: relative;
@@ -202,13 +200,13 @@ export default function AboutUs() {
         .about-hero h1 {
           font-size: 52px;
           font-weight: 800;
-          color: #000000;
+          color: #f59e0b;
           margin-bottom: 20px;
           letter-spacing: -0.02em;
         }
         .about-hero p {
           font-size: 19px;
-          color: #2c2c2c;
+          color: #F59E0B;
           max-width: 680px;
           margin: 0 auto;
           line-height: 1.5;
@@ -241,7 +239,7 @@ export default function AboutUs() {
           font-size: 13px;
           letter-spacing: 2.5px;
           font-weight: 700;
-          background: rgba(243,190,23,0.1);
+          background: rgba(245,158,11,0.1);
           display: inline-block;
           padding: 4px 12px;
           border-radius: 40px;
@@ -281,7 +279,7 @@ export default function AboutUs() {
         /* Mission Section */
         .mission-section {
           padding: 80px 0;
-          background: linear-gradient(115deg, #f0f4f8 0%, #e8edf2 100%);
+          // background: linear-gradient(115deg, #f0f4f8 0%, #e8edf2 100%);
         }
         .mission-grid {
           display: grid;
@@ -295,7 +293,7 @@ export default function AboutUs() {
           border-radius: 32px;
           box-shadow: 0 12px 30px rgba(0,0,0,0.06);
           transition: all 0.35s ease;
-          border: 1px solid rgba(243,190,23,0.2);
+          border: 1px solid rgba(245,158,11,0.2);
           position: relative;
           overflow: hidden;
           cursor: pointer;
@@ -303,12 +301,12 @@ export default function AboutUs() {
         .mission-card:hover {
           transform: translateY(-8px);
           box-shadow: 0 25px 45px -12px rgba(0,0,0,0.2);
-          border-color: #F3BE17;
+          border-color: #F59E0B;
         }
         .mission-icon {
           width: 80px;
           height: 80px;
-          background: #F3BE17;
+          background: #F59E0B;
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -343,7 +341,7 @@ export default function AboutUs() {
         }
         .section-tag {
           color: #000;
-          background: rgba(243,190,23,0.12);
+          background: rgba(245,158,11,0.12);
           font-size: 13px;
           letter-spacing: 2px;
           font-weight: 700;
@@ -381,7 +379,7 @@ export default function AboutUs() {
           border-radius: 28px;
           box-shadow: 0 15px 35px -10px rgba(0,0,0,0.08);
           transition: all 0.35s ease;
-          border: 1px solid rgba(243,190,23,0.15);
+          border: 1px solid rgba(245,158,11,0.15);
           position: relative;
           overflow: hidden;
           cursor: pointer;
@@ -389,12 +387,12 @@ export default function AboutUs() {
         .value-card:hover {
           transform: translateY(-8px);
           box-shadow: 0 25px 45px -12px rgba(0,0,0,0.15);
-          border-color: #F3BE17;
+          border-color: #F59E0B;
         }
         .value-icon {
           width: 70px;
           height: 70px;
-          background: #F3BE17;
+          background: #F59E0B;
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -447,7 +445,7 @@ export default function AboutUs() {
         }
         .stat-icon {
           font-size: 42px;
-          color: #F3BE17;
+          color: #F59E0B;
           stroke-width: 1.5;
           transition: transform 0.3s ease;
         }
@@ -501,18 +499,18 @@ export default function AboutUs() {
           border-radius: 28px;
           transition: all 0.35s ease;
           box-shadow: 0 5px 15px rgba(0,0,0,0.04);
-          border: 1px solid rgba(243,190,23,0.2);
+          border: 1px solid rgba(245,158,11,0.2);
           position: relative;
           overflow: hidden;
           cursor: pointer;
         }
         .feature:hover {
           transform: translateX(8px) translateY(-3px);
-          border-color: #F3BE17;
-          box-shadow: 0 12px 28px rgba(243,190,23,0.15);
+          border-color: #F59E0B;
+          box-shadow: 0 12px 28px rgba(245,158,11,0.15);
         }
         .feature svg {
-          background: #F3BE17;
+          background: #F59E0B;
           padding: 10px;
           border-radius: 18px;
           color: #1e1e1e;
@@ -544,7 +542,7 @@ export default function AboutUs() {
           left: 0;
           right: 0;
           height: 4px;
-          background: #F3BE17;
+          background: #F59E0B;
           transform: scaleX(0);
           transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
           transform-origin: left;
@@ -555,43 +553,11 @@ export default function AboutUs() {
           transform: scaleX(1);
         }
 
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-          .container {
-            padding: 0 40px;
-          }
-          .story-grid {
-            gap: 40px;
-          }
-          .story-content h2 {
-            font-size: 34px;
-          }
-          .about-hero h1 {
-            font-size: 44px;
-          }
-          .section-header h2 {
-            font-size: 36px;
-          }
-          .values-grid {
-            gap: 24px;
-          }
-          .value-card {
-            min-width: 200px;
-            padding: 28px 20px;
-          }
-          .value-stats-grid {
-            gap: 40px;
-            padding: 40px 30px;
-          }
-          .features-grid {
-            gap: 28px;
-            max-width: 800px;
-          }
-        }
+        /* Removed redundant container media queries */
 
         @media (max-width: 768px) {
           .container {
-            padding: 0 24px;
+            /* Using global container styles */
           }
           .story-grid {
             grid-template-columns: 1fr;
@@ -653,7 +619,7 @@ export default function AboutUs() {
 
         @media (max-width: 640px) {
           .container {
-            padding: 0 20px;
+            /* Using global container styles */
           }
           .about-hero h1 {
             font-size: 32px;
@@ -680,7 +646,7 @@ export default function AboutUs() {
 
         @media (max-width: 480px) {
           .container {
-            padding: 0 16px;
+            /* Using global container styles */
           }
           .story-stats {
             flex-direction: column;

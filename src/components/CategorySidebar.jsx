@@ -2,9 +2,7 @@ import { useState } from 'react';
 import { FiChevronRight, FiFilter, FiX } from 'react-icons/fi';
 import './CategorySidebar.css';
 
-const CategorySidebar = ({ categories, activeCategory, onCategoryChange, priceRange, onPriceChange, activeColor, onColorChange, isOpen, onClose }) => {
-  const colors = ['Black', 'White', 'Yellow', 'Red', 'Blue', 'Orange', 'Green', 'Grey'];
-
+const CategorySidebar = ({ categories, activeCategory, onCategoryChange, priceRange, onPriceChange, isOpen, onClose }) => {
   return (
     <aside className={`category-sidebar ${isOpen ? 'open' : ''}`}>
       <div className="sidebar-header">
@@ -52,27 +50,9 @@ const CategorySidebar = ({ categories, activeCategory, onCategoryChange, priceRa
         </div>
       </div>
 
-      <div className="filter-section">
-        <h4>Color Filter</h4>
-        <div className="color-grid">
-          {colors.map(color => (
-            <button 
-              key={color} 
-              className={`color-btn ${activeColor === color ? 'active' : ''}`}
-              onClick={() => onColorChange(color === activeColor ? null : color)}
-              title={color}
-            >
-              <span className={`color-swatch ${color.toLowerCase()}`}></span>
-              <span className="color-name">{color}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-
       <button className="clear-filters" onClick={() => {
         onCategoryChange('all');
         onPriceChange([0, 100000]);
-        onColorChange(null);
       }}>
         Clear All Filters
       </button>

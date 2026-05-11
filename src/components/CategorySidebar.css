@@ -65,14 +65,14 @@
 }
 
 .category-list li:hover {
-  color: #c4a47a;
+  color: #F59E0B;
   padding-left: 0.5rem;
 }
 
 .category-list li.active {
-  color: #c4a47a;
+  color: #F59E0B;
   font-weight: 700;
-  border-bottom-color: #c4a47a;
+  border-bottom-color: #F59E0B;
 }
 
 .cat-count {
@@ -85,7 +85,7 @@
 
 .price-slider input {
   width: 100%;
-  accent-color: #c4a47a;
+  accent-color: #F59E0B;
   margin-bottom: 0.5rem;
 }
 
@@ -120,7 +120,7 @@
 }
 
 .color-btn.active {
-  border-color: #c4a47a;
+  border-color: #F59E0B;
   background: #fffbeb;
 }
 
@@ -148,18 +148,22 @@
 .clear-filters {
   width: 100%;
   padding: 0.8rem;
-  background: #f1f5f9;
+  background: #F59E0B;
   border: none;
   border-radius: 0.75rem;
-  color: #64748b;
-  font-weight: 600;
+  color: #1c1c1c;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
 }
 
 .clear-filters:hover {
-  background: #e2e8f0;
-  color: #0f172a;
+  background: #e0a800;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
 }
 
 @media (max-width: 1024px) {

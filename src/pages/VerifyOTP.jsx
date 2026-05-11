@@ -57,7 +57,7 @@ const VerifyOTP = () => {
           <div className="side-overlay"></div>
           <img src="/safety_login_side_1777667349463.png" alt="Safety" className="side-bg-image" />
           <div className="side-content">
-            <Link to="/" className="auth-logo">Safety<span>Me</span></Link>
+            <Link to="/" className="auth-logo">The Horizon <span>Hub</span></Link>
             <div className="side-text">
               <h2>Verify Your Identity</h2>
               <p>We've sent a 6-digit verification code to <strong>{email}</strong>.</p>

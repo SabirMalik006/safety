@@ -158,13 +158,24 @@
 }
 
 .success-actions .btn-primary {
-  background: #0f172a;
-  color: white;
+  background: #F59E0B;
+  color: #000;
+  transition: all 0.2s;
+}
+
+.success-actions .btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
 }
 
 .success-actions .btn-secondary {
-  background: #e2e8f0;
+  background: #f1f5f9;
   color: #0f172a;
+  transition: all 0.2s;
+}
+
+.success-actions .btn-secondary:hover {
+  background: #e2e8f0;
 }
 
 @media (max-width: 640px) {

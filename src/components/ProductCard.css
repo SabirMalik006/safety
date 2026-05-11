@@ -31,6 +31,7 @@
 }
 
 .badge-discount,
+.badge-sale,
 .badge-out {
   position: absolute;
   top: 12px;
@@ -42,14 +43,21 @@
   z-index: 2;
 }
 
+.badge-sale {
+  background: #000;
+  color: #F59E0B;
+  border: 1px solid #F59E0B;
+}
+
 .badge-discount {
-  background: var(--sale-red);
-  color: white;
+  background: #F59E0B;
+  color: #000;
 }
 
 .badge-out {
-  background: var(--primary);
-  color: white;
+  background: #000;
+  color: #F59E0B;
+  border: 1px solid #F59E0B;
 }
 
 /* Hover Actions */
@@ -87,9 +95,9 @@
 }
 
 .action-btn:hover {
-  background: var(--primary);
-  color: var(--white);
-  border-color: var(--primary);
+  background: #F59E0B;
+  color: #000;
+  border-color: #F59E0B;
 }
 
 .wishlist-btn.active {
@@ -113,6 +121,7 @@
 .product-info {
   padding: 1rem 1.1rem 1.25rem;
   text-align: center;
+}
 
 .color-swatches {
   display: flex;
@@ -160,7 +169,7 @@
 }
 
 .product-name a:hover {
-  color: var(--accent-dark);
+  color: #F59E0B;
 }
 
 .product-pricing {
@@ -174,7 +183,12 @@
 .price-sale {
   font-size: 1rem;
   font-weight: 700;
-  color: #F3BE17;
+  color: #000;
+}
+
+.currency {
+  color: #F59E0B;
+  margin-right: 2px;
 }
 
 .price-original {
@@ -201,28 +215,29 @@
 }
 
 .btn-add-cart:hover {
-  background: var(--accent-dark);
+  background: #F59E0B;
+  color: #000;
   transform: translateY(-1px);
 }
 
 .btn-add-cart.disabled {
-  background: #F3BE17;
+  background: #F59E0B;
   color: #000;
   cursor: pointer;
   transform: none;
   text-align: center;
-  box-shadow: 0 0 0 0 #F3BE17;
+  box-shadow: 0 0 0 0 #F59E0B;
   animation: glow-pulse 2s infinite;
 }
 
 @keyframes glow-pulse {
   0% {
-    box-shadow: 0 0 0 0 rgba(243, 190, 23, 0.7);
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
   }
   50% {
-    box-shadow: 0 0 0 6px rgba(243, 190, 23, 0);
+    box-shadow: 0 0 0 6px rgba(245, 158, 11, 0);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(243, 190, 23, 0);
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
   }
 }

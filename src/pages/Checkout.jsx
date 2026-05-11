@@ -415,49 +415,12 @@ export default function Checkout() {
                 />
                 
                 <PaymentMethodBlock 
-                  id="easypaisa"
-                  icon={FiSmartphone}
-                  title="EasyPaisa"
-                  desc="Transfer to our EasyPaisa account"
-                  accounts={[{ label: 'EasyPaisa', value: '0321-5366666 (Horizon)' }]}
-                  isSelected={paymentMethod === 'easypaisa'}
-                  onSelect={setPaymentMethod}
-                  paymentProof={paymentProof}
-                  onProofChange={handleProofChange}
-                  screenshotFile={screenshotFile}
-                  onFileChange={handleFileChange}
-                  fileInputRef={fileInputRef}
-                  uploading={uploading}
-                  onRemoveFile={() => setScreenshotFile(null)}
-                />
-
-                <PaymentMethodBlock 
                   id="jazzcash"
                   icon={FiSmartphone}
                   title="JazzCash"
                   desc="Transfer to our JazzCash account"
                   accounts={[{ label: 'JazzCash', value: '0321-5366666 (The Horizon Hub)' }]}
                   isSelected={paymentMethod === 'jazzcash'}
-                  onSelect={setPaymentMethod}
-                  paymentProof={paymentProof}
-                  onProofChange={handleProofChange}
-                  screenshotFile={screenshotFile}
-                  onFileChange={handleFileChange}
-                  fileInputRef={fileInputRef}
-                  uploading={uploading}
-                  onRemoveFile={() => setScreenshotFile(null)}
-                />
-
-                <PaymentMethodBlock 
-                  id="bank_transfer"
-                  icon={FiCreditCard}
-                  title="Bank Transfer"
-                  desc="Transfer to our Bank account"
-                  accounts={[
-                    { label: 'Bank', value: 'Bank Al-Habib' },
-                    { label: 'Account #', value: '1234-5678-9012 (HIS)' }
-                  ]}
-                  isSelected={paymentMethod === 'bank_transfer'}
                   onSelect={setPaymentMethod}
                   paymentProof={paymentProof}
                   onProofChange={handleProofChange}

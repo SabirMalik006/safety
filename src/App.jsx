@@ -67,8 +67,8 @@ const PageLoader = () => (
       .spinner {
         width: 50px;
         height: 50px;
-        border: 3px solid rgba(196, 164, 122, 0.1);
-        border-top-color: #c4a47a;
+        border: 3px solid rgba(245, 158, 11, 0.1);
+        border-top-color: #F59E0B;
         border-radius: 50%;
         animation: spin 1s linear infinite;
       }

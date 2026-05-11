@@ -33,7 +33,7 @@ const ForgotPassword = () => {
           <div className="side-overlay"></div>
           <img src="/safety_login_side_1777667349463.png" alt="Safety" className="side-bg-image" />
           <div className="side-content">
-            <Link to="/" className="auth-logo">Safety<span>Me</span></Link>
+            <Link to="/" className="auth-logo">The Horizon <span>Hub</span></Link>
             <div className="side-text">
               <h2>Reset Your Password</h2>
               <p>Don't worry! It happens to the best of us. We'll help you get back into your account safely.</p>

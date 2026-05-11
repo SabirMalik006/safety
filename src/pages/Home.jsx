@@ -12,7 +12,7 @@ import './Home.css';
 
 // Features array - same rahega
 const features = [
-  { icon: <FiTruck />, title: 'Free Delivery', desc: 'On orders above Rs.3,999' },
+  { icon: <FiTruck />, title: 'Free Delivery', desc: '' },
   { icon: <FiRefreshCw />, title: 'Easy Returns', desc: '7-day hassle-free returns' },
   { icon: <FiShield />, title: 'Secure Payment', desc: 'COD & digital payments' },
   { icon: <FiHeadphones />, title: '24/7 Support', desc: 'Always here to help you' },
@@ -47,30 +47,30 @@ export default function Home() {
           setHeroSlides([
             {
               id: 1,
-              tag: 'Season End Sale',
-              title: 'Protective Goggles',
-              subtitle: 'Close-up Photo of Pliers and Protective Goggles',
+              tag: 'New Arrival 2025',
+              title: 'Safety\nFirst',
+              subtitle: 'Premium Head Protection for Industrial Excellence',
               cta: 'Shop Now',
               ctaPath: '/collections/all-products',
-              image: 'https://images.pexels.com/photos/9242909/pexels-photo-9242909.jpeg',
+              image: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?q=80&w=2000&auto=format&fit=crop',
             },
             {
               id: 2,
-              tag: 'New Arrivals',
-              title: 'Construction Helmet',
-              subtitle: 'Yellow Construction Helmet on Industrial Site',
-              cta: 'Explore Collection',
+              tag: 'Industrial Grade',
+              title: 'Heavy Duty\nTools',
+              subtitle: 'Professional Grade Hand Tools for Maximum Efficiency',
+              cta: 'Shop Hand Tools',
               ctaPath: '/collections/all-products',
-              image: 'https://images.pexels.com/photos/34965713/pexels-photo-34965713.jpeg',
+              image: 'https://images.unsplash.com/photo-1581147036324-c17ac41dfa6c?q=80&w=2000&auto=format&fit=crop',
             },
             {
               id: 3,
-              tag: "Men's Collection",
-              title: 'Hand Tools',
-              subtitle: 'Flat Lay Photography of Hand Tools',
-              cta: 'Shop Wallets',
+              tag: 'Best Selling',
+              title: 'Tough\nGear',
+              subtitle: 'Heavy Duty Gloves for Maximum Grip and Safety',
+              cta: 'Shop Now',
               ctaPath: '/collections/all-products',
-              image: 'https://images.pexels.com/photos/1029243/pexels-photo-1029243.jpeg',
+              image: 'https://images.unsplash.com/photo-1621905251918-48416bd8575a?q=80&w=2000&auto=format&fit=crop',
             },
           ]);
         }
@@ -101,30 +101,30 @@ export default function Home() {
         setHeroSlides([
           {
             id: 1,
-            tag: 'Season End Sale',
-            title: 'Protective Goggles',
-            subtitle: 'Close-up Photo of Pliers and Protective Goggles',
+            tag: 'New Arrival 2025',
+            title: 'Safety\nFirst',
+            subtitle: 'Premium Head Protection for Industrial Excellence',
             cta: 'Shop Now',
-            ctaPath: '/collections/best-selling',
-            image: 'https://images.pexels.com/photos/9242909/pexels-photo-9242909.jpeg',
+            ctaPath: '/collections/all-products',
+            image: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?q=80&w=2000&auto=format&fit=crop',
           },
           {
             id: 2,
-            tag: 'New Arrivals',
-            title: 'Construction Helmet',
-            subtitle: 'Yellow Construction Helmet on Industrial Site',
-            cta: 'Explore Collection',
-            ctaPath: '/collections/best-selling',
-            image: 'https://images.pexels.com/photos/34965713/pexels-photo-34965713.jpeg',
+            tag: 'Industrial Grade',
+            title: 'Heavy Duty\nTools',
+            subtitle: 'Professional Grade Hand Tools for Maximum Efficiency',
+            cta: 'Shop Hand Tools',
+            ctaPath: '/collections/all-products',
+            image: 'https://images.unsplash.com/photo-1581147036324-c17ac41dfa6c?q=80&w=2000&auto=format&fit=crop',
           },
           {
             id: 3,
-            tag: "Men's Collection",
-            title: 'Hand Tools',
-            subtitle: 'Flat Lay Photography of Hand Tools',
-            cta: 'Shop Wallets',
-            ctaPath: '/collections/best-selling',
-            image: 'https://images.pexels.com/photos/1029243/pexels-photo-1029243.jpeg',
+            tag: 'Best Selling',
+            title: 'Tough\nGear',
+            subtitle: 'Heavy Duty Gloves for Maximum Grip and Safety',
+            cta: 'Shop Now',
+            ctaPath: '/collections/all-products',
+            image: 'https://images.unsplash.com/photo-1621905251918-48416bd8575a?q=80&w=2000&auto=format&fit=crop',
           },
         ]);
         setBestSellers(mockProducts.slice(0, 8));
@@ -339,7 +339,7 @@ export default function Home() {
         </section>
 
         {/* ── INSTAGRAM ── */}
-        <section className="instagram-section">
+        {/* <section className="instagram-section">
           <div className="container" style={{ textAlign: 'center' }}>
             <p className="section-tag">Follow Us</p>
             <h2 className="section-title">@Horizon.pk</h2>
@@ -360,7 +360,7 @@ export default function Home() {
               ))}
             </div>
           </div>
-        </section>
+        </section> */}
 
       </div>
     </>

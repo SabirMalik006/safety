@@ -28,7 +28,7 @@ export default function Cart() {
             <h1>Your cart is empty</h1>
             <p>Looks like you haven't added any safety gear to your cart yet.</p>
             <Link to="/collections/all-products" className="btn-primary">
-              Continue Shopping <FiArrowRight />
+              Continue Shopping 
             </Link>
           </div>
         </div>

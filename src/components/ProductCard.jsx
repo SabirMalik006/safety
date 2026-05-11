@@ -101,7 +101,7 @@ export default function ProductCard({ product }) {
         />
 
         {productDiscount > 0 && (
-          <span className="badge-discount">-{productDiscount}%</span>
+          <span className="badge-sale">SALE</span>
         )}
         {!inStock && (
           <span className="badge-out">Out of Stock</span>
@@ -160,9 +160,9 @@ export default function ProductCard({ product }) {
         </h3>
 
         <div className="product-pricing">
-          <span className="price-sale">Rs.{productPrice.toLocaleString()}</span>
+          <span className="price-sale"><span className="currency">Rs.</span>{productPrice.toLocaleString()}</span>
           {product.originalPrice > productPrice && (
-            <span className="price-original">Rs.{product.originalPrice.toLocaleString()}</span>
+            <span className="price-original"><span className="currency">Rs.</span>{product.originalPrice.toLocaleString()}</span>
           )}
         </div>
 

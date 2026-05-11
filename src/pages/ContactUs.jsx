@@ -193,13 +193,12 @@ export default function ContactUs() {
         }
 
         .container {
-
-          padding: 0 65px;
+          /* Using global container styles */
         }
 
         /* Hero Section */
         .contact-hero {
-          background: linear-gradient(135deg, #faf7f2 0%, #f0ebe3 100%);
+          background: #1C1917;
           padding: 90px 0;
           text-align: center;
           position: relative;
@@ -207,13 +206,13 @@ export default function ContactUs() {
         .contact-hero h1 {
           font-size: 52px;
           font-weight: 800;
-          color: #000000;
+          color: #F59E0B;
           margin-bottom: 20px;
           letter-spacing: -0.02em;
         }
         .contact-hero p {
           font-size: 19px;
-          color: #2c2c2c;
+          color: #F59E0B;
           margin: 0 auto;
           line-height: 1.5;
         }
@@ -242,7 +241,7 @@ export default function ContactUs() {
           border-radius: 28px;
           box-shadow: 0 15px 35px -10px rgba(0,0,0,0.08);
           transition: all 0.35s ease;
-          border: 1px solid rgba(243,190,23,0.15);
+          border: 1px solid rgba(245,158,11,0.15);
           position: relative;
           overflow: hidden;
           cursor: pointer;
@@ -250,12 +249,12 @@ export default function ContactUs() {
         .contact-card:hover {
           transform: translateY(-8px);
           box-shadow: 0 25px 45px -12px rgba(0,0,0,0.15);
-          border-color: #F3BE17;
+          border-color: #F59E0B;
         }
         .contact-icon {
           width: 70px;
           height: 70px;
-          background: #F3BE17;
+          background: #F59E0B;
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -284,7 +283,7 @@ export default function ContactUs() {
         /* Contact Form Section */
         .contact-form-section {
           padding: 80px 0;
-          background: linear-gradient(115deg, #f0f4f8 0%, #e8edf2 100%);
+          // background: linear-gradient(115deg, #f0f4f8 0%, #e8edf2 100%);
         }
         .contact-grid {
           display: grid;
@@ -308,7 +307,7 @@ export default function ContactUs() {
           padding: 40px;
           border-radius: 28px;
           box-shadow: 0 15px 35px -10px rgba(0,0,0,0.08);
-          border: 1px solid rgba(243,190,23,0.1);
+          border: 1px solid rgba(245,158,11,0.1);
         }
         .contact-form h2 {
           font-size: 32px;
@@ -341,11 +340,11 @@ export default function ContactUs() {
         .form-group input:focus,
         .form-group textarea:focus {
           outline: none;
-          border-color: #F3BE17;
-          box-shadow: 0 0 0 3px rgba(243,190,23,0.1);
+          border-color: #F59E0B;
+          box-shadow: 0 0 0 3px rgba(245,158,11,0.1);
         }
         .submit-btn {
-          background: #F3BE17;
+          background: #F59E0B;
           color: #1c1c1c;
           border: none;
           padding: 14px 32px;
@@ -366,7 +365,7 @@ export default function ContactUs() {
         .submit-btn:hover:not(:disabled) {
           background: #e0a800;
           transform: translateY(-2px);
-          box-shadow: 0 8px 20px rgba(243,190,23,0.3);
+          box-shadow: 0 8px 20px rgba(245,158,11,0.3);
         }
         .success-message {
           margin-top: 18px;
@@ -395,7 +394,7 @@ export default function ContactUs() {
         .hours-icon {
           width: 70px;
           height: 70px;
-          background: #F3BE17;
+          background: #F59E0B;
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -438,7 +437,7 @@ export default function ContactUs() {
           left: 0;
           right: 0;
           height: 4px;
-          background: #F3BE17;
+          background: #F59E0B;
           transform: scaleX(0);
           transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
           transform-origin: left;
@@ -450,13 +449,13 @@ export default function ContactUs() {
         /* Responsive Design */
         @media (max-width: 1280px) {
           .container {
-            padding: 0 65px;
+            /* Using global container styles */
           }
         }
 
         @media (max-width: 1024px) {
           .container {
-            padding: 0 40px;
+            /* Using global container styles */
           }
           .contact-hero h1 {
             font-size: 44px;
@@ -474,7 +473,7 @@ export default function ContactUs() {
 
         @media (max-width: 768px) {
           .container {
-            padding: 0 24px;
+            /* Using global container styles */
           }
           .contact-hero {
             padding: 70px 0;
@@ -524,7 +523,7 @@ export default function ContactUs() {
 
         @media (max-width: 640px) {
           .container {
-            padding: 0 20px;
+            /* Using global container styles */
           }
           .contact-hero h1 {
             font-size: 32px;
@@ -543,7 +542,7 @@ export default function ContactUs() {
 
         @media (max-width: 480px) {
           .container {
-            padding: 0 16px;
+            /* Using global container styles */
           }
           .contact-icon {
             width: 60px;

@@ -2,9 +2,9 @@
    VARIABLES
    ═══════════════════════════════════════════════════ */
 :root {
-  --navbar-dark: #1a1a1a;
-  --navbar-dark-secondary: #2d2d2d;
-  --navbar-accent: #F3BE17; /* Gold Primary */
+  --navbar-dark: #000000;
+  --navbar-dark-secondary: #000000;
+  --navbar-accent: #F59E0B; /* Gold Primary */
   --navbar-accent-dark: #D4A300;
   --navbar-text-light: rgba(255, 255, 255, 0.9);
   --navbar-text-muted: rgba(255, 255, 255, 0.6);
@@ -31,7 +31,7 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  background: rgba(0, 0, 0, 0.9);
+  background: #000000;
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -172,13 +172,13 @@
   top: 100%;
   left: -20px;
   width: 320px;
-  background: #ffffff;
+  background: #000000;
   border-radius: 12px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.45);
   padding: 12px 0;
   z-index: 2000;
   animation: dropFade 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid rgba(0,0,0,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
   margin-top: 5px;
 }
 
@@ -198,7 +198,7 @@
   position: relative;
   padding: 12px 18px;
   font-size: 0.9rem;
-  color: #333333 !important;
+  color: #ffffff !important;
   text-decoration: none;
   font-weight: 500;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -303,7 +303,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: #F59E0B;
   text-decoration: none;
   border-radius: 50%;
   transition: all 0.3s ease;
@@ -349,10 +349,15 @@
   display: none;
   background: none;
   border: none;
-  color: #fff;
+  color: var(--navbar-accent);
   cursor: pointer;
   padding: 0.5rem;
   z-index: 2001;
+  transition: all 0.3s ease;
+}
+
+.nb-hamburger:hover {
+  transform: scale(1.1);
 }
 
 /* ═══════════════════════════════════════════════════
@@ -393,26 +398,35 @@
 }
 
 .mobile-search-bar {
-  flex: 1;
   position: relative;
+  margin: 1.5rem;
   display: flex;
   align-items: center;
 }
 
 .mobile-search-bar input {
   width: 100%;
-  padding: 10px 10px 10px 35px;
-  background: rgba(255,255,255,0.1);
+  padding: 12px 15px 12px 45px;
+  background: rgba(255,255,255,0.07);
   border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 8px;
+  border-radius: 12px;
   color: #fff;
-  font-size: 14px;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.mobile-search-bar input:focus {
+  background: rgba(255,255,255,0.12);
+  border-color: var(--navbar-accent);
+  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
 }
 
 .mobile-search-bar svg {
   position: absolute;
-  left: 12px;
-  color: rgba(255,255,255,0.5);
+  left: 18px;
+  color: var(--navbar-accent);
+  font-size: 18px;
 }
 
 .mobile-close {
@@ -562,16 +576,26 @@
   padding: 1.5rem;
 }
 
-.mobile-search-bar {
-  flex: 1;
-  background: rgba(255,255,255,0.08);
+.mobile-menu-header {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
-  padding: 0.7rem 1.2rem;
-  border-radius: 12px;
-  color: #fff;
+  justify-content: space-between;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
+
+.mobile-menu-header .nb-logo {
+  display: block !important;
+}
+
+.mobile-close {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Consolidated search bar style above */
 
 .mobile-search-bar input {
   background: none;
@@ -717,6 +741,136 @@
 
 @media (max-width: 768px) {
   .has-navbar {
-    margin-top: var(--header-height); /* Use variable for consistency */
+    margin-top: var(--header-height);
   }
+}
+
+/* ═══════════════════════════════════════════════════
+   FLOATING WHATSAPP & GLOW EFFECTS
+   ═══════════════════════════════════════════════════ */
+
+/* Glowing Number in Mobile Menu */
+.glow-number {
+  color: #fff !important;
+  font-weight: 800 !important;
+  font-size: 1.2rem !important;
+  text-decoration: none;
+  display: inline-block;
+  animation: text-glow 2s infinite ease-in-out;
+  text-shadow: 0 0 5px rgba(245, 158, 11, 0.2);
+}
+
+@keyframes text-glow {
+  0%, 100% { 
+    color: #fff;
+    text-shadow: 0 0 5px rgba(245, 158, 11, 0.2);
+    transform: scale(1);
+  }
+  50% { 
+    color: #F59E0B;
+    text-shadow: 0 0 20px rgba(245, 158, 11, 0.8), 0 0 30px rgba(245, 158, 11, 0.4);
+    transform: scale(1.05);
+  }
+}
+
+/* Floating WhatsApp Button */
+.floating-whatsapp {
+  position: fixed;
+  right: 30px !important;
+  bottom: 30px !important;
+  background: #25d366;
+  color: #fff;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+  z-index: 9999;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: wa-glow 2s infinite;
+  text-decoration: none;
+}
+
+.floating-whatsapp:hover {
+  transform: scale(1.1) translateY(-5px);
+  box-shadow: 0 15px 35px rgba(37, 211, 102, 0.6);
+}
+
+.floating-whatsapp .wa-text {
+  position: absolute;
+  right: 75px;
+  background: #fff;
+  color: #1c1c1c;
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(20px);
+  transition: all 0.3s ease;
+}
+
+.floating-whatsapp:hover .wa-text {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+@keyframes wa-glow {
+  0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+  70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+
+@media (max-width: 600px) {
+  .floating-whatsapp {
+    width: 50px;
+    height: 50px;
+    font-size: 26px;
+    right: 20px;
+    bottom: 20px;
+  }
+  
+  .floating-whatsapp .wa-text {
+    display: none; /* Hide text on mobile to keep it clean */
+  }
+}
+
+.mobile-wa-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: #25d366;
+  color: #fff !important;
+  padding: 12px 20px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-top: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+  animation: wa-btn-glow 2s infinite;
+}
+
+.mobile-wa-btn:hover {
+  background: #20ba5a;
+  transform: translateY(-2px);
+}
+
+.mobile-wa-btn svg {
+  font-size: 1.2rem;
+}
+
+@keyframes wa-btn-glow {
+  0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+  70% { box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
 }

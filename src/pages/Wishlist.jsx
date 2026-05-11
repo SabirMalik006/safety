@@ -9,13 +9,17 @@ export default function Wishlist() {
 
   if (wishlist.length === 0) {
     return (
-      <div className="wishlist-empty page-content">
-        <FiHeart size={64} strokeWidth={1} />
-        <h2>Your wishlist is empty</h2>
-        <p>Save essential industrial gear for later!</p>
-        <Link to="/collections/all-products" className="btn-shop">
-          Browse Collection <FiArrowRight />
-        </Link>
+      <div className="wishlist-empty-page">
+        <div className="empty-wishlist-card">
+          <div className="empty-icon-wrap">
+            <FiHeart size={50} />
+          </div>
+          <h1>Your wishlist is empty</h1>
+          <p>Save essential industrial gear for later!</p>
+          <Link to="/collections/all-products" className="btn-primary">
+            Browse Collection
+          </Link>
+        </div>
       </div>
     );
   }

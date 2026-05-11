@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams, useParams, useNavigate } from 'react-router-dom';
-import { FiGrid, FiList, FiFilter, FiChevronDown, FiSearch, FiShoppingCart, FiHeart, FiStar } from 'react-icons/fi';
+import { useSearchParams, useParams, useNavigate, Link } from 'react-router-dom';
+import { FiGrid, FiList, FiFilter, FiChevronDown, FiSearch, FiShoppingCart, FiHeart, FiStar, FiEye } from 'react-icons/fi';
 import { getProducts, getCategories } from '../services/productService';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
@@ -150,7 +150,6 @@ const Collections = () => {
                 <button className="btn-primary" onClick={() => {
                   setActiveCategory('all');
                   setPriceRange([0, 100000]);
-                  setActiveColor(null);
                   setSearchTerm('');
                 }}>Clear All Filters</button>
               </div>
@@ -195,7 +194,7 @@ const ProductCard = ({ product, viewMode, onAddToCart, onWishlist, isWishlisted 
       <div className="card-image-wrap">
         <img src={product.images?.[0]?.url || product.image || '/images/placeholder.jpg'} alt={product.name} />
         {product.comparePrice > product.price && (
-          <span className="sale-badge">Sale</span>
+          <span className="sale-badge">SALE</span>
         )}
         <div className="card-actions">
           <button
@@ -205,6 +204,9 @@ const ProductCard = ({ product, viewMode, onAddToCart, onWishlist, isWishlisted 
           >
             <FiHeart />
           </button>
+          <Link to={`/products/${product.slug}`} className="action-btn" title="View Product">
+            <FiEye />
+          </Link>
           <button className="action-btn" onClick={() => onAddToCart(product)} title="Quick Add">
             <FiShoppingCart />
           </button>
@@ -223,11 +225,21 @@ const ProductCard = ({ product, viewMode, onAddToCart, onWishlist, isWishlisted 
           <span>({product.numReviews || 0})</span>
         </div>
         <div className="card-price">
-          <span className="current-price">Rs.{product.price?.toLocaleString()}</span>
+          <span className="current-price"><span className="currency">Rs.</span>{product.price?.toLocaleString()}</span>
           {product.comparePrice > product.price && (
-            <span className="old-price">Rs.{product.comparePrice?.toLocaleString()}</span>
+            <span className="old-price"><span className="currency">Rs.</span>{product.comparePrice?.toLocaleString()}</span>
           )}
         </div>
+
+        {viewMode === 'grid' && (
+          <button 
+            className={`btn-add-cart-grid ${product.countInStock === 0 ? 'disabled' : ''}`}
+            onClick={() => (product.countInStock > 0 || product.countInStock === undefined) && onAddToCart(product)}
+            disabled={product.countInStock === 0}
+          >
+            {(product.countInStock > 0 || product.countInStock === undefined) ? 'Add to Cart' : 'Out of Stock'}
+          </button>
+        )}
 
         {viewMode === 'list' && (
           <div className="list-description">

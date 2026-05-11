@@ -14,12 +14,12 @@
 }
 
 .address-card:hover {
-  border-color: #c4a47a;
+  border-color: #F59E0B;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
 }
 
 .address-card.default {
-  border-color: #c4a47a;
+  border-color: #F59E0B;
   background: #fffbeb;
 }
 
@@ -27,7 +27,7 @@
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background: #c4a47a;
+  background: #F59E0B;
   color: white;
   font-size: 0.7rem;
   font-weight: 700;
@@ -90,7 +90,7 @@
 }
 
 .addr-action-btn.set-default {
-  color: #c4a47a;
+  color: #F59E0B;
   margin-left: auto;
 }
 

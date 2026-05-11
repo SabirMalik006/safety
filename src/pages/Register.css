@@ -1,14 +1,14 @@
 /* ═══════════════════════════════════════════════════
    AUTHENTICATION COMMON STYLES
    ═══════════════════════════════════════════════════ */
-.auth-page {
+.auth-page { 
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(900px 420px at 15% 10%, rgba(196, 164, 122, 0.22) 0%, rgba(196, 164, 122, 0) 60%),
-              radial-gradient(800px 380px at 85% 15%, rgba(15, 23, 42, 0.18) 0%, rgba(15, 23, 42, 0) 62%),
-              linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  background: radial-gradient(circle at top right, rgba(245, 158, 11, 0.12), transparent 400px),
+              radial-gradient(circle at bottom left, rgba(245, 158, 11, 0.08), transparent 400px),
+              linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   padding: 2rem;
   font-family: 'Inter', sans-serif;
   position: relative;
@@ -20,18 +20,22 @@
   position: absolute;
   inset: -120px;
   background:
-    radial-gradient(circle at 20% 20%, rgba(196, 164, 122, 0.10) 0%, rgba(196, 164, 122, 0) 45%),
-    radial-gradient(circle at 80% 30%, rgba(15, 23, 42, 0.08) 0%, rgba(15, 23, 42, 0) 50%),
-    radial-gradient(circle at 60% 90%, rgba(196, 164, 122, 0.08) 0%, rgba(196, 164, 122, 0) 55%);
+    radial-gradient(circle at 20% 20%, rgba(245, 158, 11, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 80% 30%, rgba(15, 23, 42, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 60% 90%, rgba(245, 158, 11, 0.06) 0%, transparent 55%);
   filter: blur(2px);
   pointer-events: none;
   z-index: 0;
+  
 }
 
 .auth-container {
+  
   width: 100%;
   max-width: 1100px;
-  height: 700px;
+  min-height: 600px;
+  height: auto;
+  margin: 2rem 0;
   background: white;
   display: flex;
   border-radius: 1.5rem;
@@ -88,7 +92,7 @@
 }
 
 .auth-logo span {
-  color: #c4a47a;
+  color: #F59E0B;
 }
 
 .side-text h2 {
@@ -121,7 +125,7 @@
 }
 
 .benefit-icon {
-  color: #c4a47a;
+  color: #F59E0B;
   font-size: 1.2rem;
   flex-shrink: 0;
 }
@@ -137,7 +141,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 3rem;
+  padding: 4rem 3rem;
   background: white;
 }
 
@@ -203,7 +207,7 @@
 
 .input-box input:focus {
   outline: none;
-  border-color: #c4a47a;
+  border-color: #F59E0B;
   background: white;
   box-shadow: 0 0 0 4px rgba(196, 164, 122, 0.1);
 }
@@ -223,8 +227,8 @@
 .auth-submit-btn {
   width: 100%;
   padding: 1rem;
-  background: #0f172a;
-  color: white;
+  background: #F59E0B;
+  color: #000;
   border: none;
   border-radius: 0.75rem;
   font-size: 1rem;
@@ -238,7 +242,7 @@
 }
 
 .auth-submit-btn:hover:not(:disabled) {
-  background: #1e293b;
+  opacity: 0.9;
   transform: translateY(-2px);
 }
 
@@ -258,7 +262,7 @@
 }
 
 .auth-footer a {
-  color: #c4a47a;
+  color: #F59E0B;
   text-decoration: none;
   font-weight: 700;
 }

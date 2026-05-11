@@ -255,8 +255,8 @@
 .btn-checkout {
   width: 100%;
   padding: 1.1rem;
-  background: #0f172a;
-  color: white;
+  background: #F59E0B;
+  color: rgb(0, 0, 0);
   border: none;
   border-radius: 1rem;
   font-size: 1.05rem;
@@ -334,7 +334,7 @@
 
 .empty-cart-card .btn-primary {
   padding: 1rem 2rem;
-  background: #0f172a;
+  background: #F59E0B;
   color: white;
   text-decoration: none;
   border-radius: 0.75rem;

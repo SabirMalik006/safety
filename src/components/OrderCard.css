@@ -8,7 +8,7 @@
 }
 
 .order-card:hover {
-  border-color: #c4a47a;
+  border-color: #F59E0B;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
 }
 
@@ -134,7 +134,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #c4a47a;
+  color: #F59E0B;
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 700;

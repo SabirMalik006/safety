@@ -218,7 +218,7 @@ export default function ProductDetail() {
           <div className="main-image">
             <img src={productImages[activeImage]} alt={product.name} />
             {discount > 0 && (
-              <span className="detail-badge">-{discount}% OFF</span>
+              <span className="badge-sale">SALE</span>
             )}
           </div>
         </div>
@@ -318,8 +318,7 @@ export default function ProductDetail() {
             <div className="guarantee-item">
               <FiTruck />
               <div>
-                <strong>Fast Logistics</strong>
-                <span>On orders above Rs.10,000</span>
+                <span>Fast & Reliable</span>
               </div>
             </div>
             <div className="guarantee-item">
@@ -455,7 +454,7 @@ export default function ProductDetail() {
             <div className="tab-pane">
               <h3>Shipping & Returns</h3>
               <p><strong>Delivery:</strong> 2-4 business days across Pakistan</p>
-              <p><strong>Free shipping:</strong> On orders above Rs.10,000</p>
+
               <p><strong>COD:</strong> Available nationwide</p>
               <p><strong>Returns:</strong> 7-day easy return policy if product is unused and in original packaging</p>
             </div>

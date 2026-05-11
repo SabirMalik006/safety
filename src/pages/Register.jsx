@@ -25,7 +25,7 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (formData.password !== formData.confirmPassword) {
       return toast.error('Passwords do not match');
     }
@@ -59,11 +59,7 @@ const Register = () => {
         {/* Left Side: Brand Info */}
         <div className="auth-side-panel">
           <div className="side-overlay"></div>
-          <img 
-            src="/safety_login_side_1777667349463.png" 
-            alt="Safety Gear" 
-            className="side-bg-image" 
-          />
+
           <div className="side-content">
             <Link to="/" className="auth-logo">
               The Horizon <span>Hub</span>
@@ -72,7 +68,7 @@ const Register = () => {
               <h2>Join the Professionals</h2>
               <p>Create an account to access bulk pricing, track shipments, and secure your industrial operations.</p>
             </div>
-            
+
             <ul className="benefits-list">
               <li>
                 <FiCheckCircle className="benefit-icon" />
@@ -87,7 +83,7 @@ const Register = () => {
                 <span>Custom branding on safety gear</span>
               </li>
             </ul>
-            
+
             <div className="side-footer">
               <p>© 2026 The Horizon Hub. All rights reserved.</p>
             </div>

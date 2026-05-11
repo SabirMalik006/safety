@@ -1,17 +1,18 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { FiSearch, FiShoppingCart, FiHeart, FiMenu, FiX, FiUser, FiPackage, FiChevronDown, FiShield, FiTruck, FiTool, FiZap, FiBox, FiActivity, FiStar } from 'react-icons/fi';
+import { FiSearch, FiShoppingCart, FiHeart, FiMenu, FiX, FiUser, FiPackage, FiChevronDown, FiShield, FiTruck, FiTool, FiZap, FiBox, FiActivity, FiStar, FiMessageSquare } from 'react-icons/fi';
+import { FaWhatsapp } from 'react-icons/fa';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { getProducts, getCategories } from '../services/productService';
 import { getCurrentUser } from '../services/authService';
-import horizonHubLogo from '../assets/helo.jpeg';
+import horizonHubLogo from '../../public/Screenshot 2026-05-11 224635.png';
 import './Navbar.css';
 
 const navLinks = [
   { label: 'Home', path: '/' },
-  { label: 'Shop', path: '/collections/all-products' },
   { label: 'About', path: '/about' },
+  { label: 'Shop', path: '/collections/all-products' },
   { label: 'Contact', path: '/contact' },
 ];
 
@@ -25,18 +26,18 @@ export default function Navbar() {
   const [categories, setCategories] = useState([]);
   const [catDropdownOpen, setCatDropdownOpen] = useState(false);
   const [mobileCatOpen, setMobileCatOpen] = useState(false);
-  
+
   const searchRef = useRef(null);
   const catRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   const { cartItems } = useCart();
   const { wishlist } = useWishlist();
   const user = getCurrentUser();
 
-  const cartCount = (cartItems && Array.isArray(cartItems)) 
-    ? cartItems.reduce((acc, item) => acc + (item.quantity || 1), 0) 
+  const cartCount = (cartItems && Array.isArray(cartItems))
+    ? cartItems.reduce((acc, item) => acc + (item.quantity || 1), 0)
     : 0;
   const wishlistCount = (wishlist && Array.isArray(wishlist)) ? wishlist.length : 0;
 
@@ -125,17 +126,16 @@ export default function Navbar() {
 
   return (
     <>
-     
+
 
       <nav className={`navbar ${scrolled ? 'scrolled' : ''} ${menuOpen ? 'menu-open' : ''}`}>
         <div className="container nb-container">
           <Link to="/" className="nb-logo" onClick={handleNavClick}>
             <span className="nb-brand">
               <span className="nb-brand-mark" aria-hidden="true">
-                <img src={horizonHubLogo} alt="" />
+                <img src={horizonHubLogo} alt="The Horizon Hub" />
               </span>
-              <a href="https://horizonintegratedsolutions.com/" target="_blank" rel="noopener noreferrer" className="nb-brand-byline">by Horizon-Integrated Solutions</a>
-              <span className="sr-only">The Horizon Hub</span>
+              <span className="nb-brand-byline">by Horizon-Integrated Solutions</span>
             </span>
           </Link>
 
@@ -150,7 +150,7 @@ export default function Navbar() {
               </li>
             ))}
             <li className="nav-item-dropdown" ref={catRef}>
-              <button 
+              <button
                 className={`nav-drop-btn ${catDropdownOpen ? 'active' : ''}`}
                 onMouseEnter={() => setCatDropdownOpen(true)}
                 onClick={() => setCatDropdownOpen(!catDropdownOpen)}
@@ -161,9 +161,9 @@ export default function Navbar() {
                 <div className="nb-dropdown-card" onMouseLeave={() => setCatDropdownOpen(false)}>
                   <div className="dropdown-grid">
                     {categories.length > 0 ? categories.map(cat => (
-                      <Link 
-                        key={cat._id} 
-                        to={`/collections/${cat.slug}`} 
+                      <Link
+                        key={cat._id}
+                        to={`/collections/${cat.slug}`}
                         className="dropdown-item"
                         onClick={handleNavClick}
                       >
@@ -239,7 +239,7 @@ export default function Navbar() {
                   <Link to="/register" className="btn-signup-solid">Sign Up</Link>
                 </div>
               )}
-              
+
               {user?.role === 'admin' && (
                 <Link to="/admin/dashboard" className="nb-icon admin-badge" title="Admin Panel">
                   <FiPackage size={20} />
@@ -252,18 +252,27 @@ export default function Navbar() {
         {/* ── MOBILE MENU OVERLAY ── */}
         <div className={`nb-mobile-menu ${menuOpen ? 'open' : ''}`}>
           <div className="mobile-menu-header">
-            <div className="mobile-search-bar">
-              <FiSearch />
-              <input 
-                type="text" 
-                placeholder="Search products..." 
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-              />
-            </div>
+            <Link to="/" className="nb-logo" onClick={handleNavClick}>
+              <span className="nb-brand">
+                <span className="nb-brand-mark" aria-hidden="true">
+                  <img src={horizonHubLogo} alt="" />
+                </span>
+                <span className="sr-only">The Horizon Hub</span>
+              </span>
+            </Link>
             <button className="mobile-close" onClick={() => setMenuOpen(false)}>
               <FiX size={24} />
             </button>
+          </div>
+
+          <div className="mobile-search-bar">
+            <FiSearch />
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+            />
           </div>
 
           <div className="mobile-menu-content">
@@ -294,9 +303,9 @@ export default function Navbar() {
                   <Link to={link.path} onClick={handleNavClick}>{link.label}</Link>
                 </li>
               ))}
-              
+
               <li className="mobile-dropdown">
-                <button 
+                <button
                   className={`mobile-drop-btn ${mobileCatOpen ? 'active' : ''}`}
                   onClick={() => setMobileCatOpen(!mobileCatOpen)}
                 >
@@ -310,7 +319,7 @@ export default function Navbar() {
                   ))}
                 </div>
               </li>
-              
+
               {/* Added Icons to Mobile Menu */}
               <li>
                 <Link to="/pages/wishlist" onClick={handleNavClick} className="mobile-nav-icon-link">
@@ -337,15 +346,30 @@ export default function Navbar() {
                   <Link to="/register" className="btn-signup-solid" onClick={handleNavClick}>Sign Up</Link>
                 </div>
               )}
-              
+
               <div className="mobile-contact-info">
                 <p>Need Help? Call us:</p>
-                <a href="tel:+923215366666">+92 3215366666</a>
+                <a href="tel:+923215366666" className="glow-number">+92 3215366666</a>
+
+
               </div>
             </div>
           </div>
         </div>
+
       </nav>
+
+      {/* Floating WhatsApp Button */}
+      <a
+        href="https://wa.me/923215366666"
+        className="floating-whatsapp"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Contact us on WhatsApp"
+      >
+        <FaWhatsapp />
+        <span className="wa-text">Chat with us</span>
+      </a>
     </>
   );
 }
