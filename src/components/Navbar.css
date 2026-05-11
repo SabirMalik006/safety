@@ -4,60 +4,30 @@
 :root {
   --navbar-dark: #1a1a1a;
   --navbar-dark-secondary: #2d2d2d;
-  --navbar-accent: #c4a47a; /* Gold Primary */
-  --navbar-accent-dark: #b39369;
+  --navbar-accent: #F3BE17; /* Gold Primary */
+  --navbar-accent-dark: #D4A300;
   --navbar-text-light: rgba(255, 255, 255, 0.9);
   --navbar-text-muted: rgba(255, 255, 255, 0.6);
 
   /* Header Heights */
   --ann-height: 36px;
   --nav-height: 70px;
-  --header-height: calc(var(--ann-height) + var(--nav-height));
+  --header-height: var(--nav-height);
 }
 
 /* ═══════════════════════════════════════════════════
    ANNOUNCEMENT BAR
    ═══════════════════════════════════════════════════ */
-.ann-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1001;
-  height: var(--ann-height);
-  background: #000;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid rgba(196, 164, 122, 0.2);
-}
 
-.ann-track {
-  display: flex;
-  white-space: nowrap;
-  animation: marquee 30s linear infinite;
-}
 
-.ann-track span {
-  font-size: 0.7rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--navbar-accent);
-  padding-right: 4rem;
-}
 
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
 
 /* ═══════════════════════════════════════════════════
    MAIN NAVBAR
    ═══════════════════════════════════════════════════ */
 .navbar {
   position: fixed;
-  top: var(--ann-height);
+  top: 0;
   left: 0;
   right: 0;
   z-index: 1000;

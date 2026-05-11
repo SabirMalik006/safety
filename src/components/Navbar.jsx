@@ -125,17 +125,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="ann-bar">
-        <div className="ann-track">
-          {[...Array(6)].map((_, i) => (
-            <span key={i}>
-              🛡️ Premium Safety Equipment | Certified Standards | Shop Now! &nbsp;&nbsp;&nbsp;
-              🚚 Free Delivery on orders above Rs.10,000 &nbsp;&nbsp;&nbsp;
-              ⚡ Industrial Grade Protection for Professionals &nbsp;&nbsp;&nbsp;
-            </span>
-          ))}
-        </div>
-      </div>
+     
 
       <nav className={`navbar ${scrolled ? 'scrolled' : ''} ${menuOpen ? 'menu-open' : ''}`}>
         <div className="container nb-container">
@@ -144,7 +134,7 @@ export default function Navbar() {
               <span className="nb-brand-mark" aria-hidden="true">
                 <img src={horizonHubLogo} alt="" />
               </span>
-              <span className="nb-brand-byline">by Horizon-Integrated Solutions</span>
+              <a href="https://horizonintegratedsolutions.com/" target="_blank" rel="noopener noreferrer" className="nb-brand-byline">by Horizon-Integrated Solutions</a>
               <span className="sr-only">The Horizon Hub</span>
             </span>
           </Link>
@@ -154,7 +144,7 @@ export default function Navbar() {
           </button>
 
           <ul className="nb-links">
-            {navLinks.map(link => (
+            {navLinks.slice(0, 3).map(link => (
               <li key={link.path}>
                 <Link to={link.path} onClick={handleNavClick}>{link.label}</Link>
               </li>
@@ -187,6 +177,11 @@ export default function Navbar() {
                 </div>
               )}
             </li>
+            {navLinks.slice(3).map(link => (
+              <li key={link.path}>
+                <Link to={link.path} onClick={handleNavClick}>{link.label}</Link>
+              </li>
+            ))}
           </ul>
 
           <div className="nb-actions">

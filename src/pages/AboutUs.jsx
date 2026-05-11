@@ -1,8 +1,9 @@
-import { FiAward, FiHeart, FiUsers, FiTarget, FiTruck, FiShield, FiRefreshCw, FiStar } from 'react-icons/fi';
+import React from 'react';
+import { FiAward, FiHeart, FiUsers, FiTarget, FiTruck, FiShield, FiRefreshCw, FiStar, FiTrendingUp, FiClock } from 'react-icons/fi';
 
 export default function AboutUs() {
   return (
-    <div className="about-page page-content">
+    <div className="about-page">
       {/* Hero Section */}
       <section className="about-hero">
         <div className="container">
@@ -18,7 +19,7 @@ export default function AboutUs() {
             <div className="story-image">
               <img 
                 src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=800&q=80" 
-                alt="Our Story"
+                alt="Industrial safety team at work"
               />
             </div>
             <div className="story-content">
@@ -53,16 +54,19 @@ export default function AboutUs() {
               <div className="mission-icon"><FiTarget /></div>
               <h3>Our Mission</h3>
               <p>To eliminate workplace hazards by providing accessible, certified, and high-quality safety solutions to every industrial sector in Pakistan.</p>
+              <div className="card-hover-effect"></div>
             </div>
             <div className="mission-card">
               <div className="mission-icon"><FiHeart /></div>
               <h3>Our Vision</h3>
               <p>To be the definitive standard for industrial safety in the region, recognized for technical expertise and uncompromising quality.</p>
+              <div className="card-hover-effect"></div>
             </div>
             <div className="mission-card">
               <div className="mission-icon"><FiUsers /></div>
               <h3>Our Promise</h3>
               <p>Guaranteed certification, technical support, and the most reliable equipment for your workforce.</p>
+              <div className="card-hover-effect"></div>
             </div>
           </div>
         </div>
@@ -74,58 +78,67 @@ export default function AboutUs() {
           <div className="section-header">
             <span className="section-tag">What We Believe</span>
             <h2>Our Core Values</h2>
+            <p className="section-subtitle">The principles that guide everything we do</p>
           </div>
           <div className="values-grid">
-            <div className="value-item">
+            <div className="value-card">
               <div className="value-icon"><FiAward /></div>
               <h3>Certified Safety</h3>
               <p>All our products comply with international safety standards (CE/ANSI).</p>
+              <div className="card-hover-effect"></div>
             </div>
-            <div className="value-item">
+            <div className="value-card">
               <div className="value-icon"><FiHeart /></div>
               <h3>Integrity</h3>
               <p>We prioritize worker safety above all else in our product selection.</p>
+              <div className="card-hover-effect"></div>
             </div>
-            <div className="value-item">
+            <div className="value-card">
               <div className="value-icon"><FiTruck /></div>
               <h3>Industrial Logistics</h3>
               <p>Specialized handling for heavy tools and bulk safety equipment.</p>
+              <div className="card-hover-effect"></div>
             </div>
-            <div className="value-item">
+            <div className="value-card">
               <div className="value-icon"><FiShield /></div>
               <h3>Total Support</h3>
               <p>On-site safety consultations and equipment training available.</p>
+              <div className="card-hover-effect"></div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Team Section */}
-      <section className="team-section">
+      {/* Additional Value Stats Row */}
+      <section className="value-stats-section">
         <div className="container">
-          <div className="section-header">
-            <span className="section-tag">Meet the Experts</span>
-            <h2>The Leadership Behind The Horizon Hub</h2>
-            <p>Industry veterans dedicated to ensuring workplace safety across Pakistan.</p>
-          </div>
-          <div className="team-grid">
-            {[
-              { name: 'Irfan Ahmed', role: 'Founder & Safety Consultant', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80' },
-              { name: 'Saad Farooq', role: 'Chief of Operations', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80' },
-              { name: 'Dr. Amna Khan', role: 'Standardization Lead', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80' },
-              { name: 'Hamza Ali', role: 'Industrial Logistics Manager', image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80' },
-            ].map((member, i) => (
-              <div key={i} className="team-card">
-                <img src={member.image} alt={member.name} />
-                <h3>{member.name}</h3>
-                <p>{member.role}</p>
+          <div className="value-stats-grid">
+            <div className="value-stat-item">
+              <FiTrendingUp className="stat-icon" />
+              <div className="stat-info">
+                <span className="stat-number">100%</span>
+                <span className="stat-label">Certified Products</span>
               </div>
-            ))}
+            </div>
+            <div className="value-stat-item">
+              <FiClock className="stat-icon" />
+              <div className="stat-info">
+                <span className="stat-number">24/7</span>
+                <span className="stat-label">Technical Support</span>
+              </div>
+            </div>
+            <div className="value-stat-item">
+              <FiUsers className="stat-icon" />
+              <div className="stat-info">
+                <span className="stat-number">5000+</span>
+                <span className="stat-label">Happy Clients</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Why Choose Us */}
+      {/* Why Choose Us - Centered properly */}
       <section className="why-us">
         <div className="container">
           <div className="why-us-content">
@@ -137,6 +150,7 @@ export default function AboutUs() {
                   <strong>Premium Quality</strong>
                   <span>High-grade materials for lasting durability</span>
                 </div>
+                <div className="card-hover-effect"></div>
               </div>
               <div className="feature">
                 <FiRefreshCw />
@@ -144,6 +158,7 @@ export default function AboutUs() {
                   <strong>Easy Returns</strong>
                   <span>7-day hassle-free return policy</span>
                 </div>
+                <div className="card-hover-effect"></div>
               </div>
               <div className="feature">
                 <FiTruck />
@@ -151,6 +166,7 @@ export default function AboutUs() {
                   <strong>Fast Logistics</strong>
                   <span>Expedited shipping for critical site equipment</span>
                 </div>
+                <div className="card-hover-effect"></div>
               </div>
               <div className="feature">
                 <FiShield />
@@ -158,6 +174,7 @@ export default function AboutUs() {
                   <strong>Secure Shopping</strong>
                   <span>100% secure payment gateway</span>
                 </div>
+                <div className="card-hover-effect"></div>
               </div>
             </div>
           </div>
@@ -166,266 +183,525 @@ export default function AboutUs() {
 
       <style jsx>{`
         .about-page {
-          font-family: 'Inter', sans-serif;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
 
         .container {
-          max-width: 1200px;
+          max-width: 1280px;
           margin: 0 auto;
-          padding: 0 20px;
+          padding: 0 65px;
         }
 
         /* Hero Section */
         .about-hero {
-          background: linear-gradient(135deg, #f0ebe4 0%, #e8e0d5 100%);
-          padding: 80px 0;
+          background: linear-gradient(135deg, #faf7f2 0%, #f0ebe3 100%);
+          padding: 100px 0 90px;
           text-align: center;
+          position: relative;
         }
         .about-hero h1 {
-          font-size: 48px;
-          font-weight: 700;
-          color: #1a1a1a;
-          margin-bottom: 16px;
+          font-size: 52px;
+          font-weight: 800;
+          color: #000000;
+          margin-bottom: 20px;
+          letter-spacing: -0.02em;
         }
         .about-hero p {
-          font-size: 18px;
-          color: #555;
-          max-width: 600px;
+          font-size: 19px;
+          color: #2c2c2c;
+          max-width: 680px;
           margin: 0 auto;
+          line-height: 1.5;
         }
 
         /* Brand Story */
         .brand-story {
-          padding: 80px 0;
-          background: #fff;
+          padding: 96px 0;
+          background: #ffffff;
         }
         .story-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 50px;
+          gap: 64px;
           align-items: center;
         }
         .story-image img {
           width: 100%;
-          border-radius: 20px;
-          box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+          border-radius: 32px;
+          box-shadow: 0 30px 45px -20px rgba(0,0,0,0.2);
+          transition: transform 0.4s ease;
+          object-fit: cover;
+        }
+        .story-image img:hover {
+          transform: scale(1.01);
         }
         .story-tag {
-          color: #c4a47a;
+          color: #000;
           text-transform: uppercase;
-          font-size: 12px;
-          letter-spacing: 2px;
-          font-weight: 600;
+          font-size: 13px;
+          letter-spacing: 2.5px;
+          font-weight: 700;
+          background: rgba(243,190,23,0.1);
+          display: inline-block;
+          padding: 4px 12px;
+          border-radius: 40px;
         }
         .story-content h2 {
-          font-size: 36px;
-          font-weight: 700;
-          margin: 15px 0 20px;
-          color: #1a1a1a;
+          font-size: 42px;
+          font-weight: 800;
+          margin: 20px 0 24px;
+          color: #000000;
+          line-height: 1.2;
         }
         .story-content p {
-          color: #666;
-          line-height: 1.8;
-          margin-bottom: 20px;
+          color: #3a3a3a;
+          line-height: 1.7;
+          margin-bottom: 24px;
+          font-size: 16px;
         }
         .story-stats {
           display: flex;
-          gap: 30px;
-          margin-top: 30px;
+          gap: 48px;
+          margin-top: 36px;
+          flex-wrap: wrap;
         }
         .stat strong {
           display: block;
-          font-size: 28px;
-          font-weight: 700;
-          color: #c4a47a;
+          font-size: 32px;
+          font-weight: 800;
+          color: #000000;
+          margin-bottom: 6px;
         }
         .stat span {
           font-size: 14px;
-          color: #666;
+          font-weight: 500;
+          color: #4a4a4a;
         }
 
         /* Mission Section */
         .mission-section {
-          padding: 60px 0;
-          background: #faf9f8;
+          padding: 80px 0;
+          background: linear-gradient(115deg, #f0f4f8 0%, #e8edf2 100%);
         }
         .mission-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-          gap: 30px;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 36px;
         }
         .mission-card {
           text-align: center;
-          padding: 40px 20px;
+          padding: 44px 28px;
           background: white;
-          border-radius: 20px;
-          box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+          border-radius: 32px;
+          box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+          transition: all 0.35s ease;
+          border: 1px solid rgba(243,190,23,0.2);
+          position: relative;
+          overflow: hidden;
+          cursor: pointer;
+        }
+        .mission-card:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 25px 45px -12px rgba(0,0,0,0.2);
+          border-color: #F3BE17;
         }
         .mission-icon {
-          width: 70px;
-          height: 70px;
-          background: #c4a47a;
+          width: 80px;
+          height: 80px;
+          background: #F3BE17;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          margin: 0 auto 20px;
-          font-size: 28px;
-          color: white;
+          margin: 0 auto 24px;
+          font-size: 36px;
+          color: #1e1e1e;
+          transition: transform 0.3s ease;
+        }
+        .mission-card:hover .mission-icon {
+          transform: scale(1.05);
         }
         .mission-card h3 {
-          font-size: 22px;
-          font-weight: 600;
-          margin-bottom: 15px;
+          font-size: 24px;
+          font-weight: 700;
+          margin-bottom: 16px;
+          color: #000000;
         }
         .mission-card p {
-          color: #666;
+          color: #4a4a4a;
           line-height: 1.6;
         }
 
         /* Values Section */
         .values-section {
-          padding: 80px 0;
-          background: #fff;
+          padding: 96px 0 80px;
+          background: linear-gradient(135deg, #ffffff 0%, #fefcf8 100%);
         }
         .section-header {
           text-align: center;
-          margin-bottom: 50px;
+          margin-bottom: 64px;
         }
         .section-tag {
-          color: #c4a47a;
-          text-transform: uppercase;
-          font-size: 12px;
+          color: #000;
+          background: rgba(243,190,23,0.12);
+          font-size: 13px;
           letter-spacing: 2px;
-          font-weight: 600;
+          font-weight: 700;
+          padding: 5px 14px;
+          display: inline-block;
+          border-radius: 60px;
         }
         .section-header h2 {
-          font-size: 36px;
-          font-weight: 700;
-          margin-top: 10px;
+          font-size: 44px;
+          font-weight: 800;
+          margin-top: 14px;
+          margin-bottom: 12px;
+          color: #000000;
+        }
+        .section-subtitle {
+          font-size: 16px;
+          color: #666;
+          max-width: 500px;
+          margin: 0 auto;
         }
         .values-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          gap: 40px;
+          display: flex;
+          justify-content: center;
+          align-items: stretch;
+          gap: 32px;
+          flex-wrap: wrap;
         }
-        .value-item {
+        .value-card {
+          flex: 1;
+          min-width: 220px;
+          max-width: 270px;
           text-align: center;
+          padding: 36px 24px;
+          background: white;
+          border-radius: 28px;
+          box-shadow: 0 15px 35px -10px rgba(0,0,0,0.08);
+          transition: all 0.35s ease;
+          border: 1px solid rgba(243,190,23,0.15);
+          position: relative;
+          overflow: hidden;
+          cursor: pointer;
+        }
+        .value-card:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 25px 45px -12px rgba(0,0,0,0.15);
+          border-color: #F3BE17;
         }
         .value-icon {
-          width: 60px;
-          height: 60px;
-          background: #f0ebe4;
+          width: 70px;
+          height: 70px;
+          background: #F3BE17;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          margin: 0 auto 20px;
-          font-size: 24px;
-          color: #c4a47a;
+          margin: 0 auto 24px;
+          font-size: 28px;
+          color: #1c1c1c;
+          transition: transform 0.3s ease;
         }
-        .value-item h3 {
-          font-size: 18px;
-          font-weight: 600;
-          margin-bottom: 10px;
+        .value-card:hover .value-icon {
+          transform: scale(1.05);
         }
-        .value-item p {
+        .value-card h3 {
+          font-size: 20px;
+          font-weight: 700;
+          margin-bottom: 16px;
+          color: #000000;
+        }
+        .value-card p {
+          color: #555;
+          font-size: 14px;
+          line-height: 1.6;
+          margin: 0;
+        }
+
+        /* Value Stats Section */
+        .value-stats-section {
+          padding: 0 0 80px;
+          background: transparent;
+        }
+        .value-stats-grid {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 60px;
+          flex-wrap: wrap;
+          background: linear-gradient(115deg, #FCF9F4 0%, #f8f5ee 100%);
+          padding: 50px 40px;
+          border-radius: 60px;
+          margin-top: 20px;
+        }
+        .value-stat-item {
+          display: flex;
+          align-items: center;
+          gap: 18px;
+          transition: transform 0.3s ease;
+        }
+        .value-stat-item:hover {
+          transform: translateY(-4px);
+        }
+        .stat-icon {
+          font-size: 42px;
+          color: #F3BE17;
+          stroke-width: 1.5;
+          transition: transform 0.3s ease;
+        }
+        .value-stat-item:hover .stat-icon {
+          transform: scale(1.1);
+        }
+        .stat-info {
+          display: flex;
+          flex-direction: column;
+        }
+        .stat-number {
+          font-size: 32px;
+          font-weight: 800;
+          color: #000000;
+          line-height: 1.2;
+        }
+        .stat-label {
+          font-size: 14px;
           color: #666;
-          font-size: 14px;
+          font-weight: 500;
         }
 
-        /* Team Section */
-        .team-section {
-          padding: 60px 0;
-          background: #faf9f8;
-        }
-        .team-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          gap: 30px;
-        }
-        .team-card {
-          text-align: center;
-          background: white;
-          border-radius: 20px;
-          overflow: hidden;
-          box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-          padding: 20px;
-        }
-        .team-card img {
-          width: 150px;
-          height: 150px;
-          border-radius: 50%;
-          object-fit: cover;
-          margin-bottom: 15px;
-        }
-        .team-card h3 {
-          font-size: 18px;
-          font-weight: 600;
-          margin-bottom: 5px;
-        }
-        .team-card p {
-          color: #c4a47a;
-          font-size: 14px;
-        }
-
-        /* Why Us Section */
+        /* Why Choose Us - FIXED CENTERING */
         .why-us {
-          padding: 60px 0;
-          background: #c4a47a;
-          color: white;
+          padding: 80px 0;
+          background: linear-gradient(115deg, #f5f2ec 0%, #efeae1 100%);
         }
         .why-us-content {
           text-align: center;
         }
         .why-us-content h2 {
-          font-size: 32px;
-          font-weight: 700;
-          margin-bottom: 40px;
+          font-size: 38px;
+          font-weight: 800;
+          margin-bottom: 56px;
+          color: #000000;
         }
         .features-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          gap: 30px;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 32px;
           max-width: 900px;
           margin: 0 auto;
         }
         .feature {
           display: flex;
           align-items: center;
-          gap: 15px;
+          gap: 20px;
           text-align: left;
+          background: #ffffff;
+          padding: 18px 22px;
+          border-radius: 28px;
+          transition: all 0.35s ease;
+          box-shadow: 0 5px 15px rgba(0,0,0,0.04);
+          border: 1px solid rgba(243,190,23,0.2);
+          position: relative;
+          overflow: hidden;
+          cursor: pointer;
+        }
+        .feature:hover {
+          transform: translateX(8px) translateY(-3px);
+          border-color: #F3BE17;
+          box-shadow: 0 12px 28px rgba(243,190,23,0.15);
         }
         .feature svg {
-          font-size: 28px;
+          background: #F3BE17;
+          padding: 10px;
+          border-radius: 18px;
+          color: #1e1e1e;
+          width: 52px;
+          height: 52px;
           flex-shrink: 0;
+          stroke-width: 1.5;
+          transition: transform 0.3s ease;
+        }
+        .feature:hover svg {
+          transform: scale(1.05);
         }
         .feature strong {
           display: block;
-          font-size: 16px;
-          margin-bottom: 5px;
+          font-size: 18px;
+          font-weight: 700;
+          margin-bottom: 6px;
+          color: #000000;
         }
         .feature span {
-          font-size: 13px;
-          opacity: 0.9;
+          font-size: 14px;
+          color: #4a4a4a;
+        }
+
+        /* UNIVERSAL HOVER EFFECT LINE */
+        .card-hover-effect {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 4px;
+          background: #F3BE17;
+          transform: scaleX(0);
+          transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+          transform-origin: left;
+        }
+        .mission-card:hover .card-hover-effect,
+        .value-card:hover .card-hover-effect,
+        .feature:hover .card-hover-effect {
+          transform: scaleX(1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+          .container {
+            padding: 0 40px;
+          }
+          .story-grid {
+            gap: 40px;
+          }
+          .story-content h2 {
+            font-size: 34px;
+          }
+          .about-hero h1 {
+            font-size: 44px;
+          }
+          .section-header h2 {
+            font-size: 36px;
+          }
+          .values-grid {
+            gap: 24px;
+          }
+          .value-card {
+            min-width: 200px;
+            padding: 28px 20px;
+          }
+          .value-stats-grid {
+            gap: 40px;
+            padding: 40px 30px;
+          }
+          .features-grid {
+            gap: 28px;
+            max-width: 800px;
+          }
         }
 
         @media (max-width: 768px) {
+          .container {
+            padding: 0 24px;
+          }
           .story-grid {
             grid-template-columns: 1fr;
+            gap: 40px;
+          }
+          .about-hero {
+            padding: 70px 0;
           }
           .about-hero h1 {
             font-size: 36px;
           }
           .story-content h2 {
-            font-size: 28px;
+            font-size: 30px;
           }
           .story-stats {
-            flex-wrap: wrap;
+            gap: 28px;
             justify-content: center;
           }
+          .mission-grid {
+            grid-template-columns: 1fr;
+            gap: 28px;
+          }
           .values-grid {
+            flex-direction: column;
+            align-items: center;
+          }
+          .value-card {
+            max-width: 360px;
+            width: 100%;
+          }
+          .value-stats-grid {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
             gap: 30px;
+            border-radius: 40px;
+          }
+          .value-stat-item {
+            width: 100%;
+            justify-content: center;
+          }
+          .mission-card {
+            padding: 32px 20px;
+          }
+          .why-us-content h2 {
+            font-size: 30px;
+          }
+          .features-grid {
+            grid-template-columns: 1fr;
+            max-width: 450px;
+            gap: 20px;
+          }
+          .feature svg {
+            width: 44px;
+            height: 44px;
+            padding: 8px;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .container {
+            padding: 0 20px;
+          }
+          .about-hero h1 {
+            font-size: 32px;
+          }
+          .about-hero p {
+            font-size: 16px;
+          }
+          .story-content h2 {
+            font-size: 26px;
+          }
+          .section-header h2 {
+            font-size: 30px;
+          }
+          .value-stats-grid {
+            padding: 30px 20px;
+          }
+          .stat-number {
+            font-size: 26px;
+          }
+          .feature {
+            padding: 14px 18px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .container {
+            padding: 0 16px;
+          }
+          .story-stats {
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+          }
+          .stat {
+            text-align: center;
+          }
+          .mission-card {
+            padding: 28px 16px;
+          }
+          .value-card {
+            padding: 28px 20px;
+          }
+          .feature {
+            flex-direction: column;
+            text-align: center;
+          }
+          .feature svg {
+            margin-bottom: 8px;
           }
         }
       `}</style>

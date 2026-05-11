@@ -32,7 +32,6 @@ export default function Footer() {
         rating,
         comment,
         guestName: user ? undefined : guestName,
-        // product is undefined for general feedback
       });
       toast.success('Thank you for your feedback!');
       setShowFeedbackModal(false);

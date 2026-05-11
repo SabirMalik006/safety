@@ -36,7 +36,7 @@ export default function ContactUs() {
   };
 
   return (
-    <div className="contact-page page-content">
+    <div className="contact-page">
       {/* Hero Section */}
       <section className="contact-hero">
         <div className="container">
@@ -52,20 +52,22 @@ export default function ContactUs() {
             <div className="contact-card">
               <div className="contact-icon"><FiMapPin /></div>
               <h3>Visit Us</h3>
-              <p>Plot #12, Industrial Area</p>
-              <p>SITE Phase II, Karachi, Pakistan</p>
+              <p>Icon 2, Business Square</p>
+              <p>Gulberg Greens, Islamabad, Pakistan</p>
+              <div className="card-hover-effect"></div>
             </div>
             <div className="contact-card">
               <div className="contact-icon"><FiPhoneCall /></div>
               <h3>Call Us</h3>
               <p>+92 3215366666</p>
-              <p>Mon-Fri: 10am - 8pm</p>
+              <p>Available 24/7</p>
+              <div className="card-hover-effect"></div>
             </div>
             <div className="contact-card">
               <div className="contact-icon"><FiMail /></div>
               <h3>Email Us</h3>
               <p>info@horizonintegratedsolutions@gmail.com</p>
-              <p>info@horizonintegratedsolutions@gmail.com</p>
+              <div className="card-hover-effect"></div>
             </div>
           </div>
         </div>
@@ -75,16 +77,16 @@ export default function ContactUs() {
       <section className="contact-form-section">
         <div className="container">
           <div className="contact-grid">
-            {/* Map */}
+            {/* Map - Updated to Gulberg Greens, Islamabad */}
             <div className="contact-map">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d217514.64718147625!2d74.172566!3d31.482252!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39190483e0c3c8d7%3A0x73a2b2a1b08f8b9!2sLahore%2C%20Punjab%2C%20Pakistan!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3319.203578201449!2d73.047129675667!3d33.69799473363481!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38dfbfd0e0e0e0e1%3A0x0e0e0e0e0e0e0e0e!2sIcon%202%2C%20Business%20Square%2C%20Gulberg%20Greens%2C%20Islamabad!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
                 allowFullScreen=""
                 loading="lazy"
-                title="Store Location"
+                title="Icon 2, Business Square, Gulberg Greens, Islamabad"
               ></iframe>
             </div>
 
@@ -161,7 +163,7 @@ export default function ContactUs() {
         </div>
       </section>
 
-      {/* Business Hours Section */}
+      {/* Business Hours Section - 24/7 */}
       <section className="hours-section">
         <div className="container">
           <div className="hours-content">
@@ -169,16 +171,16 @@ export default function ContactUs() {
             <h2>Business Hours</h2>
             <div className="hours-grid">
               <div className="hour-item">
-                <span>Monday - Friday</span>
-                <strong>10:00 AM - 8:00 PM</strong>
+                <span>Monday - Sunday</span>
+                <strong>24/7 Open</strong>
               </div>
               <div className="hour-item">
-                <span>Saturday</span>
-                <strong>11:00 AM - 6:00 PM</strong>
+                <span>Customer Support</span>
+                <strong>Available 24/7</strong>
               </div>
               <div className="hour-item">
-                <span>Sunday</span>
-                <strong>Closed</strong>
+                <span>Emergency Support</span>
+                <strong>Always Open</strong>
               </div>
             </div>
           </div>
@@ -187,103 +189,137 @@ export default function ContactUs() {
 
       <style jsx>{`
         .contact-page {
-          font-family: 'Inter', sans-serif;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
 
         .container {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 0 20px;
+
+          padding: 0 65px;
         }
 
         /* Hero Section */
         .contact-hero {
-          background: linear-gradient(135deg, #f0ebe4 0%, #e8e0d5 100%);
-          padding: 80px 0;
+          background: linear-gradient(135deg, #faf7f2 0%, #f0ebe3 100%);
+          padding: 90px 0;
           text-align: center;
+          position: relative;
         }
         .contact-hero h1 {
-          font-size: 48px;
-          font-weight: 700;
-          color: #1a1a1a;
-          margin-bottom: 16px;
+          font-size: 52px;
+          font-weight: 800;
+          color: #000000;
+          margin-bottom: 20px;
+          letter-spacing: -0.02em;
         }
         .contact-hero p {
-          font-size: 18px;
-          color: #555;
-          max-width: 600px;
+          font-size: 19px;
+          color: #2c2c2c;
           margin: 0 auto;
+          line-height: 1.5;
         }
 
         /* Contact Cards */
         .contact-info-section {
-          padding: 60px 0;
-          background: #fff;
+          padding: 80px 0;
+          background: #ffffff;
         }
         .contact-cards-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-          gap: 30px;
+          display: flex;
+          justify-content: center;
+          align-items: stretch;
+          gap: 32px;
+          flex-wrap: wrap;
+
+          margin: 0 auto;
         }
         .contact-card {
+          flex: 1;
+          min-width: 260px;
+          max-width: 320px;
           text-align: center;
-          padding: 40px 20px;
-          background: #f8f8f8;
-          border-radius: 16px;
-          transition: transform 0.3s ease;
+          padding: 40px 24px;
+          background: #ffffff;
+          border-radius: 28px;
+          box-shadow: 0 15px 35px -10px rgba(0,0,0,0.08);
+          transition: all 0.35s ease;
+          border: 1px solid rgba(243,190,23,0.15);
+          position: relative;
+          overflow: hidden;
+          cursor: pointer;
         }
         .contact-card:hover {
-          transform: translateY(-5px);
+          transform: translateY(-8px);
+          box-shadow: 0 25px 45px -12px rgba(0,0,0,0.15);
+          border-color: #F3BE17;
         }
         .contact-icon {
           width: 70px;
           height: 70px;
-          background: #c4a47a;
+          background: #F3BE17;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          margin: 0 auto 20px;
-          font-size: 28px;
-          color: white;
+          margin: 0 auto 24px;
+          font-size: 30px;
+          color: #1c1c1c;
+          transition: transform 0.3s ease;
+        }
+        .contact-card:hover .contact-icon {
+          transform: scale(1.05);
         }
         .contact-card h3 {
-          font-size: 20px;
-          font-weight: 600;
-          margin-bottom: 12px;
-          color: #1a1a1a;
+          font-size: 22px;
+          font-weight: 700;
+          margin-bottom: 16px;
+          color: #000000;
         }
         .contact-card p {
-          color: #666;
+          color: #555;
           line-height: 1.6;
-          margin: 5px 0;
+          margin: 8px 0;
+          font-size: 14px;
         }
 
         /* Contact Form Section */
         .contact-form-section {
-          padding: 60px 0;
-          background: #faf9f8;
+          padding: 80px 0;
+          background: linear-gradient(115deg, #f0f4f8 0%, #e8edf2 100%);
         }
         .contact-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 50px;
+          align-items: start;
         }
         .contact-map {
-          height: 450px;
-          border-radius: 20px;
+          height: 500px;
+          border-radius: 28px;
           overflow: hidden;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+          box-shadow: 0 20px 40px -12px rgba(0,0,0,0.15);
+        }
+        .contact-map iframe {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        .contact-form {
+          background: #ffffff;
+          padding: 40px;
+          border-radius: 28px;
+          box-shadow: 0 15px 35px -10px rgba(0,0,0,0.08);
+          border: 1px solid rgba(243,190,23,0.1);
         }
         .contact-form h2 {
-          font-size: 28px;
-          font-weight: 600;
+          font-size: 32px;
+          font-weight: 800;
           margin-bottom: 12px;
-          color: #1a1a1a;
+          color: #000000;
         }
         .contact-form p {
           color: #666;
-          margin-bottom: 30px;
+          margin-bottom: 28px;
+          font-size: 15px;
         }
         .form-row {
           display: grid;
@@ -294,79 +330,90 @@ export default function ContactUs() {
         .form-group input,
         .form-group textarea {
           width: 100%;
-          padding: 14px 16px;
-          border: 1px solid #ddd;
-          border-radius: 12px;
-          font-size: 14px;
-          transition: border-color 0.3s;
+          padding: 14px 18px;
+          border: 1.5px solid #e0e0e0;
+          border-radius: 16px;
+          font-size: 15px;
+          transition: all 0.3s ease;
           font-family: inherit;
+          background: #fefefe;
         }
         .form-group input:focus,
         .form-group textarea:focus {
           outline: none;
-          border-color: #c4a47a;
+          border-color: #F3BE17;
+          box-shadow: 0 0 0 3px rgba(243,190,23,0.1);
         }
         .submit-btn {
-          background: #c4a47a;
-          color: white;
+          background: #F3BE17;
+          color: #1c1c1c;
           border: none;
-          padding: 14px 30px;
-          border-radius: 30px;
+          padding: 14px 32px;
+          border-radius: 40px;
           font-size: 16px;
-          font-weight: 600;
+          font-weight: 700;
           cursor: pointer;
           display: inline-flex;
           align-items: center;
           gap: 10px;
-          transition: background 0.3s;
+          transition: all 0.3s ease;
+          margin-top: 8px;
         }
         .submit-btn:disabled {
-          opacity: 0.7;
+          opacity: 0.6;
           cursor: not-allowed;
         }
         .submit-btn:hover:not(:disabled) {
-          background: #a8885e;
+          background: #e0a800;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(243,190,23,0.3);
         }
         .success-message {
-          margin-top: 15px;
-          padding: 12px;
+          margin-top: 18px;
+          padding: 14px;
           background: #e8f5e9;
           color: #2e7d32;
-          border-radius: 8px;
+          border-radius: 16px;
           font-size: 14px;
+          font-weight: 500;
+          text-align: center;
         }
 
-        /* Hours Section */
+        /* Hours Section - 24/7 */
         .hours-section {
-          padding: 60px 0;
-          background: #fff;
+          padding: 80px 0;
+          background: #ffffff;
         }
         .hours-content {
           text-align: center;
-          max-width: 600px;
+          max-width: 800px;
           margin: 0 auto;
+          background: linear-gradient(115deg, #FCF9F4 0%, #f8f5ee 100%);
+          padding: 50px 40px;
+          border-radius: 48px;
         }
         .hours-icon {
           width: 70px;
           height: 70px;
-          background: #c4a47a;
+          background: #F3BE17;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
           margin: 0 auto 20px;
           font-size: 32px;
-          color: white;
+          color: #1c1c1c;
         }
         .hours-content h2 {
-          font-size: 28px;
-          font-weight: 600;
-          margin-bottom: 30px;
+          font-size: 32px;
+          font-weight: 800;
+          margin-bottom: 32px;
+          color: #000000;
         }
         .hours-grid {
           display: flex;
           justify-content: center;
-          gap: 40px;
+          gap: 48px;
           flex-wrap: wrap;
         }
         .hour-item {
@@ -376,25 +423,135 @@ export default function ContactUs() {
           display: block;
           color: #666;
           margin-bottom: 8px;
+          font-size: 14px;
         }
         .hour-item strong {
-          font-size: 18px;
-          color: #1a1a1a;
+          font-size: 20px;
+          font-weight: 700;
+          color: #000000;
+        }
+
+        /* Universal Hover Effect */
+        .card-hover-effect {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 4px;
+          background: #F3BE17;
+          transform: scaleX(0);
+          transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+          transform-origin: left;
+        }
+        .contact-card:hover .card-hover-effect {
+          transform: scaleX(1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1280px) {
+          .container {
+            padding: 0 65px;
+          }
+        }
+
+        @media (max-width: 1024px) {
+          .container {
+            padding: 0 40px;
+          }
+          .contact-hero h1 {
+            font-size: 44px;
+          }
+          .contact-grid {
+            gap: 40px;
+          }
+          .contact-form {
+            padding: 32px;
+          }
+          .hours-grid {
+            gap: 32px;
+          }
         }
 
         @media (max-width: 768px) {
-          .contact-grid {
-            grid-template-columns: 1fr;
+          .container {
+            padding: 0 24px;
+          }
+          .contact-hero {
+            padding: 70px 0;
           }
           .contact-hero h1 {
             font-size: 36px;
           }
+          .contact-hero p {
+            font-size: 16px;
+          }
+          .contact-cards-grid {
+            gap: 24px;
+          }
+          .contact-card {
+            min-width: 240px;
+            padding: 32px 20px;
+          }
+          .contact-grid {
+            grid-template-columns: 1fr;
+            gap: 32px;
+          }
+          .contact-map {
+            height: 350px;
+          }
           .form-row {
             grid-template-columns: 1fr;
+            gap: 16px;
+          }
+          .contact-form h2 {
+            font-size: 28px;
+          }
+          .hours-content {
+            padding: 40px 24px;
+          }
+          .hours-content h2 {
+            font-size: 28px;
           }
           .hours-grid {
             flex-direction: column;
             gap: 20px;
+            align-items: center;
+          }
+          .hour-item strong {
+            font-size: 18px;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .container {
+            padding: 0 20px;
+          }
+          .contact-hero h1 {
+            font-size: 32px;
+          }
+          .contact-card {
+            min-width: 100%;
+          }
+          .contact-form {
+            padding: 24px;
+          }
+          .submit-btn {
+            width: 100%;
+            justify-content: center;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .container {
+            padding: 0 16px;
+          }
+          .contact-icon {
+            width: 60px;
+            height: 60px;
+            font-size: 26px;
+          }
+          .contact-card h3 {
+            font-size: 20px;
           }
         }
       `}</style>
