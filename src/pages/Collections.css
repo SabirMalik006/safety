@@ -17,7 +17,8 @@
   gap: 1.5rem;
 }
 
-.top-left, .top-right {
+.top-left,
+.top-right {
   display: flex;
   align-items: center;
   gap: 1.5rem;
@@ -291,7 +292,7 @@
 .current-price {
   font-size: 1.25rem;
   font-weight: 800;
-  color: #000;
+  color: #F59E0B;
 }
 
 .currency {
@@ -381,7 +382,7 @@
   .collections-main {
     grid-template-columns: 1fr;
   }
-  
+
   .mobile-filter-btn {
     display: flex;
   }
@@ -391,20 +392,20 @@
   .collections-top {
     padding: 1rem;
   }
-  
+
   .top-right {
     width: 100%;
     justify-content: space-between;
   }
-  
+
   .search-form {
     width: 100%;
   }
-  
+
   .product-card.list {
     flex-direction: column;
   }
-  
+
   .product-card.list .card-image-wrap {
     width: 100%;
     height: 250px;
