@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, useParams, useNavigate, Link } from 'react-router-dom';
-import { FiGrid, FiList, FiFilter, FiChevronDown, FiSearch, FiShoppingCart, FiHeart, FiStar, FiEye } from 'react-icons/fi';
+import { FiGrid, FiList, FiFilter, FiChevronDown, FiSearch } from 'react-icons/fi';
 import { getProducts, getCategories } from '../services/productService';
-import { useCart } from '../context/CartContext';
-import { useWishlist } from '../context/WishlistContext';
-import { isAuthenticated } from '../services/authService';
 import CategorySidebar from '../components/CategorySidebar';
+import ProductCard from '../components/ProductCard';
 import { SkeletonGrid } from '../components/ProductSkeleton';
 import toast from 'react-hot-toast';
 import './Collections.css';
@@ -26,10 +24,6 @@ const Collections = () => {
   const [priceRange, setPriceRange] = useState([0, 100000]);
   const [activeColor, setActiveColor] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-
-  const { addToCart } = useCart();
-  const { toggleWishlist, isWishlisted } = useWishlist();
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (slug) {
@@ -160,90 +154,12 @@ const Collections = () => {
                     key={product._id}
                     product={product}
                     viewMode={viewMode}
-                    onAddToCart={(p) => {
-                      if (!isAuthenticated()) {
-                        toast.error('Please login to add items to cart');
-                        navigate('/login');
-                        return;
-                      }
-                      addToCart(p);
-                    }}
-                    onWishlist={(p) => {
-                      if (!isAuthenticated()) {
-                        toast.error('Please login to add items to wishlist');
-                        navigate('/login');
-                        return;
-                      }
-                      toggleWishlist(p);
-                    }}
-                    isWishlisted={isWishlisted(product._id)}
                   />
                 ))}
               </div>
             )}
           </main>
         </div>
-      </div>
-    </div>
-  );
-};
-
-const ProductCard = ({ product, viewMode, onAddToCart, onWishlist, isWishlisted }) => {
-  return (
-    <div className={`product-card ${viewMode}`}>
-      <div className="card-image-wrap">
-        <img src={product.images?.[0]?.url || product.image || '/images/placeholder.jpg'} alt={product.name} />
-        {product.comparePrice > product.price && (
-          <span className="sale-badge">SALE</span>
-        )}
-        <div className="card-actions">
-          <button
-            className={`action-btn ${isWishlisted ? 'active' : ''}`}
-            onClick={() => onWishlist(product)}
-            title="Add to Wishlist"
-          >
-            <FiHeart />
-          </button>
-          <Link to={`/products/${product.slug}`} className="action-btn" title="View Product">
-            <FiEye />
-          </Link>
-          <button className="action-btn" onClick={() => onAddToCart(product)} title="Quick Add">
-            <FiShoppingCart />
-          </button>
-        </div>
-      </div>
-
-      <div className="card-info">
-        <div className="card-category">{product.category?.name}</div>
-        <h3 className="card-title">
-          <a href={`/products/${product.slug}`}>{product.name}</a>
-        </h3>
-
-        <div className="card-price">
-          <span className="current-price"><span className="currency">Rs.</span>{product.price?.toLocaleString()}</span>
-          {product.comparePrice > product.price && (
-            <span className="old-price"><span className="currency">Rs.</span>{product.comparePrice?.toLocaleString()}</span>
-          )}
-        </div>
-
-        {viewMode === 'grid' && (
-          <button 
-            className={`btn-add-cart-grid ${product.countInStock === 0 ? 'disabled' : ''}`}
-            onClick={() => (product.countInStock > 0 || product.countInStock === undefined) && onAddToCart(product)}
-            disabled={product.countInStock === 0}
-          >
-            {(product.countInStock > 0 || product.countInStock === undefined) ? 'Add to Cart' : 'Out of Stock'}
-          </button>
-        )}
-
-        {viewMode === 'list' && (
-          <div className="list-description">
-            <p>{product.description?.substring(0, 150)}...</p>
-            <button className="btn-add-cart" onClick={() => onAddToCart(product)}>
-              Add to Cart <FiShoppingCart />
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );

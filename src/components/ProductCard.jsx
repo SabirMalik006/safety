@@ -1,40 +1,17 @@
-import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiHeart, FiShoppingCart, FiEye } from 'react-icons/fi';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/blur.css';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { isAuthenticated } from '../services/authService';
 import toast from 'react-hot-toast';
 import './ProductCard.css';
 
-export default function ProductCard({ product }) {
-  const [hovering, setHovering] = useState(false);
-  const [selectedColor, setSelectedColor] = useState(product?.colors?.[0] || '');
-  const [imageLoaded, setImageLoaded] = useState(false);
+export default function ProductCard({ product, viewMode = 'grid' }) {
   const { addToCart } = useCart();
   const { toggleWishlist, isWishlisted } = useWishlist();
   const navigate = useNavigate();
 
-  // ✅ Safety check
-  if (!product) {
-    return null;
-  }
-
-  const colorMap = {
-    'Black': '#1a1a1a',
-    'Brown': '#6B4226',
-    'Dark Brown': '#3E2C1C',
-    'Green': '#2E5E3E',
-    'Beige': '#C8AD8F',
-    'Pink': '#E8A4B0',
-    'White': '#F5F5F5',
-    'Off-White': '#EDE8E0',
-    'Natural': '#D4C4A0',
-    'Navy': '#1B2A4A',
-    'Olive': '#6B6E3E',
-  };
+  if (!product) return null;
 
   const handleAddToCart = (e) => {
     e.preventDefault();
@@ -46,8 +23,8 @@ export default function ProductCard({ product }) {
       return;
     }
 
-    if (product.inStock || product.stock > 0) {
-      addToCart(product, 1, selectedColor);
+    if (product.inStock !== false && (product.stock > 0 || product.countInStock > 0 || product.stock === undefined)) {
+      addToCart(product);
     }
   };
 
@@ -64,115 +41,82 @@ export default function ProductCard({ product }) {
     toggleWishlist(product);
   };
 
-  const handleViewClick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    window.location.href = `/products/${product.slug}`;
-  };
-
-  const productId = product._id || product.id;
-  const inStock = product.inStock || product.stock > 0;
-  const productName = product.name || 'Product';
-  const productPrice = product.price || 0;
-  const productImage = typeof product.image === 'string' ? product.image : (product.images?.[0]?.url || product.images?.[0] || '/images/placeholder.jpg');
-  const hoverImage = product.images?.[1]?.url || product.images?.[1] || productImage;
-  const productSlug = product.slug;
-  const productColors = product.colors || [];
-  const productDiscount = product.discount || 0;
-
-  // Current image based on hover state
-  const currentImage = (hovering && hoverImage) ? hoverImage : productImage;
+  const inStock = product.inStock !== false && (product.stock > 0 || product.countInStock > 0 || product.stock === undefined || product.countInStock === undefined);
+  const productImage = product.images?.[0]?.url || product.image || '/images/placeholder.jpg';
+  const discount = product.comparePrice > product.price || (product.originalPrice > product.price);
 
   return (
-    <div
-      className="product-card"
-      onMouseEnter={() => setHovering(true)}
-      onMouseLeave={() => setHovering(false)}
-    >
-      <Link to={`/products/${productSlug}`} className="product-image-wrap">
-        <LazyLoadImage
-          src={currentImage}
-          alt={productName}
-          className="product-img"
-          effect="blur"
-          wrapperClassName="product-img-wrapper"
-          threshold={100}
-          onLoad={() => setImageLoaded(true)}
-        />
-
-        {productDiscount > 0 && (
-          <span className="badge-sale">SALE</span>
+    <div className={`product-card ${viewMode}`}>
+      <div className="card-image-wrap">
+        <Link to={`/products/${product.slug}`}>
+          <img src={productImage} alt={product.name} />
+        </Link>
+        {discount && (
+          <span className="sale-badge">SALE</span>
         )}
         {!inStock && (
           <span className="badge-out">Out of Stock</span>
         )}
-
-        <div className={`product-actions ${hovering ? 'visible' : ''}`}>
+        <div className="card-actions">
           <button
-            className={`action-btn wishlist-btn ${isWishlisted(productId) ? 'active' : ''}`}
+            className={`action-btn ${isWishlisted(product._id) ? 'active' : ''}`}
             onClick={handleWishlistClick}
             title="Add to Wishlist"
           >
             <FiHeart />
           </button>
-          <button
-            className="action-btn cart-btn"
-            onClick={handleAddToCart}
-            title={inStock ? 'Add to Cart' : 'Out of Stock'}
+          <Link to={`/products/${product.slug}`} className="action-btn" title="View Product">
+            <FiEye />
+          </Link>
+          <button 
+            className="action-btn" 
+            onClick={handleAddToCart} 
+            title={inStock ? 'Quick Add' : 'Out of Stock'}
             disabled={!inStock}
           >
             <FiShoppingCart />
           </button>
-          <button
-            className="action-btn view-btn"
-            onClick={handleViewClick}
-            title="Quick View"
-          >
-            <FiEye />
-          </button>
         </div>
-      </Link>
+      </div>
 
-      <div className="product-info">
-        {productColors.length > 0 && (
-          <div className="color-swatches">
-            {productColors.slice(0, 5).map(color => (
-              <button
-                key={typeof color === 'string' ? color : color.name}
-                className={`swatch ${selectedColor === (typeof color === 'string' ? color : color.name) ? 'active' : ''}`}
-                style={{ background: colorMap[typeof color === 'string' ? color : color.name] || '#ccc' }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setSelectedColor(typeof color === 'string' ? color : color.name);
-                }}
-                title={typeof color === 'string' ? color : color.name}
-              />
-            ))}
-            {productColors.length > 5 && (
-              <span className="swatch-more">+{productColors.length - 5}</span>
-            )}
-          </div>
-        )}
-
-        <h3 className="product-name">
-          <Link to={`/products/${productSlug}`}>{productName}</Link>
+      <div className="card-info">
+        <div className="card-category">{product.category?.name || 'Safety Equipment'}</div>
+        <h3 className="card-title">
+          <Link to={`/products/${product.slug}`}>{product.name}</Link>
         </h3>
 
-        <div className="product-pricing">
-          <span className="price-sale"><span className="currency">Rs.</span>{productPrice.toLocaleString()}</span>
-          {product.originalPrice > productPrice && (
-            <span className="price-original"><span className="currency">Rs.</span>{product.originalPrice.toLocaleString()}</span>
+        <div className="card-price">
+          <span className="current-price"><span className="currency">Rs.</span>{product.price?.toLocaleString()}</span>
+          {discount && (
+            <span className="old-price">
+              <span className="currency">Rs.</span>
+              {(product.comparePrice || product.originalPrice)?.toLocaleString()}
+            </span>
           )}
         </div>
 
-        <button
-          className={`btn-add-cart ${!inStock ? 'disabled' : ''}`}
-          onClick={handleAddToCart}
-          disabled={!inStock}
-        >
-          {inStock ? 'Add to Cart' : 'Out of Stock'}
-        </button>
+        {viewMode === 'grid' && (
+          <button 
+            className={`btn-add-cart-grid ${!inStock ? 'disabled' : ''}`}
+            onClick={handleAddToCart}
+            disabled={!inStock}
+          >
+            {inStock ? 'Add to Cart' : 'Out of Stock'}
+          </button>
+        )}
+
+        {viewMode === 'list' && (
+          <div className="list-description">
+            <p>{product.description?.substring(0, 150)}...</p>
+            <button 
+              className={`btn-add-cart ${!inStock ? 'disabled' : ''}`} 
+              onClick={handleAddToCart}
+              disabled={!inStock}
+            >
+              {inStock ? 'Add to Cart' : 'Out of Stock'} <FiShoppingCart />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

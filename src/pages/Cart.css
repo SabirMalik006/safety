@@ -247,9 +247,14 @@
   padding-top: 1.25rem;
   border-top: 2px solid #f1f5f9;
   font-size: 1.25rem;
-  font-weight: 800;
+  font-weight: 900;
   color: #0f172a;
   margin-top: 0.5rem;
+}
+
+.currency {
+  font-weight: 500;
+  color: inherit;
 }
 
 .btn-checkout {

@@ -146,8 +146,13 @@
 
 .detail-price {
   font-size: 1.8rem;
-  font-weight: 700;
+  font-weight: 900;
   color: var(--primary);
+}
+
+.currency {
+  font-weight: 500;
+  color: inherit;
 }
 
 .detail-original {

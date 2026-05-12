@@ -65,7 +65,7 @@ export default function Cart() {
                         {item.color && <span>Color: {item.color}</span>}
                         {item.size && <span>Size: {item.size}</span>}
                       </div>
-                      <div className="item-price-mobile">Rs.{item.price.toLocaleString()}</div>
+                      <div className="item-price-mobile"><span className="currency">Rs.</span>{item.price.toLocaleString()}</div>
                       <button className="btn-remove-mobile" onClick={() => removeFromCart(index)}>
                         <FiTrash2 /> Remove
                       </button>
@@ -85,7 +85,7 @@ export default function Cart() {
                   </div>
 
                   <div className="item-total">
-                    <strong>Rs.{(item.price * item.quantity).toLocaleString()}</strong>
+                    <strong><span className="currency">Rs.</span>{(item.price * item.quantity).toLocaleString()}</strong>
                     <button className="btn-remove-desktop" title="Remove Item" onClick={() => removeFromCart(index)}>
                       <FiXCircle />
                     </button>
@@ -107,20 +107,20 @@ export default function Cart() {
               <div className="summary-rows">
                 <div className="summary-row">
                   <span>Subtotal</span>
-                  <span>Rs.{subtotal.toLocaleString()}</span>
+                  <span><span className="currency">Rs.</span>{subtotal.toLocaleString()}</span>
                 </div>
                 <div className="summary-row">
                   <span>Shipping</span>
-                  <span>{shipping === 0 ? <span className="free">FREE</span> : `Rs.${shipping.toLocaleString()}`}</span>
+                  <span>{shipping === 0 ? <span className="free">FREE</span> : <><span className="currency">Rs.</span>{shipping.toLocaleString()}</>}</span>
                 </div>
                 {shipping > 0 && (
                   <div className="shipping-info">
-                    <FiTruck /> Spend <strong>Rs.{(shippingThreshold - subtotal).toLocaleString()}</strong> more for FREE shipping!
+                    <FiTruck /> Spend <strong><span className="currency">Rs.</span>{(shippingThreshold - subtotal).toLocaleString()}</strong> more for FREE shipping!
                   </div>
                 )}
                 <div className="summary-total">
                   <span>Total</span>
-                  <span>Rs.{total.toLocaleString()}</span>
+                  <span><span className="currency">Rs.</span>{total.toLocaleString()}</span>
                 </div>
               </div>
 

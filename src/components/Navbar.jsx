@@ -6,7 +6,7 @@ import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { getProducts, getCategories } from '../services/productService';
 import { getCurrentUser } from '../services/authService';
-const horizonHubLogo = '/horizon-hub.jpeg';
+const horizonHubLogo = '/favicon.jpeg';
 import './Navbar.css';
 
 const navLinks = [

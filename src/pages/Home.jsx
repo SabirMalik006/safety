@@ -81,14 +81,19 @@ export default function Home() {
           // Convert backend product format to frontend ProductCard expected format
           const formattedProducts = productsRes.data.map(product => ({
             id: product._id,
+            _id: product._id,
             name: product.name,
             price: product.price,
             comparePrice: product.comparePrice,
             image: product.images?.[0]?.url || '/images/placeholder.jpg',
+            images: product.images,
             slug: product.slug,
             rating: product.rating,
             reviewCount: product.numReviews,
             colors: product.colors || [],
+            countInStock: product.countInStock,
+            category: product.category,
+            description: product.description,
           }));
           setBestSellers(formattedProducts);
         } else {

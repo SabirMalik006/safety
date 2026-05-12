@@ -235,10 +235,10 @@ export default function ProductDetail() {
           </div> */}
 
           <div className="detail-pricing">
-            <span className="detail-price">Rs.{product.price.toLocaleString()}</span>
+            <span className="detail-price"><span className="currency">Rs.</span>{product.price.toLocaleString()}</span>
             {product.comparePrice && product.comparePrice > product.price && (
               <>
-                <span className="detail-original">Rs.{product.comparePrice.toLocaleString()}</span>
+                <span className="detail-original"><span className="currency">Rs.</span>{product.comparePrice.toLocaleString()}</span>
                 <span className="detail-saving">Save Rs.{(product.comparePrice - product.price).toLocaleString()}</span>
               </>
             )}
