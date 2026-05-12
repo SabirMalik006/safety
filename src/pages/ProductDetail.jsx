@@ -227,12 +227,12 @@ export default function ProductDetail() {
         <div className="product-info-detail">
           <h1 className="detail-name">{product.name}</h1>
 
-          <div className="detail-ratings">
+          {/* <div className="detail-ratings">
             {[...Array(5)].map((_, i) => (
               <FiStar key={i} className={i < Math.floor(product.rating || 0) ? 'star filled' : 'star'} />
             ))}
             <span>({product.numReviews || 0} reviews)</span>
-          </div>
+          </div> */}
 
           <div className="detail-pricing">
             <span className="detail-price">Rs.{product.price.toLocaleString()}</span>
@@ -342,7 +342,7 @@ export default function ProductDetail() {
       {/* Tabs */}
       <div className="container detail-tabs-section">
         <div className="tabs-nav">
-          {['description', 'reviews', 'shipping'].map(tab => (
+          {['description','shipping'].map(tab => (
             <button
               key={tab}
               className={`tab-btn ${activeTab === tab ? 'active' : ''}`}
@@ -367,7 +367,7 @@ export default function ProductDetail() {
               </ul>
             </div>
           )}
-          {activeTab === 'reviews' && (
+          {/* {activeTab === 'reviews' && (
             <div className="tab-pane">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                 <h3>Customer Reviews</h3>
@@ -449,7 +449,7 @@ export default function ProductDetail() {
                 ))}
               </div>
             </div>
-          )}
+          )} */}
           {activeTab === 'shipping' && (
             <div className="tab-pane">
               <h3>Shipping & Returns</h3>

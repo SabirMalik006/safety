@@ -707,7 +707,7 @@
   .nb-hamburger { display: block; order: 3; }
   .nb-auth-buttons { display: none; }
   .desktop-only-actions { display: none; }
-  .nb-logo { order: 1; }
+  .nb-logo { order: 0; }
   .nb-search-wrap { order: 2; }
 
   /* Hide brand and hamburger when menu is open */

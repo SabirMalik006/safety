@@ -218,12 +218,7 @@ const ProductCard = ({ product, viewMode, onAddToCart, onWishlist, isWishlisted 
         <h3 className="card-title">
           <a href={`/products/${product.slug}`}>{product.name}</a>
         </h3>
-        <div className="card-rating">
-          {[...Array(5)].map((_, i) => (
-            <FiStar key={i} className={i < Math.floor(product.rating || 0) ? 'filled' : ''} />
-          ))}
-          <span>({product.numReviews || 0})</span>
-        </div>
+
         <div className="card-price">
           <span className="current-price"><span className="currency">Rs.</span>{product.price?.toLocaleString()}</span>
           {product.comparePrice > product.price && (

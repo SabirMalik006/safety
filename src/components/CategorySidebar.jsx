@@ -26,14 +26,13 @@ const CategorySidebar = ({ categories, activeCategory, onCategoryChange, priceRa
               onClick={() => { onCategoryChange(cat._id); onClose(); }}
             >
               {cat.name}
-              <span className="cat-count">{cat.productCount || 0}</span>
             </li>
           ))}
         </ul>
       </div>
 
       <div className="filter-section">
-        <h4>Price Range</h4>
+        {/* <h4>Price Range</h4>
         <div className="price-slider">
           <input 
             type="range" 
@@ -47,7 +46,7 @@ const CategorySidebar = ({ categories, activeCategory, onCategoryChange, priceRa
             <span>Rs.0</span>
             <span>Rs.{priceRange[1].toLocaleString()}</span>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <button className="clear-filters" onClick={() => {
