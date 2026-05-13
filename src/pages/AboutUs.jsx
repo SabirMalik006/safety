@@ -12,13 +12,48 @@ export default function AboutUs() {
         </div>
       </section>
 
+      {/* Leadership Message Section */}
+      <section className="leadership-message">
+        <div className="container">
+          <div className="message-box">
+            <span className="message-tag">A Message From Our Leadership</span>
+            <h2>Our Commitment to Your Safety</h2>
+
+            <div className="message-content">
+              <p>In today's rapidly evolving industrial landscape, organizations face unprecedented challenges in securing their workforce, optimizing safety protocols, and maintaining a competitive advantage through reliable protection gear.</p>
+
+              <p>At <strong>The Horizon Hub</strong>, we understand that successful safety management requires more than just equipment—it demands strategic vision, technical excellence, and an unwavering commitment to our clients' well-being and success.</p>
+
+              <p>Our team brings together decades of experience in industrial safety, occupational health, and risk management to deliver solutions that are not only robust but also perfectly aligned with operational realities and organizational objectives.</p>
+
+              <p>We are proud to serve construction firms, manufacturing plants, and industrial institutions that require the highest standards of reliability and protection. Every product we provide reflects our commitment to excellence and our understanding of the critical role safety plays in modern operations.</p>
+
+              <p>Thank you for considering <strong>The Horizon Hub</strong> as your safety partner. We look forward to helping you achieve your workplace protection goals and ensuring a safer future for your team.</p>
+            </div>
+
+            <div className="message-footer">
+              <div className="signature-area">
+                <div className="signature-font">
+                  <span className="sig-word">Ammad</span>
+                  <span className="sig-word">Khan</span>
+                </div>
+                <div className="leader-info">
+                  {/* <strong>Ammad Khan</strong> */}
+                  <span>CEO, The Horizon Hub</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Brand Story */}
       <section className="brand-story">
         <div className="container">
           <div className="story-grid">
             <div className="story-image">
-              <img 
-                src="https://images.pexels.com/photos/8470884/pexels-photo-8470884.jpeg" 
+              <img
+                src="https://images.pexels.com/photos/8470884/pexels-photo-8470884.jpeg"
                 alt="Industrial safety team at work"
               />
             </div>
@@ -184,6 +219,116 @@ export default function AboutUs() {
       <style jsx>{`
         .about-page {
           font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+          @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+        }
+
+        .leadership-message {
+          padding: 60px 0;
+          background: #fdfdfd;
+          background-image: radial-gradient(#F59E0B08 1px, transparent 1px);
+          background-size: 20px 20px;
+        }
+
+        .message-box {
+          max-width: 780px;
+          margin: 0 auto;
+          background: #ffffff;
+          padding: 50px 60px;
+          border-radius: 30px;
+          box-shadow: 0 20px 50px -10px rgba(0,0,0,0.06);
+          border: 1px solid rgba(245, 158, 11, 0.08);
+          position: relative;
+        }
+
+        .message-box::before {
+          content: '"';
+          position: absolute;
+          top: 30px;
+          left: 30px;
+          font-size: 100px;
+          color: #F59E0B12;
+          font-family: serif;
+          line-height: 1;
+        }
+
+        .message-tag {
+          color: #f59e0b;
+          font-weight: 800;
+          font-size: 12px;
+          text-transform: uppercase;
+          letter-spacing: 2px;
+          display: block;
+          margin-bottom: 16px;
+        }
+
+        .message-box h2 {
+          font-size: 32px;
+          font-weight: 800;
+          margin-bottom: 30px;
+          color: #1a1a1a;
+          line-height: 1.2;
+        }
+
+        .message-content p {
+          font-size: 16px;
+          line-height: 1.7;
+          color: #4a4a4a;
+          margin-bottom: 20px;
+        }
+
+        .message-content strong {
+          color: #1a1a1a;
+          font-weight: 700;
+        }
+
+        .message-footer {
+          margin-top: 40px;
+          padding-top: 30px;
+          border-top: 1px solid #f0f0f0;
+        }
+
+        .signature-font {
+          font-family: 'Dancing Script', cursive;
+          font-size: 46px;
+          color: #f59e0b;
+          margin-bottom: 8px;
+          transform: rotate(-1.5deg);
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          position: relative;
+        }
+
+        .sig-word {
+          position: relative;
+          display: inline-block;
+        }
+
+        .sig-word::after {
+          content: '';
+          position: absolute;
+          bottom: 10px;
+          left: 0;
+          width: 100%;
+          height: 1.5px;
+          background: #f59e0b;
+          opacity: 0.8;
+          transform: rotate(-1deg);
+          border-radius: 50% 20%;
+        }
+
+        .leader-info strong {
+          display: block;
+          font-size: 17px;
+          color: #1a1a1a;
+          font-weight: 700;
+        }
+
+        .leader-info span {
+          font-size: 14px;
+          color: #666;
+          margin-top: 2px;
+          display: block;
         }
 
         .container {
@@ -614,6 +759,33 @@ export default function AboutUs() {
             width: 44px;
             height: 44px;
             padding: 8px;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .message-box {
+            padding: 35px 25px;
+            border-radius: 20px;
+            margin: 0 15px;
+          }
+          .message-box h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+          }
+          .message-content p {
+            font-size: 15px;
+            margin-bottom: 15px;
+          }
+          .signature-font {
+            font-size: 34px;
+          }
+          .leadership-message {
+            padding: 40px 0;
+          }
+          .message-box::before {
+            top: 15px;
+            left: 15px;
+            font-size: 60px;
           }
         }
 

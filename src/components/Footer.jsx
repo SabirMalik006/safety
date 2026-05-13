@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiInstagram, FiFacebook, FiTwitter, FiYoutube, FiStar, FiX, FiMessageSquare } from 'react-icons/fi';
 import { getCurrentUser } from '../services/authService';
+import { getCategories } from '../services/productService';
 import api from '../services/api';
 import toast from 'react-hot-toast';
 import './Footer.css';
@@ -13,13 +14,35 @@ export default function Footer() {
   const [comment, setComment] = useState('');
   const [guestName, setGuestName] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [categories, setCategories] = useState([]);
   const user = getCurrentUser();
 
   useEffect(() => {
     if (user && showFeedbackModal) {
       setGuestName(user.name);
     }
-  }, [showFeedbackModal, user]);
+  }, [user, showFeedbackModal]);
+
+  useEffect(() => {
+    const fetchCats = async () => {
+      try {
+        const res = await getCategories();
+        if (res.success) {
+          setCategories(res.data || []);
+        }
+      } catch (err) {
+        console.error('Error fetching footer cats:', err);
+      }
+    };
+    fetchCats();
+  }, []);
+
+  const handleLinkClick = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
 
   const handleSubmitFeedback = async (e) => {
     e.preventDefault();
@@ -48,7 +71,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer-top container">
         <div className="footer-brand">
-          <Link to="/" className="footer-logo">The Horizon <span>Hub</span></Link>
+          <Link to="/" className="footer-logo" onClick={handleLinkClick}>The Horizon <span>Hub</span></Link>
           <p>Pakistan's trusted destination for premium safety equipment and industrial protection gear. Quality you can trust, safety you can rely on.</p>
           
           <button className="footer-feedback-btn" onClick={() => setShowFeedbackModal(true)}>
@@ -59,21 +82,31 @@ export default function Footer() {
         <div className="footer-col">
           <h4>Industrial Solutions</h4>
           <ul>
-            <li><Link to="/collections/head-protection">Head Protection</Link></li>
-            <li><Link to="/collections/eye-protection">Eye Protection</Link></li>
-            <li><Link to="/collections/hand-protection">Hand Protection</Link></li>
-            <li><Link to="/collections/body-protection">Body Protection</Link></li>
-            <li><Link to="/collections/foot-protection">Foot Protection</Link></li>
-            <li><Link to="/collections/respiratory-protection">Respiratory Protection</Link></li>
+            {categories.length > 0 ? (
+              categories.slice(0, 6).map(cat => (
+                <li key={cat._id}>
+                  <Link to={`/collections/${cat.slug}`} onClick={handleLinkClick}>{cat.name}</Link>
+                </li>
+              ))
+            ) : (
+              <>
+                <li><Link to="/collections/head-protection" onClick={handleLinkClick}>Head Protection</Link></li>
+                <li><Link to="/collections/eye-protection" onClick={handleLinkClick}>Eye Protection</Link></li>
+                <li><Link to="/collections/hand-protection" onClick={handleLinkClick}>Hand Protection</Link></li>
+                <li><Link to="/collections/body-protection" onClick={handleLinkClick}>Body Protection</Link></li>
+                <li><Link to="/collections/foot-protection" onClick={handleLinkClick}>Foot Protection</Link></li>
+                <li><Link to="/collections/respiratory-protection" onClick={handleLinkClick}>Respiratory Protection</Link></li>
+              </>
+            )}
           </ul>
         </div>
 
         <div className="footer-col">
           <h4>Customer Care</h4>
           <ul>
-            <li><Link to="/about">About Our Story</Link></li>
-            <li><Link to="/pages/reviews">Customer Testimonials</Link></li>
-            <li><Link to="/contact">Get in Touch</Link></li>
+            <li><Link to="/about" onClick={handleLinkClick}>About Our Story</Link></li>
+            <li><Link to="/pages/reviews" onClick={handleLinkClick}>Customer Testimonials</Link></li>
+            <li><Link to="/contact" onClick={handleLinkClick}>Get in Touch</Link></li>
           </ul>
           <div className="social-links">
             <a href="#" aria-label="Instagram"><FiInstagram /></a>
@@ -85,11 +118,11 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom container">
-        <p>© {new Date().getFullYear()} The Horizon Hub. All rights reserved. Made with ♥ in Pakistan</p>
-        <div className="payment-badges">
+        <p>© {new Date().getFullYear()} The Horizon Hub. All rights reserved.</p>
+        {/* <div className="payment-badges">
           <span>JazzCash</span>
           <span>Cash on delivery</span>
-        </div>
+        </div> */}
       </div>
 
       {/* Feedback Modal */}
