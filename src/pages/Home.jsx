@@ -263,7 +263,7 @@ export default function Home() {
           <div className="container">
             <p className="section-tag">Explore</p>
             <h2 className="section-title">Shop By Category</h2>
-            <p className="section-subtitle">Your safety, our priority — explore our premium protection gear</p>
+            <p className="section-subtitle">One Hub. Unlimited Solutions. From industrial gear to everyday essentials.</p>
             <div className="categories-grid">
               {categories.map(cat => (
                 <Link key={cat.id} to={`/collections/${cat.slug}`} className="cat-card">
@@ -318,7 +318,7 @@ export default function Home() {
           <div className="container">
             <p className="section-tag">Testimonials</p>
             <h2 className="section-title">What Our Customers Say</h2>
-            <p className="section-subtitle">Real reviews from real CarryMe customers across Pakistan.</p>
+            <p className="section-subtitle">Real reviews from our valued customers across Pakistan.</p>
             <div className="reviews-marquee">
               <div className="reviews-track">
                 {[...reviews, ...reviews].map((r, idx) => (

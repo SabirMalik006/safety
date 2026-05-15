@@ -41,7 +41,7 @@ export default function ContactUs() {
       <section className="contact-hero">
         <div className="container">
           <h1>Get in Touch</h1>
-          <p>We'd love to hear from you. Our team is here to help you with any questions.</p>
+          <p>Whether you are managing a project, securing your property, or ordering products for personal use, we're here to provide the right solutions.</p>
         </div>
       </section>
 

@@ -72,7 +72,7 @@ export default function Footer() {
       <div className="footer-top container">
         <div className="footer-brand">
           <Link to="/" className="footer-logo" onClick={handleLinkClick}>The Horizon <span>Hub</span></Link>
-          <p>Pakistan's trusted destination for premium safety equipment and industrial protection gear. Quality you can trust, safety you can rely on.</p>
+          <p>One Hub. Unlimited Solutions. Your trusted platform for industrial, technical, and everyday procurement needs.</p>
           
           <button className="footer-feedback-btn" onClick={() => setShowFeedbackModal(true)}>
             <FiMessageSquare /> Leave a Review
@@ -80,7 +80,7 @@ export default function Footer() {
         </div>
 
         <div className="footer-col">
-          <h4>Industrial Solutions</h4>
+          <h4>Categories We Serve</h4>
           <ul>
             {categories.length > 0 ? (
               categories.slice(0, 6).map(cat => (

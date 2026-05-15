@@ -8,7 +8,7 @@ export default function AboutUs() {
       <section className="about-hero">
         <div className="container">
           <h1>Our Mission</h1>
-          <p>Protecting Pakistan's workforce with certified industrial safety gear and professional tools.</p>
+          <p>Simplifying procurement with reliable industrial, technical, and everyday solutions through one trusted platform.</p>
         </div>
       </section>
 
@@ -20,15 +20,15 @@ export default function AboutUs() {
             <h2>Our Commitment to Your Safety</h2>
 
             <div className="message-content">
-              <p>In today's rapidly evolving industrial landscape, organizations face unprecedented challenges in securing their workforce, optimizing safety protocols, and maintaining a competitive advantage through reliable protection gear.</p>
+              <p>In today's fast-paced world, businesses and individuals alike face the challenge of finding reliable, high-quality supplies across multiple categories—from industrial safety and surveillance to IT products and everyday essentials. Procurement shouldn't be a hurdle; it should be a seamless part of your growth.</p>
 
-              <p>At <strong>The Horizon Hub</strong>, we understand that successful safety management requires more than just equipment—it demands strategic vision, technical excellence, and an unwavering commitment to our clients' well-being and success.</p>
+              <p>At <strong>The Horizon Hub</strong>, our mission is to simplify this journey. We have built a platform that brings together diverse requirements under one roof, ensuring that whether you are securing a warehouse, upgrading your office technology, or sourcing construction materials, you have a partner you can depend on.</p>
 
-              <p>Our team brings together decades of experience in industrial safety, occupational health, and risk management to deliver solutions that are not only robust but also perfectly aligned with operational realities and organizational objectives.</p>
+              <p>Our commitment goes beyond just delivering products. We focus on quality, competitive pricing, and scalable solutions that evolve with your needs. We are proud to serve a wide range of clients, from large-scale contractors and organizations to individuals seeking smart technology and lifestyle essentials.</p>
 
-              <p>We are proud to serve construction firms, manufacturing plants, and industrial institutions that require the highest standards of reliability and protection. Every product we provide reflects our commitment to excellence and our understanding of the critical role safety plays in modern operations.</p>
+              <p>Every solution we provide is designed to be future-ready, modern, and efficient. We believe that by providing the right tools and equipment, we empower you to focus on what matters most—your vision and your success.</p>
 
-              <p>Thank you for considering <strong>The Horizon Hub</strong> as your safety partner. We look forward to helping you achieve your workplace protection goals and ensuring a safer future for your team.</p>
+              <p>Thank you for choosing <strong>The Horizon Hub</strong>. We look forward to being your trusted partner in procurement and supply, today and in the future.</p>
             </div>
 
             <div className="message-footer">
@@ -59,9 +59,9 @@ export default function AboutUs() {
             </div>
             <div className="story-content">
               <span className="story-tag">Our Background</span>
-              <h2>Your Partner in Industrial Excellence</h2>
-              <p>Founded in 2020, The Horizon Hub was established with a clear mission: to bridge the gap in Pakistan's industrial sector by providing certified, high-performance safety equipment and precision tools. What began as a specialized consultancy has evolved into a leading distributor of professional-grade gear.</p>
-              <p>Every piece of equipment in our catalog is rigorously tested to meet international safety standards (CE, ANSI). We believe that the right tools and protection don't just prevent accidents—they empower workers to perform at their definitive best.</p>
+              <h2>Your Partner in Comprehensive Procurement</h2>
+              <p>Founded with a vision to revolutionize how businesses and individuals source their essentials, The Horizon Hub has grown into a versatile procurement and supply platform. We bridge the gap between complex industrial needs and everyday requirements by providing a one-stop marketplace for quality products and dependable service.</p>
+              <p>From modern surveillance systems and IT hardware to construction materials and outdoor gear, every item in our catalog is carefully sourced for reliability and durability. We don't just supply products; we deliver solutions that power progress and enhance security across various environments.</p>
               <div className="story-stats">
                 <div className="stat">
                   <strong>10,000+</strong>
@@ -88,19 +88,19 @@ export default function AboutUs() {
             <div className="mission-card">
               <div className="mission-icon"><FiTarget /></div>
               <h3>Our Mission</h3>
-              <p>To eliminate workplace hazards by providing accessible, certified, and high-quality safety solutions to every industrial sector in Pakistan.</p>
+              <p>To provide reliable access to industrial requirements, safety solutions, and everyday operational supplies through one trusted platform, simplifying procurement for everyone.</p>
               <div className="card-hover-effect"></div>
             </div>
             <div className="mission-card">
               <div className="mission-icon"><FiHeart /></div>
               <h3>Our Vision</h3>
-              <p>To be the definitive standard for industrial safety in the region, recognized for technical expertise and uncompromising quality.</p>
+              <p>To become a versatile procurement platform connecting businesses and individuals with quality products, modern technology, and dependable service across multiple industries.</p>
               <div className="card-hover-effect"></div>
             </div>
             <div className="mission-card">
               <div className="mission-icon"><FiUsers /></div>
               <h3>Our Promise</h3>
-              <p>Guaranteed certification, technical support, and the most reliable equipment for your workforce.</p>
+              <p>Quality products, dependable service, competitive pricing, and scalable solutions for your evolving needs, from security to everyday essentials.</p>
               <div className="card-hover-effect"></div>
             </div>
           </div>
@@ -144,6 +144,37 @@ export default function AboutUs() {
         </div>
       </section>
 
+      {/* Categories We Serve */}
+      <section className="categories-serve">
+        <div className="container">
+          <div className="section-header">
+            <span className="section-tag">Our Scope</span>
+            <h2>Categories We Serve</h2>
+            <p className="section-subtitle">A comprehensive range of solutions for every need</p>
+          </div>
+          <div className="categories-list-grid">
+            {[
+              "Industrial Requirements",
+              "Safety & Hazard Equipment",
+              "Fire Safety Solutions",
+              "Surveillance & Security Equipment",
+              "Construction Materials & Supplies",
+              "Power Solutions & Electrical Equipment",
+              "IT Equipment & Accessories",
+              "Tools & Hardware",
+              "Gadgets & Smart Devices",
+              "Outdoor & Camping Gear",
+              "General Procurement & Supply Solutions"
+            ].map((cat, idx) => (
+              <div key={idx} className="category-serve-item">
+                <FiStar className="cat-bullet" />
+                <span>{cat}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Additional Value Stats Row */}
       <section className="value-stats-section">
         <div className="container">
@@ -182,32 +213,32 @@ export default function AboutUs() {
               <div className="feature">
                 <FiStar />
                 <div>
-                  <strong>Premium Quality</strong>
-                  <span>High-grade materials for lasting durability</span>
-                </div>
-                <div className="card-hover-effect"></div>
-              </div>
-              <div className="feature">
-                <FiRefreshCw />
-                <div>
-                  <strong>Easy Returns</strong>
-                  <span>7-day hassle-free return policy</span>
-                </div>
-                <div className="card-hover-effect"></div>
-              </div>
-              <div className="feature">
-                <FiTruck />
-                <div>
-                  <strong>Fast Logistics</strong>
-                  <span>Expedited shipping for critical site equipment</span>
+                  <strong>Complete Procurement</strong>
+                  <span>Multiple product categories under one trusted platform</span>
                 </div>
                 <div className="card-hover-effect"></div>
               </div>
               <div className="feature">
                 <FiShield />
                 <div>
-                  <strong>Secure Shopping</strong>
-                  <span>100% secure payment gateway</span>
+                  <strong>Security & Surveillance</strong>
+                  <span>Modern equipment designed to protect your environment</span>
+                </div>
+                <div className="card-hover-effect"></div>
+              </div>
+              <div className="feature">
+                <FiTruck />
+                <div>
+                  <strong>Efficient Sourcing</strong>
+                  <span>Simplified procurement for businesses and individuals</span>
+                </div>
+                <div className="card-hover-effect"></div>
+              </div>
+              <div className="feature">
+                <FiTrendingUp />
+                <div>
+                  <strong>Scalable & Future Ready</strong>
+                  <span>Expanding categories to meet your evolving needs</span>
                 </div>
                 <div className="card-hover-effect"></div>
               </div>
@@ -561,6 +592,44 @@ export default function AboutUs() {
           font-size: 14px;
           line-height: 1.6;
           margin: 0;
+        }
+
+        /* Categories We Serve */
+        .categories-serve {
+          padding: 80px 0;
+          background: #fdfdfd;
+        }
+        .categories-list-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+          gap: 20px;
+          margin-top: 40px;
+        }
+        .category-serve-item {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          background: #ffffff;
+          padding: 20px 25px;
+          border-radius: 20px;
+          border: 1px solid rgba(245,158,11,0.1);
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+        .category-serve-item:hover {
+          transform: translateY(-3px);
+          border-color: #F59E0B;
+          box-shadow: 0 10px 25px rgba(245,158,11,0.1);
+        }
+        .cat-bullet {
+          color: #F59E0B;
+          font-size: 20px;
+          flex-shrink: 0;
+        }
+        .category-serve-item span {
+          font-size: 16px;
+          font-weight: 600;
+          color: #333;
         }
 
         /* Value Stats Section */
