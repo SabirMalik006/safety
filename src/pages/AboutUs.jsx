@@ -1,5 +1,7 @@
 import React from 'react';
 import { FiAward, FiHeart, FiUsers, FiTarget, FiTruck, FiShield, FiRefreshCw, FiStar, FiTrendingUp, FiClock } from 'react-icons/fi';
+import signatureImg from '../assets/font.jpeg';
+import nameImg from '../assets/ammad khan.jpeg';
 
 export default function AboutUs() {
   return (
@@ -33,12 +35,11 @@ export default function AboutUs() {
 
             <div className="message-footer">
               <div className="signature-area">
-                <div className="signature-font">
-                  <span className="sig-word">Ammad</span>
-                  <span className="sig-word">Khan</span>
+                <div className="signature-container">
+                  <img src={signatureImg} alt="Ammad Khan Signature" className="signature-img" />
+                  <img src={nameImg} alt="Ammad Khan" className="printed-name-img" />
                 </div>
                 <div className="leader-info">
-                  {/* <strong>Ammad Khan</strong> */}
                   <span>CEO, The Horizon Hub</span>
                 </div>
               </div>
@@ -318,34 +319,35 @@ export default function AboutUs() {
           border-top: 1px solid #f0f0f0;
         }
 
-        .signature-font {
-          font-family: 'Dancing Script', cursive;
-          font-size: 46px;
-          color: #f59e0b;
-          margin-bottom: 8px;
-          transform: rotate(-1.5deg);
+        .signature-container {
           display: flex;
-          align-items: center;
-          gap: 15px;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px; /* Elegant gap in between the signature and printed name */
+          margin-bottom: 12px;
           position: relative;
         }
 
-        .sig-word {
-          position: relative;
-          display: inline-block;
+        .printed-name-img {
+          height: auto;
+          width: 175px;
+          mix-blend-mode: multiply;
+          filter: contrast(1.15) brightness(1.05);
+          display: block;
         }
 
-        .sig-word::after {
-          content: '';
-          position: absolute;
-          bottom: 10px;
-          left: 0;
-          width: 100%;
-          height: 1.5px;
-          background: #f59e0b;
-          opacity: 0.8;
+        .signature-img {
+          height: auto;
+          width: 270px; /* Slightly larger size as requested */
+          mix-blend-mode: multiply;
+          filter: contrast(1.15) brightness(1.05);
+          display: block;
           transform: rotate(-1deg);
-          border-radius: 50% 20%;
+          transition: transform 0.3s ease;
+        }
+
+        .signature-img:hover {
+          transform: scale(1.02) rotate(-1.5deg);
         }
 
         .leader-info strong {
@@ -845,8 +847,14 @@ export default function AboutUs() {
             font-size: 15px;
             margin-bottom: 15px;
           }
-          .signature-font {
-            font-size: 34px;
+          .signature-container {
+            gap: 8px;
+          }
+          .signature-img {
+            width: 220px;
+          }
+          .printed-name-img {
+            width: 140px;
           }
           .leadership-message {
             padding: 40px 0;
@@ -909,6 +917,15 @@ export default function AboutUs() {
           }
           .feature svg {
             margin-bottom: 8px;
+          }
+          .signature-container {
+            gap: 6px;
+          }
+          .signature-img {
+            width: 180px;
+          }
+          .printed-name-img {
+            width: 120px;
           }
         }
       `}</style>

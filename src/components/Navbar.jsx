@@ -135,7 +135,7 @@ export default function Navbar() {
               <span className="nb-brand-mark" aria-hidden="true">
                 <img src={horizonHubLogo} alt="The Horizon Hub" />
               </span>
-              <span className="nb-brand-byline">by Horizon-Integrated Solutions</span>
+              <span className="nb-brand-byline">by Horizon Integrated Solutions</span>
             </span>
           </Link>
 
