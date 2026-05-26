@@ -28,6 +28,7 @@ const OrderSuccess = lazy(() => import('./pages/OrderSuccess'));
 const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
 const VerifyOTP = lazy(() => import('./pages/VerifyOTP'));
 const ResetPassword = lazy(() => import('./pages/ResetPassword'));
+const Policy = lazy(() => import('./pages/Policy'));
 
 // Admin Pages
 const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'));
@@ -126,6 +127,7 @@ export default function App() {
               <Route path="/contact" element={<ContactUs />} />
               <Route path="/about" element={<AboutUs />} />
               <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+              <Route path="/policy" element={<Policy />} />
               
               {/* Checkout - No Navbar/Footer */}
               <Route path="/checkout" element={<Checkout />} />

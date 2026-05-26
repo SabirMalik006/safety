@@ -107,6 +107,7 @@ export default function Footer() {
             <li><Link to="/about" onClick={handleLinkClick}>About Our Story</Link></li>
             <li><Link to="/pages/reviews" onClick={handleLinkClick}>Customer Testimonials</Link></li>
             <li><Link to="/contact" onClick={handleLinkClick}>Get in Touch</Link></li>
+            <li><Link to="/policy" onClick={handleLinkClick}>Policy</Link></li>
           </ul>
           <div className="social-links">
             <a href="#" aria-label="Instagram"><FiInstagram /></a>
