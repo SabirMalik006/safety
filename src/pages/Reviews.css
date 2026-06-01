@@ -96,3 +96,11 @@
 
 @media (max-width: 900px) { .reviews-grid-page { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .reviews-grid-page { grid-template-columns: 1fr; } }
+
+.loading-state, .empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 0;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}

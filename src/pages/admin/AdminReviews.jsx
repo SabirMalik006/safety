@@ -47,6 +47,16 @@ const AdminReviews = () => {
     }
   };
 
+  const handleToggleFeature = async (reviewId) => {
+    try {
+      await api.put(`/reviews/${reviewId}/feature`);
+      toast.success('Feature status updated!');
+      fetchReviews();
+    } catch (err) {
+      toast.error('Failed to update feature status');
+    }
+  };
+
   const handleDelete = async () => {
     setSubmitting(true);
     try {
@@ -64,6 +74,7 @@ const AdminReviews = () => {
   const filteredReviews = reviews.filter(r => {
     if (filter === 'pending') return !r.isApproved;
     if (filter === 'approved') return r.isApproved;
+    if (filter === 'featured') return r.isFeatured;
     return true;
   });
 
@@ -82,6 +93,7 @@ const AdminReviews = () => {
         <button className={filter === 'all' ? 'active' : ''} onClick={() => setFilter('all')}>All Reviews</button>
         <button className={filter === 'pending' ? 'active' : ''} onClick={() => setFilter('pending')}>Pending Approval</button>
         <button className={filter === 'approved' ? 'active' : ''} onClick={() => setFilter('approved')}>Approved</button>
+        <button className={filter === 'featured' ? 'active' : ''} onClick={() => setFilter('featured')}>Featured</button>
       </div>
 
       <div className="reviews-list">
@@ -121,6 +133,13 @@ const AdminReviews = () => {
                     <FiCheck /> Approve
                   </button>
                 )}
+                <button 
+                  className={`btn-feature ${review.isFeatured ? 'active' : ''}`} 
+                  onClick={() => handleToggleFeature(review._id)}
+                  title={review.isFeatured ? 'Unfeature' : 'Feature on homepage'}
+                >
+                  <FiStar /> {review.isFeatured ? 'Featured' : 'Feature'}
+                </button>
                 <button className="btn-delete" onClick={() => setDeleteModal({ open: true, id: review._id })}>
                   <FiTrash2 /> Delete
                 </button>

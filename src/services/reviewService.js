@@ -9,3 +9,8 @@ export const createReview = async (reviewData) => {
   const response = await api.post('/reviews', reviewData);
   return response.data;
 };
+
+export const getFeaturedReviews = async () => {
+  const response = await api.get('/reviews/featured');
+  return response.data;
+};

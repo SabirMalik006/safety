@@ -114,11 +114,32 @@
   color: white;
 }
 
-.btn-approve:hover { background: #059669; }
+.btn-approve:hover {
+  background: #22c55e;
+  color: white;
+}
+
+.btn-feature {
+  color: #6366f1;
+  border: 1px solid #e0e7ff;
+  background: #f5f3ff;
+}
+
+.btn-feature:hover {
+  background: #6366f1;
+  color: white;
+}
+
+.btn-feature.active {
+  background: #6366f1;
+  color: white;
+  border-color: #6366f1;
+}
 
 .btn-delete {
-  background: #fee2e2;
   color: #ef4444;
+  border: 1px solid #fee2e2;
+  background: #fef2f2;
 }
 
 .btn-delete:hover { background: #fecaca; }

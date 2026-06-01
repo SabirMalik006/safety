@@ -7,7 +7,8 @@ import {
 import ProductCard from '../components/ProductCard';
 import { getHeroes } from '../services/heroService';
 import { getProducts } from '../services/productService';
-import { products as mockProducts, categories, reviews } from '../data/products';
+import { getFeaturedReviews } from '../services/reviewService';
+import { products as mockProducts, categories, reviews as staticReviews } from '../data/products';
 import './Home.css';
 
 // Features array - same rahega
@@ -22,6 +23,7 @@ export default function Home() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [heroSlides, setHeroSlides] = useState([]);
   const [bestSellers, setBestSellers] = useState([]);
+  const [featuredReviews, setFeaturedReviews] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Fetch data from backend
@@ -100,6 +102,15 @@ export default function Home() {
           // Fallback to mock products
           setBestSellers(mockProducts.slice(0, 8));
         }
+
+        // Fetch featured reviews from backend
+        const reviewRes = await getFeaturedReviews();
+        if (reviewRes.success && reviewRes.data.length > 0) {
+          setFeaturedReviews(reviewRes.data);
+        } else {
+          setFeaturedReviews(staticReviews);
+        }
+
       } catch (error) {
         console.error('Error fetching home data:', error);
         // Fallback to mock data on error
@@ -321,8 +332,8 @@ export default function Home() {
             <p className="section-subtitle">Real reviews from our valued customers across Pakistan.</p>
             <div className="reviews-marquee">
               <div className="reviews-track">
-                {[...reviews, ...reviews].map((r, idx) => (
-                  <div key={`${r.id}-${idx}`} className="review-card">
+                {[...featuredReviews, ...featuredReviews].map((r, idx) => (
+                  <div key={`${r._id || r.id}-${idx}`} className="review-card">
                     <div className="review-stars">
                       {[...Array(r.rating)].map((_, i) => (
                         <FiStar key={i} className="star filled" />
@@ -330,10 +341,10 @@ export default function Home() {
                     </div>
                     <p className="review-text">"{r.comment}"</p>
                     <div className="reviewer">
-                      <div className="reviewer-avatar">{r.name[0]}</div>
+                      <div className="reviewer-avatar">{(r.user?.name || r.guestName || r.name || '?')[0]}</div>
                       <div>
-                        <strong>{r.name}</strong>
-                        <span>{r.location} · {r.date}</span>
+                        <strong>{r.user?.name || r.guestName || r.name}</strong>
+                        <span>{r.location || 'Verified Buyer'} · {r.createdAt ? new Date(r.createdAt).toLocaleDateString() : r.date}</span>
                       </div>
                     </div>
                   </div>

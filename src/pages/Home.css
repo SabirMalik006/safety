@@ -703,7 +703,7 @@
   display: flex;
   gap: 1.5rem;
   width: max-content;
-  animation: reviewsScroll 80s linear infinite;
+  animation: reviewsScroll 40s linear infinite;
 }
 
 @keyframes reviewsScroll {
